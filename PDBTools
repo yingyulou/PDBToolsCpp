@@ -1,0 +1,31 @@
+/*
+DESCRIPTION
+
+    PDBTools
+
+    Collection of modules for PDB file parsing, linear algebra calculations and
+    structure modify.
+
+    See README file for full description and examples.
+
+VERSION
+
+    1.0.0
+
+LATEST UPDATE
+
+    2020.6.20
+
+*/
+
+#include "src/PDBParser.hpp"
+#include "src/StructBase.hpp"
+#include "src/NotProtein.hpp"
+#include "src/NotAtom.hpp"
+#include "src/Protein.hpp"
+#include "src/Chain.hpp"
+#include "src/Residue.hpp"
+#include "src/Atom.hpp"
+#include "src/StructUtil.hpp"
+#include "src/MathUtil.hpp"
+#include "src/Constants.hpp"
