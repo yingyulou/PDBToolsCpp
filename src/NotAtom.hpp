@@ -11,6 +11,8 @@
 #include <vector>
 #include <unordered_set>
 #include <cstdio>
+#include <iterator>
+#include <initializer_list>
 #include <Eigen/Dense>
 #include "NotAtom.h"
 #include "Struct.h"
@@ -26,6 +28,8 @@ namespace PDBTools
 using std::string;
 using std::vector;
 using std::unordered_set;
+using std::distance;
+using std::initializer_list;
 using Eigen::RowVector3d;
 
 
@@ -274,19 +278,15 @@ SelfType *__NotAtom<SelfType, SubType>::RenumAtoms(int startNum)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Append
+// PushBack
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-template <typename T>
-SelfType *__NotAtom<SelfType, SubType>::Append(const vector<T *> &subPtrList)
+SelfType *__NotAtom<SelfType, SubType>::PushBack(const SubType *subPtr)
 {
-    for (auto subPtr: subPtrList)
-    {
-        SubType *copySubPtr = subPtr->Copy();
-        copySubPtr->owner = static_cast<SelfType *>(this);
-        static_cast<SelfType *>(this)->sub.push_back(copySubPtr);
-    }
+    SubType *copySubPtr = subPtr->Copy();
+    copySubPtr->owner = static_cast<SelfType *>(this);
+    static_cast<SelfType *>(this)->sub.push_back(copySubPtr);
 
     return static_cast<SelfType *>(this);
 }
@@ -297,68 +297,108 @@ SelfType *__NotAtom<SelfType, SubType>::Append(const vector<T *> &subPtrList)
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-template <typename T>
-SelfType *__NotAtom<SelfType, SubType>::Insert(iterator insertIter,
-    const vector<T *> &subPtrList)
+SelfType *__NotAtom<SelfType, SubType>::Insert(const_iterator insertIter,
+    SubType *subPtr)
 {
-    vector<SubType *> copySubPtrList;
-
-    for (auto subPtr: subPtrList)
-    {
-        SubType *copySubPtr = subPtr->Copy();
-        copySubPtr->owner = static_cast<SelfType *>(this);
-        copySubPtrList.push_back(copySubPtr);
-    }
-
-    static_cast<SelfType *>(this)->sub.insert(insertIter, copySubPtrList.cbegin(),
-        copySubPtrList.cend());
+    SubType *copySubPtr = subPtr->Copy();
+    copySubPtr->owner = static_cast<SelfType *>(this);
+    static_cast<SelfType *>(this)->sub.insert(insertIter, copySubPtr);
 
     return static_cast<SelfType *>(this);
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-// Move
-////////////////////////////////////////////////////////////////////////////////
-
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::Move(const vector<SubType *> &subPtrList)
+SelfType *__NotAtom<SelfType, SubType>::Insert(const_iterator insertIter,
+    int n, SubType *subPtr)
 {
-    for (auto subPtr: subPtrList)
-    {
-        if (subPtr->owner)
-        {
-            subPtr->Remove(false);
-        }
+    auto insertFirstIter = static_cast<SelfType *>(this)->sub.insert(insertIter,
+        n, subPtr);
 
-        subPtr->owner = static_cast<SelfType *>(this);
-        static_cast<SelfType *>(this)->sub.push_back(subPtr);
+    for (int _ = 0; _ < n; _++)
+    {
+        *insertFirstIter = (*insertFirstIter)->Copy();
+        (*insertFirstIter)->owner = static_cast<SelfType *>(this);
+        insertFirstIter++;
     }
 
     return static_cast<SelfType *>(this);
 }
 
 
+template <typename SelfType, typename SubType>
+template <typename ForwardIterator>
+SelfType *__NotAtom<SelfType, SubType>::Insert(const_iterator insertIter,
+    ForwardIterator firstIter, ForwardIterator lastIter)
+{
+    auto insertFirstIter = static_cast<SelfType *>(this)->sub.insert(insertIter,
+        firstIter, lastIter);
+
+    for (int _ = 0; _ < distance(firstIter, lastIter); _++)
+    {
+        *insertFirstIter = (*insertFirstIter)->Copy();
+        (*insertFirstIter)->owner = static_cast<SelfType *>(this);
+        insertFirstIter++;
+    }
+
+    return static_cast<SelfType *>(this);
+}
+
+
+template <typename SelfType, typename SubType>
+SelfType *__NotAtom<SelfType, SubType>::Insert(const_iterator insertIter,
+    initializer_list<SubType *> initializerList)
+{
+    auto insertFirstIter = static_cast<SelfType *>(this)->sub.insert(insertIter,
+        initializerList);
+
+    for (int _ = 0; _ < initializerList.size(); _++)
+    {
+        *insertFirstIter = (*insertFirstIter)->Copy();
+        (*insertFirstIter)->owner = static_cast<SelfType *>(this);
+        insertFirstIter++;
+    }
+
+    return static_cast<SelfType *>(this);
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
-// Move Insert
+// MoveBack
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::MoveInsert(iterator insertIter,
-    const vector<SubType *> &subPtrList)
+SelfType *__NotAtom<SelfType, SubType>::MoveBack(SubType *subPtr)
 {
-    for (auto subPtr: subPtrList)
-    {
-        if (subPtr->owner)
-        {
-            subPtr->Remove(false);
-        }
+    static_cast<SelfType *>(this)->sub.push_back(subPtr);
 
-        subPtr->owner = static_cast<SelfType *>(this);
+    if (subPtr->owner)
+    {
+        subPtr->Remove(false);
     }
 
-    static_cast<SelfType *>(this)->sub.insert(insertIter, subPtrList.begin(),
-        subPtrList.end());
+    subPtr->owner = static_cast<SelfType *>(this);
+
+    return static_cast<SelfType *>(this);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// MoveInsert
+////////////////////////////////////////////////////////////////////////////////
+
+template <typename SelfType, typename SubType>
+SelfType *__NotAtom<SelfType, SubType>::MoveInsert(const_iterator insertIter,
+    SubType *subPtr)
+{
+    static_cast<SelfType *>(this)->sub.insert(insertIter, subPtr);
+
+    if (subPtr->owner)
+    {
+        subPtr->Remove(false);
+    }
+
+    subPtr->owner = static_cast<SelfType *>(this);
 
     return static_cast<SelfType *>(this);
 }

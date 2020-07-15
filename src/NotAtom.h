@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <unordered_set>
+#include <initializer_list>
 #include <Eigen/Dense>
 #include "Struct.h"
 
@@ -23,6 +24,7 @@ namespace PDBTools
 using std::string;
 using std::vector;
 using std::unordered_set;
+using std::initializer_list;
 using Eigen::RowVector3d;
 
 
@@ -172,22 +174,27 @@ public:
     SelfType *RenumAtoms(int startNum = 1);
 
 
-    // Append
-    template <typename T>
-    SelfType *Append(const vector<T *> &subPtrList);
+    // PushBack
+    SelfType *PushBack(const SubType *subPtr);
 
 
     // Insert
-    template <typename T>
-    SelfType *Insert(iterator insertIter, const vector<T *> &subPtrList);
+    SelfType *Insert(const_iterator insertIter, SubType *subPtr);
+    SelfType *Insert(const_iterator insertIter, int n, SubType *subPtr);
+
+    template <typename ForwardIterator>
+    SelfType *Insert(const_iterator insertIter, ForwardIterator firstIter,
+        ForwardIterator lastIter);
+
+    SelfType *Insert(const_iterator insertIter, initializer_list<SubType *> initializerList);
 
 
-    // Move
-    SelfType *Move(const vector<SubType *> &subPtrList);
+    // MoveBack
+    SelfType *MoveBack(SubType *subPtr);
 
 
     // MoveInsert
-    SelfType *MoveInsert(iterator insertIter, const vector<SubType *> &subPtrList);
+    SelfType *MoveInsert(const_iterator insertIter, SubType *subPtr);
 
 
     // RemoveAlt

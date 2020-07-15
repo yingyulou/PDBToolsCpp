@@ -694,14 +694,19 @@ Protein *proPtr = Load("xxxx.pdb");
 proPtr->RenumResidues()->RenumAtoms();
 ```
 
-#### 9. Append, Insert
+#### 9. PushBack, Insert
 
 ``` Cpp
-template <typename T>
-SelfType *Append(const vector<T *> &subPtrList);
+SelfType *PushBack(const SubType *subPtr);
 
-template <typename T>
-SelfType *Insert(iterator insertIter, const vector<T *> &subPtrList);
+SelfType *Insert(const_iterator insertIter, SubType *subPtr);
+SelfType *Insert(const_iterator insertIter, int n, SubType *subPtr);
+
+template <typename ForwardIterator>
+SelfType *Insert(const_iterator insertIter, ForwardIterator firstIter,
+    ForwardIterator lastIter);
+
+SelfType *Insert(const_iterator insertIter, initializer_list<SubType *> initializerList);
 ```
 
 为this追加/插入子结构。
@@ -710,8 +715,12 @@ SelfType *Insert(iterator insertIter, const vector<T *> &subPtrList);
 
 #### 参数：
 
-- subPtrList：this对应的子结构对象指针列表
+- subPtr：this对应的子结构对象指针
 - insertIter：插入位置迭代器
+- n：subPtr的重复次数
+- firstIter：this对应的子结构左迭代器
+- lastIter：this对应的子结构右迭代器
+- initializerList：this对应的子结构对象指针列表
 
 #### 返回值：
 
@@ -721,24 +730,30 @@ SelfType *Insert(iterator insertIter, const vector<T *> &subPtrList);
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
-proPtr->Append({proPtr->sub[0]})->Insert(proPtr->begin(), {proPtr->sub[0]});
+
+proPtr->
+    PushBack(proPtr->sub[0])->
+    Insert(proPtr->begin(), proPtr->sub[0])->
+    Insert(proPtr->begin(), 2, proPtr->sub[0])->
+    Insert(proPtr->begin(), proPtr->begin(), proPtr->end())->
+    Insert(proPtr->begin(), {proPtr->sub[0], proPtr->sub[0]});
 ```
 
-#### 10. Move, MoveInsert
+#### 10. MoveBack, MoveInsert
 
 ``` Cpp
-SelfType *Move(const vector<SubType *> &subPtrList);
+SelfType *MoveBack(SubType *subPtr);
 
-SelfType *MoveInsert(iterator insertIter, const vector<SubType *> &subPtrList);
+SelfType *MoveInsert(const_iterator insertIter, SubType *subPtr);
 ```
 
 为this移动并追加/移动并插入子结构。
 
-所有移动至this的子结构都会断开其原从属关系（如果有），并与this建立新的从属关系。
+移动至this的子结构会断开其原从属关系（如果有），并与this建立新的从属关系。
 
 #### 参数：
 
-- subPtrList：this对应的子结构对象指针列表
+- subPtr：this对应的子结构对象指针
 - insertIter：插入位置迭代器
 
 #### 返回值：
@@ -749,7 +764,10 @@ SelfType *MoveInsert(iterator insertIter, const vector<SubType *> &subPtrList);
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
-proPtr->Move({proPtr->sub[0]})->MoveInsert(proPtr->begin(), {proPtr->sub[0]});
+
+proPtr->
+    MoveBack(proPtr->sub[0])->
+    MoveInsert(proPtr->begin(), proPtr->sub[0]);
 ```
 
 #### 11. RemoveAlt
