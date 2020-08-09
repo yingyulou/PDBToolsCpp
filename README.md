@@ -739,38 +739,7 @@ proPtr->
     Insert(proPtr->begin(), {proPtr->sub[0], proPtr->sub[0]});
 ```
 
-#### 10. MoveBack, MoveInsert
-
-``` Cpp
-SelfType *MoveBack(SubType *subPtr);
-
-SelfType *MoveInsert(const_iterator insertIter, SubType *subPtr);
-```
-
-为this移动并追加/移动并插入子结构。
-
-移动至this的子结构会断开其原从属关系（如果有），并与this建立新的从属关系。
-
-#### 参数：
-
-- subPtr：this对应的子结构对象指针
-- insertIter：插入位置迭代器
-
-#### 返回值：
-
-- this
-
-#### 例：
-
-``` Cpp
-Protein *proPtr = Load("xxxx.pdb");
-
-proPtr->
-    MoveBack(proPtr->sub[0])->
-    MoveInsert(proPtr->begin(), proPtr->sub[0]);
-```
-
-#### 11. RemoveAlt
+#### 10. RemoveAlt
 
 ``` Cpp
 SelfType *RemoveAlt();
@@ -793,7 +762,7 @@ Protein *proPtr = Load("xxxx.pdb");
 proPtr->RemoveAlt();
 ```
 
-#### 12. subMap
+#### 11. subMap
 
 ``` Cpp
 // Protein

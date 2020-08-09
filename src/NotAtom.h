@@ -189,14 +189,6 @@ public:
     SelfType *Insert(const_iterator insertIter, initializer_list<SubType *> initializerList);
 
 
-    // MoveBack
-    SelfType *MoveBack(SubType *subPtr);
-
-
-    // MoveInsert
-    SelfType *MoveInsert(const_iterator insertIter, SubType *subPtr);
-
-
     // RemoveAlt
     SelfType *RemoveAlt();
 };

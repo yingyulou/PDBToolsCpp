@@ -364,47 +364,6 @@ SelfType *__NotAtom<SelfType, SubType>::Insert(const_iterator insertIter,
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// MoveBack
-////////////////////////////////////////////////////////////////////////////////
-
-template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::MoveBack(SubType *subPtr)
-{
-    static_cast<SelfType *>(this)->sub.push_back(subPtr);
-
-    if (subPtr->owner)
-    {
-        subPtr->Remove(false);
-    }
-
-    subPtr->owner = static_cast<SelfType *>(this);
-
-    return static_cast<SelfType *>(this);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// MoveInsert
-////////////////////////////////////////////////////////////////////////////////
-
-template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::MoveInsert(const_iterator insertIter,
-    SubType *subPtr)
-{
-    static_cast<SelfType *>(this)->sub.insert(insertIter, subPtr);
-
-    if (subPtr->owner)
-    {
-        subPtr->Remove(false);
-    }
-
-    subPtr->owner = static_cast<SelfType *>(this);
-
-    return static_cast<SelfType *>(this);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 // RemoveAlt
 ////////////////////////////////////////////////////////////////////////////////
 
