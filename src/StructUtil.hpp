@@ -12,6 +12,7 @@
 #include <iostream>
 #include <cstdio>
 #include <regex>
+#include <utility>
 #include "StructBase.h"
 #include "Constants.hpp"
 
@@ -29,6 +30,7 @@ using std::ostream;
 using std::regex_search;
 using std::regex_match;
 using std::smatch;
+using std::pair;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -56,14 +58,13 @@ inline bool IsH(const string &atomName)
 // Split CompNum To ResNum + ResIns
 ////////////////////////////////////////////////////////////////////////////////
 
-inline void SplitCompNum(const string &compNumStr, int &resNum, string &resIns)
+inline pair<int, string> SplitCompNum(const string &compNumStr)
 {
     smatch smatchObj;
 
     regex_match(compNumStr, smatchObj, __COMP_NUM_RE);
 
-    resNum = stoi(smatchObj[1]);
-    resIns = smatchObj[2];
+    return {stoi(smatchObj[1]), smatchObj[2]};
 }
 
 
