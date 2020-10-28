@@ -11,11 +11,6 @@ DESCRIPTION
 VERSION
 
     1.4.0
-
-LATEST UPDATE
-
-    2020.8.9
-
 */
 
 #include "src/PDBParser.hpp"

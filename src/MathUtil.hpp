@@ -64,7 +64,7 @@ inline double CalcVectorAngle(const RowVector3d &coordA, const RowVector3d &coor
 
 Matrix3d CalcRotationMatrix(const RowVector3d &rotationAxis, double rotationAngle)
 {
-    auto normRotationAxis = rotationAxis / rotationAxis.norm();
+    auto normRotationAxis = rotationAxis.normalized();
 
     double x = normRotationAxis[0], y = normRotationAxis[1], z = normRotationAxis[2],
         s = sin(rotationAngle), c = cos(rotationAngle), one_c = 1 - c;
