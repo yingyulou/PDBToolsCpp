@@ -163,7 +163,7 @@ vector<Protein *> LoadModel(const string &pdbFilePath, bool parseHBool = false)
     {
         if (line.compare(0, 5, "MODEL") == 0)
         {
-            proPtr = new Protein(proName);
+            proPtr = new Protein(proName, stoi(line.substr(10, 4)));
             proPtrList.push_back(proPtr);
 
             lastChainName = " ";

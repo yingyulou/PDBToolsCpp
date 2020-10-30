@@ -1,5 +1,9 @@
 # PDBToolsCpp更新日志
 
+### Version 1.6.0
+
+1. 为Protein增加model属性
+
 ### Version 1.4.0
 
 1. 删除MoveBack、MoveInsert接口

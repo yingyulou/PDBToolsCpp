@@ -40,11 +40,12 @@ public:
 
     // Attribute
     string name;
+    int model;
     vector<Chain *> sub;
 
 
     // Constructor
-    explicit Protein(const string &proteinID = "");
+    explicit Protein(const string &proteinID = "", int modelNum = 0);
 
 
     // str

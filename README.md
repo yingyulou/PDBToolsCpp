@@ -89,7 +89,17 @@ string name;
 
 PDB文件名（不包含".pdb"）。
 
-#### 2. sub
+#### 2. model
+
+``` Cpp
+int model;
+```
+
+Model编号。
+
+如果当前Protein对象由Load函数解析得到，或由LoadModel函数解析得到，但其不属于一个Model，则此值为0。
+
+#### 3. sub
 
 ``` Cpp
 vector<Chain *> sub;
@@ -246,12 +256,13 @@ this所属的Residue。
 #### 1. Protein构造函数
 
 ``` Cpp
-explicit Protein(const string &proteinID = "");
+explicit Protein(const string &proteinID = "", int modelNum = 0);
 ```
 
 #### 参数：
 
 - proteinID：蛋白名，用于初始化name属性
+- modelNum：Model编号，用于初始化model属性
 
 #### 例：
 
