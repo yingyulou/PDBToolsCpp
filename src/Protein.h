@@ -51,7 +51,8 @@ public:
     // str
     string str() const
     {
-        return (format("<Protein object: %s, at 0x%p>") % name % this).str();
+        return (format("<Protein object: %s (Model: %d), at 0x%p>") %
+            name % model % this).str();
     }
 
 
