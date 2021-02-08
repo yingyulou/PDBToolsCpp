@@ -30,17 +30,14 @@ public:
 
     // iter
     typename vector<SelfType *>::iterator iter();
-    typename vector<SelfType *>::const_iterator iter() const;
 
 
     // pre
     SelfType *pre(int shiftLen = 1);
-    const SelfType *pre(int shiftLen = 1) const;
 
 
     // next
     SelfType *next(int shiftLen = 1);
-    const SelfType *next(int shiftLen = 1) const;
 
 
     // Remove

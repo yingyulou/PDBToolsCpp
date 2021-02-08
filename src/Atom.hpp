@@ -59,7 +59,7 @@ string Atom::str() const
 // Copy
 ////////////////////////////////////////////////////////////////////////////////
 
-Atom *Atom::Copy() const
+Atom *Atom::Copy()
 {
     return new Atom(name, num, coord, alt, occ, tempF, ele, chg);
 }
@@ -69,7 +69,7 @@ Atom *Atom::Copy() const
 // Dumps
 ////////////////////////////////////////////////////////////////////////////////
 
-string Atom::Dumps() const
+string Atom::Dumps()
 {
     string chainName, resName, resIns, dumpStr;
     int resNum = 0;

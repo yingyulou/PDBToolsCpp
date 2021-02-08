@@ -51,22 +51,19 @@ public:
 
 
     // Copy
-    Protein *Copy() const;
+    Protein *Copy();
 
 
     // GetResidues
     vector<Residue *> GetResidues();
-    vector<const Residue *> GetResidues() const;
 
 
     // GetAtoms
     vector<Atom *> GetAtoms();
-    vector<const Atom *> GetAtoms() const;
 
 
     // subMap
     unordered_map<string, Chain *> subMap();
-    unordered_map<string, const Chain *> subMap() const;
 
 
     // Destructor

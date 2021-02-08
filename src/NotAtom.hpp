@@ -33,6 +33,8 @@ using std::distance;
 using std::initializer_list;
 using boost::format;
 using Eigen::RowVector3d;
+using Eigen::Matrix;
+using Eigen::Dynamic;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -48,42 +50,10 @@ __NotAtom<SelfType, SubType>::begin()
 
 
 template <typename SelfType, typename SubType>
-typename __NotAtom<SelfType, SubType>::const_iterator
-__NotAtom<SelfType, SubType>::begin() const
-{
-    return static_cast<const SelfType *>(this)->sub.begin();
-}
-
-
-template <typename SelfType, typename SubType>
 typename __NotAtom<SelfType, SubType>::iterator
 __NotAtom<SelfType, SubType>::end()
 {
     return static_cast<SelfType *>(this)->sub.end();
-}
-
-
-template <typename SelfType, typename SubType>
-typename __NotAtom<SelfType, SubType>::const_iterator
-__NotAtom<SelfType, SubType>::end() const
-{
-    return static_cast<const SelfType *>(this)->sub.end();
-}
-
-
-template <typename SelfType, typename SubType>
-typename __NotAtom<SelfType, SubType>::const_iterator
-__NotAtom<SelfType, SubType>::cbegin() const
-{
-    return static_cast<const SelfType *>(this)->sub.cbegin();
-}
-
-
-template <typename SelfType, typename SubType>
-typename __NotAtom<SelfType, SubType>::const_iterator
-__NotAtom<SelfType, SubType>::cend() const
-{
-    return static_cast<const SelfType *>(this)->sub.cend();
 }
 
 
@@ -96,42 +66,10 @@ __NotAtom<SelfType, SubType>::rbegin()
 
 
 template <typename SelfType, typename SubType>
-typename __NotAtom<SelfType, SubType>::const_reverse_iterator
-__NotAtom<SelfType, SubType>::rbegin() const
-{
-    return static_cast<const SelfType *>(this)->sub.rbegin();
-}
-
-
-template <typename SelfType, typename SubType>
 typename __NotAtom<SelfType, SubType>::reverse_iterator
 __NotAtom<SelfType, SubType>::rend()
 {
     return static_cast<SelfType *>(this)->sub.rend();
-}
-
-
-template <typename SelfType, typename SubType>
-typename __NotAtom<SelfType, SubType>::const_reverse_iterator
-__NotAtom<SelfType, SubType>::rend() const
-{
-    return static_cast<const SelfType *>(this)->sub.rend();
-}
-
-
-template <typename SelfType, typename SubType>
-typename __NotAtom<SelfType, SubType>::const_reverse_iterator
-__NotAtom<SelfType, SubType>::crbegin() const
-{
-    return static_cast<const SelfType *>(this)->sub.crbegin();
-}
-
-
-template <typename SelfType, typename SubType>
-typename __NotAtom<SelfType, SubType>::const_reverse_iterator
-__NotAtom<SelfType, SubType>::crend() const
-{
-    return static_cast<const SelfType *>(this)->sub.crend();
 }
 
 
@@ -157,53 +95,22 @@ vector<Atom *> __NotAtom<SelfType, SubType>::FilterAtoms(
 }
 
 
-template <typename SelfType, typename SubType>
-vector<const Atom *> __NotAtom<SelfType, SubType>::FilterAtoms(
-    const unordered_set<string> &atomNameSet) const
-{
-    vector<const Atom *> atomPtrList;
-
-    for (auto atomPtr: static_cast<const SelfType *>(this)->GetAtoms())
-    {
-        if (atomNameSet.count(atomPtr->name))
-        {
-            atomPtrList.push_back(atomPtr);
-        }
-    }
-
-    return atomPtrList;
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // GetAtomsCoord
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-vector<RowVector3d *> __NotAtom<SelfType, SubType>::GetAtomsCoord()
+Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::GetAtomsCoord()
 {
-    vector<RowVector3d *> coordPtrList;
+    auto atomPtrList = static_cast<SelfType *>(this)->GetAtoms();
+    Matrix<double, Dynamic, 3> coordMatrix(atomPtrList.size(), 3);
 
-    for (auto atomPtr: static_cast<SelfType *>(this)->GetAtoms())
+    for (int idx = 0; idx < atomPtrList.size(); idx++)
     {
-        coordPtrList.push_back(&atomPtr->coord);
+        coordMatrix.row(idx) = atomPtrList[idx]->coord;
     }
 
-    return coordPtrList;
-}
-
-
-template <typename SelfType, typename SubType>
-vector<const RowVector3d *> __NotAtom<SelfType, SubType>::GetAtomsCoord() const
-{
-    vector<const RowVector3d *> coordPtrList;
-
-    for (auto atomPtr: static_cast<const SelfType *>(this)->GetAtoms())
-    {
-        coordPtrList.push_back(&atomPtr->coord);
-    }
-
-    return coordPtrList;
+    return coordMatrix;
 }
 
 
@@ -212,38 +119,21 @@ vector<const RowVector3d *> __NotAtom<SelfType, SubType>::GetAtomsCoord() const
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-vector<RowVector3d *> __NotAtom<SelfType, SubType>::FilterAtomsCoord(
+Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::FilterAtomsCoord(
     const unordered_set<string> &atomNameSet)
 {
-    vector<RowVector3d *> coordPtrList;
+    auto atomPtrList = static_cast<SelfType *>(this)->GetAtoms();
+    Matrix<double, Dynamic, 3> coordMatrix(atomPtrList.size(), 3);
 
-    for (auto atomPtr: static_cast<SelfType *>(this)->GetAtoms())
+    for (int idx = 0; idx < atomPtrList.size(); idx++)
     {
-        if (atomNameSet.count(atomPtr->name))
+        if (atomNameSet.count(atomPtrList[idx]->name))
         {
-            coordPtrList.push_back(&atomPtr->coord);
+            coordMatrix.row(idx) = atomPtrList[idx]->coord;
         }
     }
 
-    return coordPtrList;
-}
-
-
-template <typename SelfType, typename SubType>
-vector<const RowVector3d *> __NotAtom<SelfType, SubType>::FilterAtomsCoord(
-    const unordered_set<string> &atomNameSet) const
-{
-    vector<const RowVector3d *> coordPtrList;
-
-    for (auto atomPtr: static_cast<const SelfType *>(this)->GetAtoms())
-    {
-        if (atomNameSet.count(atomPtr->name))
-        {
-            coordPtrList.push_back(&atomPtr->coord);
-        }
-    }
-
-    return coordPtrList;
+    return coordMatrix;
 }
 
 
@@ -252,11 +142,11 @@ vector<const RowVector3d *> __NotAtom<SelfType, SubType>::FilterAtomsCoord(
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-string __NotAtom<SelfType, SubType>::Dumps() const
+string __NotAtom<SelfType, SubType>::Dumps()
 {
     string dumpStr;
 
-    for (auto atomPtr: static_cast<const SelfType *>(this)->GetAtoms())
+    for (auto atomPtr: static_cast<SelfType *>(this)->GetAtoms())
     {
         dumpStr += atomPtr->Dumps();
     }
@@ -270,7 +160,7 @@ string __NotAtom<SelfType, SubType>::Dumps() const
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-RowVector3d __NotAtom<SelfType, SubType>::center() const
+RowVector3d __NotAtom<SelfType, SubType>::center()
 {
     auto coordPtrList = GetAtomsCoord();
     double sumX = 0., sumY = 0., sumZ = 0., coordLen = coordPtrList.size();
@@ -309,11 +199,11 @@ SelfType *__NotAtom<SelfType, SubType>::MoveCenter()
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-string __NotAtom<SelfType, SubType>::seq() const
+string __NotAtom<SelfType, SubType>::seq()
 {
     string seqStr;
 
-    for (auto resPtr: static_cast<const SelfType *>(this)->GetResidues())
+    for (auto resPtr: static_cast<SelfType *>(this)->GetResidues())
     {
         seqStr += RESIDUE_NAME_THREE_TO_ONE_MAP.at(resPtr->name);
     }
@@ -327,10 +217,10 @@ string __NotAtom<SelfType, SubType>::seq() const
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-string __NotAtom<SelfType, SubType>::fasta(const string &titleStr) const
+string __NotAtom<SelfType, SubType>::fasta(const string &titleStr)
 {
     return (format(">%s\n%s\n") %
-        (titleStr.empty() ? static_cast<const SelfType *>(this)->name : titleStr) %
+        (titleStr.empty() ? static_cast<SelfType *>(this)->name : titleStr) %
         seq()).str();
 }
 
@@ -343,20 +233,11 @@ template <typename SelfType, typename SubType>
 SelfType *__NotAtom<SelfType, SubType>::DumpFasta(const string &dumpFilePath,
     const string &titleStr, const string &fileMode)
 {
-    return const_cast<__NotAtom *>(const_cast<const __NotAtom *>(this)->
-        DumpFasta(dumpFilePath, fileMode, titleStr));
-}
-
-
-template <typename SelfType, typename SubType>
-const SelfType *__NotAtom<SelfType, SubType>::DumpFasta(const string &dumpFilePath,
-    const string &titleStr, const string &fileMode) const
-{
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
     fprintf(fo, "%s", fasta(titleStr).c_str());
     fclose(fo);
 
-    return static_cast<const SelfType *>(this);
+    return static_cast<SelfType *>(this);
 }
 
 
@@ -393,11 +274,11 @@ SelfType *__NotAtom<SelfType, SubType>::RenumAtoms(int startNum)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// PushBack
+// Append
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::PushBack(const SubType *subPtr)
+SelfType *__NotAtom<SelfType, SubType>::Append(SubType *subPtr)
 {
     SubType *copySubPtr = subPtr->Copy();
     copySubPtr->owner = static_cast<SelfType *>(this);
@@ -412,67 +293,12 @@ SelfType *__NotAtom<SelfType, SubType>::PushBack(const SubType *subPtr)
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::Insert(const_iterator insertIter,
+SelfType *__NotAtom<SelfType, SubType>::Insert(iterator insertIter,
     SubType *subPtr)
 {
     SubType *copySubPtr = subPtr->Copy();
     copySubPtr->owner = static_cast<SelfType *>(this);
     static_cast<SelfType *>(this)->sub.insert(insertIter, copySubPtr);
-
-    return static_cast<SelfType *>(this);
-}
-
-
-template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::Insert(const_iterator insertIter,
-    int n, SubType *subPtr)
-{
-    auto insertFirstIter = static_cast<SelfType *>(this)->sub.insert(insertIter,
-        n, subPtr);
-
-    for (int _ = 0; _ < n; _++)
-    {
-        *insertFirstIter = (*insertFirstIter)->Copy();
-        (*insertFirstIter)->owner = static_cast<SelfType *>(this);
-        insertFirstIter++;
-    }
-
-    return static_cast<SelfType *>(this);
-}
-
-
-template <typename SelfType, typename SubType>
-template <typename ForwardIterator>
-SelfType *__NotAtom<SelfType, SubType>::Insert(const_iterator insertIter,
-    ForwardIterator firstIter, ForwardIterator lastIter)
-{
-    auto insertFirstIter = static_cast<SelfType *>(this)->sub.insert(insertIter,
-        firstIter, lastIter);
-
-    for (int _ = 0; _ < distance(firstIter, lastIter); _++)
-    {
-        *insertFirstIter = (*insertFirstIter)->Copy();
-        (*insertFirstIter)->owner = static_cast<SelfType *>(this);
-        insertFirstIter++;
-    }
-
-    return static_cast<SelfType *>(this);
-}
-
-
-template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::Insert(const_iterator insertIter,
-    initializer_list<SubType *> initializerList)
-{
-    auto insertFirstIter = static_cast<SelfType *>(this)->sub.insert(insertIter,
-        initializerList);
-
-    for (int _ = 0; _ < initializerList.size(); _++)
-    {
-        *insertFirstIter = (*insertFirstIter)->Copy();
-        (*insertFirstIter)->owner = static_cast<SelfType *>(this);
-        insertFirstIter++;
-    }
 
     return static_cast<SelfType *>(this);
 }

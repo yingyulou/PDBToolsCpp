@@ -35,15 +35,6 @@ typename vector<SelfType *>::iterator __NotProtein<SelfType, OwnerType>::iter()
 }
 
 
-template <typename SelfType, typename OwnerType>
-typename vector<SelfType *>::const_iterator __NotProtein<SelfType, OwnerType>::iter() const
-{
-    return find(static_cast<const SelfType *>(this)->owner->sub.begin(),
-        static_cast<const SelfType *>(this)->owner->sub.end(),
-        static_cast<const SelfType *>(this));
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // pre
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,26 +46,12 @@ SelfType *__NotProtein<SelfType, OwnerType>::pre(int shiftLen)
 }
 
 
-template <typename SelfType, typename OwnerType>
-const SelfType *__NotProtein<SelfType, OwnerType>::pre(int shiftLen) const
-{
-    return *(iter() - shiftLen);
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // next
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename OwnerType>
 SelfType *__NotProtein<SelfType, OwnerType>::next(int shiftLen)
-{
-    return *(iter() + shiftLen);
-}
-
-
-template <typename SelfType, typename OwnerType>
-const SelfType *__NotProtein<SelfType, OwnerType>::next(int shiftLen) const
 {
     return *(iter() + shiftLen);
 }

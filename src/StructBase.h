@@ -30,7 +30,6 @@ public:
 
     // Dump
     SelfType *Dump(const string &dumpFilePath, const string &fileMode = "w");
-    const SelfType *Dump(const string &dumpFilePath, const string &fileMode = "w") const;
 };
 
 

@@ -53,22 +53,19 @@ public:
 
 
     // Copy
-    Chain *Copy() const;
+    Chain *Copy();
 
 
     // GetResidues
-    vector<Residue *> GetResidues() { return sub; }
-    vector<const Residue *> GetResidues() const;
+    vector<Residue *> GetResidues();
 
 
     // GetAtoms
     vector<Atom *> GetAtoms();
-    vector<const Atom *> GetAtoms() const;
 
 
     // subMap
     unordered_map<string, Residue *> subMap();
-    unordered_map<string, const Residue *> subMap() const;
 
 
     // Destructor

@@ -52,7 +52,7 @@ string Protein::str() const
 // Copy
 ////////////////////////////////////////////////////////////////////////////////
 
-Protein *Protein::Copy() const
+Protein *Protein::Copy()
 {
     auto copyProPtr = new Protein(name);
 
@@ -74,22 +74,6 @@ Protein *Protein::Copy() const
 vector<Residue *> Protein::GetResidues()
 {
     vector<Residue *> resPtrList;
-
-    for (auto chainPtr: sub)
-    {
-        for (auto resPtr: chainPtr->sub)
-        {
-            resPtrList.push_back(resPtr);
-        }
-    }
-
-    return resPtrList;
-}
-
-
-vector<const Residue *> Protein::GetResidues() const
-{
-    vector<const Residue *> resPtrList;
 
     for (auto chainPtr: sub)
     {
@@ -126,25 +110,6 @@ vector<Atom *> Protein::GetAtoms()
 }
 
 
-vector<const Atom *> Protein::GetAtoms() const
-{
-    vector<const Atom *> atomPtrList;
-
-    for (auto chainPtr: sub)
-    {
-        for (auto resPtr: chainPtr->sub)
-        {
-            for (auto atomPtr: resPtr->sub)
-            {
-                atomPtrList.push_back(atomPtr);
-            }
-        }
-    }
-
-    return atomPtrList;
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // subMap
 ////////////////////////////////////////////////////////////////////////////////
@@ -152,16 +117,6 @@ vector<const Atom *> Protein::GetAtoms() const
 unordered_map<string, Chain *> Protein::subMap()
 {
     unordered_map<string, Chain *> chainPtrMap;
-
-    for (auto chainPtr: sub) chainPtrMap.emplace(chainPtr->name, chainPtr);
-
-    return chainPtrMap;
-}
-
-
-unordered_map<string, const Chain *> Protein::subMap() const
-{
-    unordered_map<string, const Chain *> chainPtrMap;
 
     for (auto chainPtr: sub) chainPtrMap.emplace(chainPtr->name, chainPtr);
 

@@ -26,6 +26,8 @@ using std::vector;
 using std::unordered_set;
 using std::initializer_list;
 using Eigen::RowVector3d;
+using Eigen::Matrix;
+using Eigen::Dynamic;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -39,49 +41,36 @@ public:
 
     // Iterator typedef
     typedef typename vector<SubType *>::iterator iterator;
-    typedef typename vector<SubType *>::const_iterator const_iterator;
     typedef typename vector<SubType *>::reverse_iterator reverse_iterator;
-    typedef typename vector<SubType *>::const_reverse_iterator const_reverse_iterator;
 
 
     // Iterator
     iterator begin();
-    const_iterator begin() const;
     iterator end();
-    const_iterator end() const;
-    const_iterator cbegin() const;
-    const_iterator cend() const;
     reverse_iterator rbegin();
-    const_reverse_iterator rbegin() const;
     reverse_iterator rend();
-    const_reverse_iterator rend() const;
-    const_reverse_iterator crbegin() const;
-    const_reverse_iterator crend() const;
 
 
     // FilterAtoms
-    vector<Atom *> FilterAtoms(const unordered_set<string> &atomNameSet = {"CA"});
-    vector<const Atom *> FilterAtoms(const unordered_set<string> &atomNameSet = {"CA"}) const;
+    vector<Atom *> FilterAtoms(
+        const unordered_set<string> &atomNameSet = {"CA"});
 
 
     // GetAtomsCoord
-    vector<RowVector3d *> GetAtomsCoord();
-    vector<const RowVector3d *> GetAtomsCoord() const;
+    Matrix<double, Dynamic, 3> GetAtomsCoord();
 
 
     // FilterAtomsCoord
-    vector<RowVector3d *> FilterAtomsCoord(const unordered_set<string> &atomNameSet = {"CA"});
-
-    vector<const RowVector3d *> FilterAtomsCoord(
-        const unordered_set<string> &atomNameSet = {"CA"}) const;
+    Matrix<double, Dynamic, 3> FilterAtomsCoord(
+        const unordered_set<string> &atomNameSet = {"CA"});
 
 
     // Dumps
-    string Dumps() const;
+    string Dumps();
 
 
     // center
-    RowVector3d center() const;
+    RowVector3d center();
 
 
     // MoveCenter
@@ -89,19 +78,16 @@ public:
 
 
     // seq
-    string seq() const;
+    string seq();
 
 
     // fasta
-    string fasta(const string &titleStr = "") const;
+    string fasta(const string &titleStr = "");
 
 
     // DumpFasta
     SelfType *DumpFasta(const string &dumpFilePath,
         const string &titleStr = "", const string &fileMode = "w");
-
-    const SelfType *DumpFasta(const string &dumpFilePath,
-        const string &titleStr = "", const string &fileMode = "w") const;
 
 
     // Renum Residues
@@ -113,18 +99,11 @@ public:
 
 
     // PushBack
-    SelfType *PushBack(const SubType *subPtr);
+    SelfType *Append(SubType *subPtr);
 
 
     // Insert
-    SelfType *Insert(const_iterator insertIter, SubType *subPtr);
-    SelfType *Insert(const_iterator insertIter, int n, SubType *subPtr);
-
-    template <typename ForwardIterator>
-    SelfType *Insert(const_iterator insertIter, ForwardIterator firstIter,
-        ForwardIterator lastIter);
-
-    SelfType *Insert(const_iterator insertIter, initializer_list<SubType *> initializerList);
+    SelfType *Insert(iterator insertIter, SubType *subPtr);
 
 
     // RemoveAlt

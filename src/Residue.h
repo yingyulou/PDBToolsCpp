@@ -59,36 +59,32 @@ public:
 
 
     // Copy
-    Residue *Copy() const;
+    Residue *Copy();
 
 
     // GetResidues
     vector<Residue *> GetResidues();
-    vector<const Residue *> GetResidues() const;
 
 
     // GetAtoms
     vector<Atom *> GetAtoms();
-    vector<const Atom *> GetAtoms() const;
 
 
     // compNum
-    string compNum() const;
+    string compNum();
     Residue *compNum(int resNum, const string &resIns = "");
 
 
     // subMap
     unordered_map<string, Atom *> subMap();
-    unordered_map<string, const Atom *> subMap() const;
 
 
     // coordMap
     unordered_map<string, RowVector3d *> coordMap();
-    unordered_map<string, const RowVector3d *> coordMap() const;
 
 
     // Calc Backbone Dihedral Angle
-    double CalcBBDihedralAngle(DIH dihedralEnum) const;
+    double CalcBBDihedralAngle(DIH dihedralEnum);
 
 
     // Calc Backbone Rotation Matrix By Delta Angle
@@ -96,24 +92,15 @@ public:
         SIDE sideEnum, double deltaAngle, RowVector3d &moveCoord,
         Matrix3d &rotationMatrix);
 
-    const Residue *CalcBBRotationMatrixByDeltaAngle(DIH dihedralEnum,
-        SIDE sideEnum, double deltaAngle, RowVector3d &moveCoord,
-        Matrix3d &rotationMatrix) const;
-
 
     // Calc Backbone Rotation Matrix By Target Angle
     Residue *CalcBBRotationMatrixByTargetAngle(DIH dihedralEnum,
         SIDE sideEnum, double targetAngle, RowVector3d &moveCoord,
         Matrix3d &rotationMatrix);
 
-    const Residue *CalcBBRotationMatrixByTargetAngle(DIH dihedralEnum,
-        SIDE sideEnum, double targetAngle, RowVector3d &moveCoord,
-        Matrix3d &rotationMatrix) const;
-
 
     // Get Backbone Rotation Atom Pointer
     vector<Atom *> GetBBRotationAtomPtr(DIH dihedralEnum, SIDE sideEnum);
-    vector<const Atom *> GetBBRotationAtomPtr(DIH dihedralEnum, SIDE sideEnum) const;
 
 
     // Rotate Backbone Dihedral Angle By Delta Angle
@@ -127,28 +114,21 @@ public:
 
 
     // Calc Side Chain Dihedral Angle
-    double CalcSCDihedralAngle(int dihedralIdx) const;
+    double CalcSCDihedralAngle(int dihedralIdx);
 
 
     // Calc Side Chain Rotation Matrix By Delta Angle
     Residue *CalcSCRotationMatrixByDeltaAngle(int dihedralIdx, double deltaAngle,
         RowVector3d &moveCoord, Matrix3d &rotationMatrix);
 
-    const Residue *CalcSCRotationMatrixByDeltaAngle(int dihedralIdx, double deltaAngle,
-        RowVector3d &moveCoord, Matrix3d &rotationMatrix) const;
-
 
     // Calc Side Chain Rotation Matrix By Target Angle
     Residue *CalcSCRotationMatrixByTargetAngle(int dihedralIdx, double targetAngle,
         RowVector3d &moveCoord, Matrix3d &rotationMatrix);
 
-    const Residue *CalcSCRotationMatrixByTargetAngle(int dihedralIdx, double targetAngle,
-        RowVector3d &moveCoord, Matrix3d &rotationMatrix) const;
-
 
     // Get Side Chain Rotation Atom Pointer
     vector<Atom *> GetSCRotationAtomPtr(int dihedralIdx);
-    vector<const Atom *> GetSCRotationAtomPtr(int dihedralIdx) const;
 
 
     // Rotate Side Chain Dihedral Angle By Delta Angle

@@ -196,7 +196,7 @@ int num;
 #### 3. coord
 
 ``` Cpp
-Eigen::RowVector3d coord;
+RowVector3d coord;
 ```
 
 原子坐标。
@@ -313,7 +313,7 @@ Residue *resPtr = new Residue("XXX", 0, "", chainPtr);
 
 ``` Cpp
 explicit Atom(const string &atomName = "", int atomNum = 0,
-    const Eigen::RowVector3d &atomCoord = Eigen::RowVector3d(0., 0., 0.),
+    const RowVector3d &atomCoord = RowVector3d(0., 0., 0.),
     const string &atomAltLoc = "", const string &atomOccupancy = "",
     const string &atomTempFactor = "", const string &atomElement = "",
     const string &atomCharge = "", Residue *atomOwner = nullptr);
@@ -355,22 +355,12 @@ delete proPtr;
 
 ``` Cpp
 typedef typename vector<SubType *>::iterator iterator;
-typedef typename vector<SubType *>::const_iterator const_iterator;
 typedef typename vector<SubType *>::reverse_iterator reverse_iterator;
-typedef typename vector<SubType *>::const_reverse_iterator const_reverse_iterator;
 
 iterator begin();
-const_iterator begin() const;
 iterator end();
-const_iterator end() const;
-const_iterator cbegin() const;
-const_iterator cend() const;
 reverse_iterator rbegin();
-const_reverse_iterator rbegin() const;
 reverse_iterator rend();
-const_reverse_iterator rend() const;
-const_reverse_iterator crbegin() const;
-const_reverse_iterator crend() const;
 ```
 
 #### 例：
@@ -419,8 +409,6 @@ cout << proPtr->str() << endl;  // 相当于cout << *proPtr << endl;
 
 ``` Cpp
 SelfType *Dump(const string &dumpFilePath, const string &fileMode = "w");
-
-const SelfType *Dump(const string &dumpFilePath, const string &fileMode = "w") const;
 ```
 
 将this输出到PDB文件。
@@ -444,7 +432,7 @@ proPtr->Dump("xxxx.pdb");
 #### 3. Dumps
 
 ``` Cpp
-string Dumps() const;
+string Dumps();
 ```
 
 得到字符串形式的PDB文件内容。
@@ -467,10 +455,10 @@ string dumpStr = proPtr->Dumps();
 #### 4. Copy
 
 ``` Cpp
-Protein *Copy() const;
-Chain *Copy() const;
-Residue *Copy() const;
-Atom *Copy() const;
+Protein *Copy();
+Chain *Copy();
+Residue *Copy();
+Atom *Copy();
 ```
 
 得到this的深拷贝。
@@ -496,8 +484,6 @@ Protein *copyProPtr = proPtr->Copy();
 
 ``` Cpp
 vector<Residue *> GetResidues();
-
-vector<const Residue *> GetResidues() const;
 ```
 
 跨层级直接返回this包含的所有残基对象指针。
@@ -522,21 +508,12 @@ vector<Residue *> resPtrList = proPtr->GetResidues();
 ``` Cpp
 vector<Atom *> GetAtoms();
 
-vector<const Atom *> GetAtoms() const;
-
 vector<Atom *> FilterAtoms(const unordered_set<string> &atomNameSet = {"CA"});
 
-vector<const Atom *> FilterAtoms(const unordered_set<string> &atomNameSet = {"CA"}) const;
+Matrix<double, Dynamic, 3> GetAtomsCoord();
 
-vector<Eigen::RowVector3d *> GetAtomsCoord();
-
-vector<const Eigen::RowVector3d *> GetAtomsCoord() const;
-
-vector<Eigen::RowVector3d *> FilterAtomsCoord(
+Matrix<double, Dynamic, 3> FilterAtomsCoord(
     const unordered_set<string> &atomNameSet = {"CA"});
-
-vector<const Eigen::RowVector3d *> FilterAtomsCoord(
-    const unordered_set<string> &atomNameSet = {"CA"}) const;
 ```
 
 跨层级直接返回this包含的所有，或按原子的name属性筛选后的原子对象指针或原子坐标指针。
@@ -562,7 +539,7 @@ vector<RowVector3d *> filterAtomCoordList = proPtr->FilterAtomsCoord({"N", "CA",
 #### 3. center
 
 ``` Cpp
-Eigen::RowVector3d center() const;
+RowVector3d center();
 ```
 
 得到this的所有原子坐标的几何中心。
@@ -608,7 +585,7 @@ proPtr->MoveCenter();
 #### 5. seq
 
 ``` Cpp
-string seq() const;
+string seq();
 ```
 
 得到this的残基序列。
@@ -631,7 +608,7 @@ string seqStr = proPtr->seq();
 #### 6. fasta
 
 ``` Cpp
-string fasta(const string &titleStr = "") const;
+string fasta(const string &titleStr = "");
 ```
 
 得到字符串形式的Fasta文件内容。
@@ -656,9 +633,6 @@ string fastaStr = proPtr->fasta("xxxx");
 ``` Cpp
 SelfType *DumpFasta(const string &dumpFilePath,
     const string &titleStr = "", const string &fileMode = "w");
-
-const SelfType *DumpFasta(const string &dumpFilePath,
-    const string &titleStr = "", const string &fileMode = "w") const;
 ```
 
 将this输出到Fasta文件。
@@ -705,19 +679,11 @@ Protein *proPtr = Load("xxxx.pdb");
 proPtr->RenumResidues()->RenumAtoms();
 ```
 
-#### 9. PushBack, Insert
+#### 9. Append, Insert
 
 ``` Cpp
-SelfType *PushBack(const SubType *subPtr);
-
-SelfType *Insert(const_iterator insertIter, SubType *subPtr);
-SelfType *Insert(const_iterator insertIter, int n, SubType *subPtr);
-
-template <typename ForwardIterator>
-SelfType *Insert(const_iterator insertIter, ForwardIterator firstIter,
-    ForwardIterator lastIter);
-
-SelfType *Insert(const_iterator insertIter, initializer_list<SubType *> initializerList);
+SelfType *Append(SubType *subPtr);
+SelfType *Insert(iterator insertIter, SubType *subPtr);
 ```
 
 为this追加/插入子结构。
@@ -728,10 +694,6 @@ SelfType *Insert(const_iterator insertIter, initializer_list<SubType *> initiali
 
 - subPtr：this对应的子结构对象指针
 - insertIter：插入位置迭代器
-- n：subPtr的重复次数
-- firstIter：this对应的子结构左迭代器
-- lastIter：this对应的子结构右迭代器
-- initializerList：this对应的子结构对象指针列表
 
 #### 返回值：
 
@@ -743,11 +705,8 @@ SelfType *Insert(const_iterator insertIter, initializer_list<SubType *> initiali
 Protein *proPtr = Load("xxxx.pdb");
 
 proPtr->
-    PushBack(proPtr->sub[0])->
-    Insert(proPtr->begin(), proPtr->sub[0])->
-    Insert(proPtr->begin(), 2, proPtr->sub[0])->
-    Insert(proPtr->begin(), proPtr->begin(), proPtr->end())->
-    Insert(proPtr->begin(), {proPtr->sub[0], proPtr->sub[0]});
+    Append(proPtr->sub[0])->
+    Insert(proPtr->begin(), proPtr->sub[0]);
 ```
 
 #### 10. RemoveAlt
@@ -779,19 +738,13 @@ proPtr->RemoveAlt();
 // Protein
 unordered_map<string, Chain *> subMap();
 
-unordered_map<string, const Chain *> subMap() const;
-
 
 // Chain
 unordered_map<string, Residue *> subMap();
 
-unordered_map<string, const Residue *> subMap() const;
-
 
 // Residue
 unordered_map<string, Atom *> subMap();
-
-unordered_map<string, const Atom *> subMap() const;
 ```
 
 对于Protein对象：得到this包含的所有链名 -> 链对象指针哈希表。
@@ -825,7 +778,6 @@ unordered_map<string, Atom *> resSubMap = proPtr->sub[0]->sub[0]->subMap();
 
 ``` Cpp
 typename vector<SelfType *>::iterator iter();
-typename vector<SelfType *>::const_iterator iter() const;
 ```
 
 得到this在this->owner->sub中的位置迭代器。
@@ -849,12 +801,7 @@ vector<Chain *>::iterator iterInOwner = proPtr->sub[0]->iter();  // begin
 
 ``` Cpp
 SelfType *pre(int shiftLen = 1);
-
-const SelfType *pre(int shiftLen = 1) const;
-
 SelfType *next(int shiftLen = 1);
-
-const SelfType *next(int shiftLen = 1) const;
 ```
 
 得到this在this->owner->sub中的前/后第N个同级结构对象指针
@@ -913,8 +860,7 @@ proPtr->sub[0]->Remove();
 #### 1. compNum
 
 ``` Cpp
-string compNum() const;
-
+string compNum();
 Residue *compNum(int resNum, const string &resIns = "");
 ```
 
@@ -941,9 +887,7 @@ string compNum = resPtr->compNum();
 #### 2. coordMap
 
 ``` Cpp
-unordered_map<string, Eigen::RowVector3d *> coordMap();
-
-unordered_map<string, const Eigen::RowVector3d *> coordMap() const;
+unordered_map<string, RowVector3d *> coordMap();
 ```
 
 得到this包含的所有原子名 -> 原子坐标指针哈希表。
@@ -1004,7 +948,7 @@ double atomDis = *proPtr->sub[0]->sub[0]->sub[0] - *proPtr->sub[0]->sub[0]->sub[
 #### 1. CalcBBDihedralAngle
 
 ``` Cpp
-double CalcBBDihedralAngle(DIH dihedralEnum) const;
+double CalcBBDihedralAngle(DIH dihedralEnum);
 ```
 
 计算主链二面角。
@@ -1029,20 +973,12 @@ double dihedralAngle = resPtr->CalcBBDihedralAngle(DIH::PHI);
 
 ``` Cpp
 Residue *CalcBBRotationMatrixByDeltaAngle(DIH dihedralEnum,
-    SIDE sideEnum, double deltaAngle, Eigen::RowVector3d &moveCoord,
-    Eigen::Matrix3d &rotationMatrix);
-
-const Residue *CalcBBRotationMatrixByDeltaAngle(DIH dihedralEnum,
-    SIDE sideEnum, double deltaAngle, Eigen::RowVector3d &moveCoord,
-    Eigen::Matrix3d &rotationMatrix) const;
+    SIDE sideEnum, double deltaAngle, RowVector3d &moveCoord,
+    Matrix3d &rotationMatrix);
 
 Residue *CalcBBRotationMatrixByTargetAngle(DIH dihedralEnum,
-    SIDE sideEnum, double targetAngle, Eigen::RowVector3d &moveCoord,
-    Eigen::Matrix3d &rotationMatrix);
-
-const Residue *CalcBBRotationMatrixByTargetAngle(DIH dihedralEnum,
-    SIDE sideEnum, double targetAngle, Eigen::RowVector3d &moveCoord,
-    Eigen::Matrix3d &rotationMatrix) const;
+    SIDE sideEnum, double targetAngle, RowVector3d &moveCoord,
+    Matrix3d &rotationMatrix);
 ```
 
 以旋转角度/目标角度作为参数，计算主链旋转矩阵。
@@ -1074,8 +1010,6 @@ resPtr->CalcBBRotationMatrixByTargetAngle(DIH::PHI, SIDE::N, 0., moveCoord, rota
 
 ``` Cpp
 vector<Atom *> GetBBRotationAtomPtr(DIH dihedralEnum, SIDE sideEnum);
-
-vector<const Atom *> GetBBRotationAtomPtr(DIH dihedralEnum, SIDE sideEnum) const;
 ```
 
 获取以给定参数进行旋转时，所有需要旋转的原子对象指针列表。
@@ -1135,7 +1069,7 @@ resPtr->RotateBBDihedralAngleByTargetAngle(DIH::PHI, SIDE::N, 0.);
 #### 1. CalcSCDihedralAngle
 
 ``` Cpp
-double CalcSCDihedralAngle(int dihedralIdx) const;
+double CalcSCDihedralAngle(int dihedralIdx);
 ```
 
 计算侧链二面角。
@@ -1160,16 +1094,10 @@ double dihedralAngle = resPtr->CalcSCDihedralAngle(0);
 
 ``` Cpp
 Residue *CalcSCRotationMatrixByDeltaAngle(int dihedralIdx, double deltaAngle,
-    Eigen::RowVector3d &moveCoord, Eigen::Matrix3d &rotationMatrix);
-
-const Residue *CalcSCRotationMatrixByDeltaAngle(int dihedralIdx, double deltaAngle,
-    Eigen::RowVector3d &moveCoord, Eigen::Matrix3d &rotationMatrix) const;
+    RowVector3d &moveCoord, Matrix3d &rotationMatrix);
 
 Residue *CalcSCRotationMatrixByTargetAngle(int dihedralIdx, double targetAngle,
-    Eigen::RowVector3d &moveCoord, Eigen::Matrix3d &rotationMatrix);
-
-const Residue *CalcSCRotationMatrixByTargetAngle(int dihedralIdx, double targetAngle,
-    Eigen::RowVector3d &moveCoord, Eigen::Matrix3d &rotationMatrix) const;
+    RowVector3d &moveCoord, Matrix3d &rotationMatrix);
 ```
 
 以旋转角度/目标角度作为参数，计算侧链旋转矩阵。
@@ -1200,8 +1128,6 @@ resPtr->CalcSCRotationMatrixByTargetAngle(0, 0., moveCoord, rotationMatrix);
 
 ``` Cpp
 vector<Atom *> GetSCRotationAtomPtr(int dihedralIdx);
-
-vector<const Atom *> GetSCRotationAtomPtr(int dihedralIdx) const;
 ```
 
 获取以给定侧链二面角进行旋转时，所有需要旋转的原子对象指针列表。
@@ -1279,7 +1205,7 @@ cout << Radians(1.) << endl;
 ### 2. CalcVectorAngle
 
 ``` Cpp
-double CalcVectorAngle(const Eigen::RowVector3d &coordA, const Eigen::RowVector3d &coordB);
+double CalcVectorAngle(const RowVector3d &coordA, const RowVector3d &coordB);
 ```
 
 计算两向量夹角。
@@ -1301,7 +1227,7 @@ double vectorAngle = CalcVectorAngle(RowVector3d(1., 2., 3.), RowVector3d(4., 5.
 ### 3. CalcRotationMatrix
 
 ``` Cpp
-Eigen::Matrix3d CalcRotationMatrix(const Eigen::RowVector3d &rotationAxis, double rotationAngle);
+Matrix3d CalcRotationMatrix(const RowVector3d &rotationAxis, double rotationAngle);
 ```
 
 计算轴角旋转矩阵。
@@ -1324,8 +1250,8 @@ Matrix3d rotationMatrix = CalcRotationMatrix(RowVector3d(1., 2., 3.), 1.);
 ### 4. CalcRotationMatrixByTwoVector
 
 ``` Cpp
-Eigen::Matrix3d CalcRotationMatrixByTwoVector(
-    const Eigen::RowVector3d &coordA, const Eigen::RowVector3d &coordB);
+Matrix3d CalcRotationMatrixByTwoVector(
+    const RowVector3d &coordA, const RowVector3d &coordB);
 ```
 
 计算从向量A旋转至向量B所需要的旋转矩阵。
@@ -1349,8 +1275,8 @@ Matrix3d rotationMatrix = CalcRotationMatrixByTwoVector(
 
 ``` Cpp
 double CalcDihedralAngle(
-    const Eigen::RowVector3d &coordA, const Eigen::RowVector3d &coordB,
-    const Eigen::RowVector3d &coordC, const Eigen::RowVector3d &coordD);
+    const RowVector3d &coordA, const RowVector3d &coordB,
+    const RowVector3d &coordC, const RowVector3d &coordD);
 ```
 
 计算二面角。
@@ -1373,8 +1299,8 @@ double dihedralAngle = CalcDihedralAngle(RowVector3d(1., 2., 3.), RowVector3d(4.
 ### 6. CalcRMSD
 
 ``` Cpp
-double CalcRMSD(const Eigen::Matrix<double, Eigen::Dynamic, 3> &coordArrayA,
-    const Eigen::Matrix<double, Eigen::Dynamic, 3> &coordArrayB);
+double CalcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
+    const Matrix<double, Dynamic, 3> &coordArrayB);
 ```
 
 对两组等长的三维坐标计算RMSD。
@@ -1400,11 +1326,11 @@ double rmsdValue = CalcRMSD(coordArrayA, coordArrayB);
 
 ``` Cpp
 void CalcSuperimposeRotationMatrix(
-    const Eigen::Matrix<double, Eigen::Dynamic, 3> &sourceCoordArray,
-    const Eigen::Matrix<double, Eigen::Dynamic, 3> &targetCoordArray,
-    Eigen::RowVector3d &sourceCenterCoord,
-    Eigen::Matrix3d &rotationMatrix,
-    Eigen::RowVector3d &targetCenterCoord);
+    const Matrix<double, Dynamic, 3> &sourceCoordArray,
+    const Matrix<double, Dynamic, 3> &targetCoordArray,
+    RowVector3d &sourceCenterCoord,
+    Matrix3d &rotationMatrix,
+    RowVector3d &targetCenterCoord);
 ```
 
 计算从sourceCoordArray到targetCoordArray的叠合旋转矩阵。
@@ -1442,8 +1368,8 @@ cout << ((coordArrayA.rowwise() - sourceCenterCoord) * rotationMatrix).rowwise()
 
 ``` Cpp
 double CalcRMSDAfterSuperimpose(
-    const Eigen::Matrix<double, Eigen::Dynamic, 3> &coordArrayA,
-    const Eigen::Matrix<double, Eigen::Dynamic, 3> &coordArrayB);
+    const Matrix<double, Dynamic, 3> &coordArrayA,
+    const Matrix<double, Dynamic, 3> &coordArrayB);
 ```
 
 叠合并计算RMSD。
@@ -1465,34 +1391,6 @@ Matrix<double, 2, 3> coordArrayA, coordArrayB;
 coordArrayA << 1., 2., 3., 4., 5., 6.;
 coordArrayB << 7., 8., 9., 10., 11., 12.;
 double rmsdValue = CalcRMSDAfterSuperimpose(coordArrayA, coordArrayB);
-```
-
-### 9. Coord2Matrix
-
-``` Cpp
-Eigen::Matrix<double, Eigen::Dynamic, 3> Coord2Matrix(
-    const vector<Eigen::RowVector3d *> &coordPtrList);
-
-Eigen::Matrix<double, Eigen::Dynamic, 3> Coord2Matrix(
-    const vector<const Eigen::RowVector3d *> &coordPtrList);
-```
-
-将GetAtomsCoord或FilterAtomsCoord函数的返回值（vector\<Eigen::RowVector3d *\>类型）转为Eigen::Matrix\<double, Dynamic, 3\>类型。
-
-#### 参数：
-
-- coordPtrList：类型为vector\<RowVector3d *\>的vector
-
-#### 返回值：
-
-- 由coordPtrList参数转换得到的Matrix\<double, Dynamic, 3\>类型矩阵
-
-#### 例：
-
-``` Cpp
-Protein *proPtr = Load("xxxx.pdb");
-vector<RowVector3d *> coordPtrList = proPtr->GetAtomsCoord();
-Matrix<double, Dynamic, 3> coordMatrix = Coord2Matrix(coordPtrList);
 ```
 
 ## 常量

@@ -196,36 +196,6 @@ double CalcRMSDAfterSuperimpose(const Matrix<double, Dynamic, 3> &coordArrayA,
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-// Transform vector<RowVector3d *> To Matrix<double, Dynamic, 3>
-////////////////////////////////////////////////////////////////////////////////
-
-Matrix<double, Dynamic, 3> Coord2Matrix(const vector<RowVector3d *> &coordPtrList)
-{
-    Matrix<double, Dynamic, 3> coordMatrix(coordPtrList.size(), 3);
-
-    for (int idx = 0; idx < coordPtrList.size(); idx++)
-    {
-        coordMatrix.row(idx) = *coordPtrList[idx];
-    }
-
-    return coordMatrix;
-}
-
-
-Matrix<double, Dynamic, 3> Coord2Matrix(const vector<const RowVector3d *> &coordPtrList)
-{
-    Matrix<double, Dynamic, 3> coordMatrix(coordPtrList.size(), 3);
-
-    for (int idx = 0; idx < coordPtrList.size(); idx++)
-    {
-        coordMatrix.row(idx) = *coordPtrList[idx];
-    }
-
-    return coordMatrix;
-}
-
-
 }  // End namespace PDBTools
 
 

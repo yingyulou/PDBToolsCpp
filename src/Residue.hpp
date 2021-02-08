@@ -61,7 +61,7 @@ string Residue::str() const
 // Copy
 ////////////////////////////////////////////////////////////////////////////////
 
-Residue *Residue::Copy() const
+Residue *Residue::Copy()
 {
     auto copyResPtr = new Residue(name, num, ins);
 
@@ -86,12 +86,6 @@ vector<Residue *> Residue::GetResidues()
 }
 
 
-vector<const Residue *> Residue::GetResidues() const
-{
-    return {this};
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // GetAtoms
 ////////////////////////////////////////////////////////////////////////////////
@@ -102,17 +96,11 @@ vector<Atom *> Residue::GetAtoms()
 }
 
 
-vector<const Atom *> Residue::GetAtoms() const
-{
-    return {sub.begin(), sub.end()};
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // compNum
 ////////////////////////////////////////////////////////////////////////////////
 
-string Residue::compNum() const
+string Residue::compNum()
 {
     return (format("%d%s") % num % ins).str();
 }
@@ -144,19 +132,6 @@ unordered_map<string, Atom *> Residue::subMap()
 }
 
 
-unordered_map<string, const Atom *> Residue::subMap() const
-{
-    unordered_map<string, const Atom *> atomPtrMap;
-
-    for (auto atomPtr: sub)
-    {
-        atomPtrMap.emplace(atomPtr->name, atomPtr);
-    }
-
-    return atomPtrMap;
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // coordMap
 ////////////////////////////////////////////////////////////////////////////////
@@ -174,24 +149,11 @@ unordered_map<string, RowVector3d *> Residue::coordMap()
 }
 
 
-unordered_map<string, const RowVector3d *> Residue::coordMap() const
-{
-    unordered_map<string, const RowVector3d *> coordPtrMap;
-
-    for (auto atomPtr: sub)
-    {
-        coordPtrMap.emplace(atomPtr->name, &atomPtr->coord);
-    }
-
-    return coordPtrMap;
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // Calc Backbone Dihedral Angle
 ////////////////////////////////////////////////////////////////////////////////
 
-double Residue::CalcBBDihedralAngle(DIH dihedralEnum) const
+double Residue::CalcBBDihedralAngle(DIH dihedralEnum)
 {
     auto atomCoordMap = coordMap();
 
@@ -215,16 +177,6 @@ double Residue::CalcBBDihedralAngle(DIH dihedralEnum) const
 Residue *Residue::CalcBBRotationMatrixByDeltaAngle(DIH dihedralEnum,
     SIDE sideEnum, double deltaAngle, RowVector3d &moveCoord,
     Matrix3d &rotationMatrix)
-{
-    return const_cast<Residue *>(const_cast<const Residue *>(this)->
-        CalcBBRotationMatrixByDeltaAngle(dihedralEnum, sideEnum, deltaAngle,
-        moveCoord, rotationMatrix));
-}
-
-
-const Residue *Residue::CalcBBRotationMatrixByDeltaAngle(DIH dihedralEnum,
-    SIDE sideEnum, double deltaAngle, RowVector3d &moveCoord,
-    Matrix3d &rotationMatrix) const
 {
     auto atomCoordMap = coordMap();
 
@@ -256,16 +208,6 @@ Residue *Residue::CalcBBRotationMatrixByTargetAngle(DIH dihedralEnum,
     SIDE sideEnum, double targetAngle, RowVector3d &moveCoord,
     Matrix3d &rotationMatrix)
 {
-    return const_cast<Residue *>(const_cast<const Residue *>(this)->
-        CalcBBRotationMatrixByTargetAngle(dihedralEnum, sideEnum, targetAngle,
-        moveCoord, rotationMatrix));
-}
-
-
-const Residue *Residue::CalcBBRotationMatrixByTargetAngle(DIH dihedralEnum,
-    SIDE sideEnum, double targetAngle, RowVector3d &moveCoord,
-    Matrix3d &rotationMatrix) const
-{
     return CalcBBRotationMatrixByDeltaAngle(dihedralEnum, sideEnum,
         targetAngle - CalcBBDihedralAngle(dihedralEnum), moveCoord, rotationMatrix);
 }
@@ -278,69 +220,6 @@ const Residue *Residue::CalcBBRotationMatrixByTargetAngle(DIH dihedralEnum,
 vector<Atom *> Residue::GetBBRotationAtomPtr(DIH dihedralEnum, SIDE sideEnum)
 {
     vector<Atom *> rotationAtomObjList;
-    auto iterInOwner = iter();
-
-    if (sideEnum == SIDE::L)
-    {
-        for (auto i = owner->sub.begin(); i != iterInOwner; i++)
-        {
-            for (auto atomPtr: (*i)->sub)
-            {
-                rotationAtomObjList.push_back(atomPtr);
-            }
-        }
-
-        if (dihedralEnum == DIH::R)
-        {
-            for (auto atomPtr: sub)
-            {
-                if (atomPtr->name != "CA" && atomPtr->name != "C" &&
-                    atomPtr->name != "O" && atomPtr->name != "OXT")
-                {
-                    rotationAtomObjList.push_back(atomPtr);
-                }
-            }
-        }
-    }
-    else
-    {
-        if (dihedralEnum == DIH::L)
-        {
-            for (auto atomPtr: sub)
-            {
-                if (atomPtr->name != "N" && atomPtr->name != "CA")
-                {
-                    rotationAtomObjList.push_back(atomPtr);
-                }
-            }
-        }
-        else
-        {
-            for (auto atomPtr: sub)
-            {
-                if (atomPtr->name == "O" || atomPtr->name == "OXT")
-                {
-                    rotationAtomObjList.push_back(atomPtr);
-                }
-            }
-        }
-
-        for (auto i = iterInOwner + 1; i != owner->sub.end(); i++)
-        {
-            for (auto atomPtr: (*i)->sub)
-            {
-                rotationAtomObjList.push_back(atomPtr);
-            }
-        }
-    }
-
-    return rotationAtomObjList;
-}
-
-
-vector<const Atom *> Residue::GetBBRotationAtomPtr(DIH dihedralEnum, SIDE sideEnum) const
-{
-    vector<const Atom *> rotationAtomObjList;
     auto iterInOwner = iter();
 
     if (sideEnum == SIDE::L)
@@ -439,7 +318,7 @@ Residue *Residue::RotateBBDihedralAngleByTargetAngle(DIH dihedralEnum,
 // Calc Side Chain Dihedral Angle
 ////////////////////////////////////////////////////////////////////////////////
 
-double Residue::CalcSCDihedralAngle(int dihedralIdx) const
+double Residue::CalcSCDihedralAngle(int dihedralIdx)
 {
     auto atomCoordMap = coordMap();
 
@@ -455,17 +334,8 @@ double Residue::CalcSCDihedralAngle(int dihedralIdx) const
 // Calc Side Chain Rotation Matrix By Delta Angle
 ////////////////////////////////////////////////////////////////////////////////
 
-Residue *Residue::CalcSCRotationMatrixByDeltaAngle(int dihedralIdx, double deltaAngle,
-    RowVector3d &moveCoord, Matrix3d &rotationMatrix)
-{
-    return const_cast<Residue *>(const_cast<const Residue *>(this)->
-        CalcSCRotationMatrixByDeltaAngle(dihedralIdx, deltaAngle, moveCoord,
-        rotationMatrix));
-}
-
-
-const Residue *Residue::CalcSCRotationMatrixByDeltaAngle(int dihedralIdx, double deltaAngle,
-    RowVector3d &moveCoord, Matrix3d &rotationMatrix) const
+Residue *Residue::CalcSCRotationMatrixByDeltaAngle(int dihedralIdx,
+    double deltaAngle, RowVector3d &moveCoord, Matrix3d &rotationMatrix)
 {
     auto atomCoordMap = coordMap();
 
@@ -484,17 +354,8 @@ const Residue *Residue::CalcSCRotationMatrixByDeltaAngle(int dihedralIdx, double
 // Calc Side Chain Rotation Matrix By Target Angle
 ////////////////////////////////////////////////////////////////////////////////
 
-Residue *Residue::CalcSCRotationMatrixByTargetAngle(int dihedralIdx, double targetAngle,
-    RowVector3d &moveCoord, Matrix3d &rotationMatrix)
-{
-    return const_cast<Residue *>(const_cast<const Residue *>(this)->
-        CalcSCRotationMatrixByTargetAngle(dihedralIdx, targetAngle, moveCoord,
-        rotationMatrix));
-}
-
-
-const Residue *Residue::CalcSCRotationMatrixByTargetAngle(int dihedralIdx, double targetAngle,
-    RowVector3d &moveCoord, Matrix3d &rotationMatrix) const
+Residue *Residue::CalcSCRotationMatrixByTargetAngle(int dihedralIdx,
+    double targetAngle, RowVector3d &moveCoord, Matrix3d &rotationMatrix)
 {
     return CalcSCRotationMatrixByDeltaAngle(dihedralIdx, targetAngle -
         CalcSCDihedralAngle(dihedralIdx), moveCoord, rotationMatrix);
@@ -508,26 +369,6 @@ const Residue *Residue::CalcSCRotationMatrixByTargetAngle(int dihedralIdx, doubl
 vector<Atom *> Residue::GetSCRotationAtomPtr(int dihedralIdx)
 {
     vector<Atom *> rotationAtomObjList;
-
-    unordered_set<string> rotationAtomNameSet(
-        __RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(name).at(dihedralIdx).cbegin() + 3,
-        __RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(name).at(dihedralIdx).cend());
-
-    for (auto atomPtr: sub)
-    {
-        if (rotationAtomNameSet.count(atomPtr->name))
-        {
-            rotationAtomObjList.push_back(atomPtr);
-        }
-    }
-
-    return rotationAtomObjList;
-}
-
-
-vector<const Atom *> Residue::GetSCRotationAtomPtr(int dihedralIdx) const
-{
-    vector<const Atom *> rotationAtomObjList;
 
     unordered_set<string> rotationAtomNameSet(
         __RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(name).at(dihedralIdx).cbegin() + 3,

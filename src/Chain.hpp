@@ -57,7 +57,7 @@ string Chain::str() const
 // Copy
 ////////////////////////////////////////////////////////////////////////////////
 
-Chain *Chain::Copy() const
+Chain *Chain::Copy()
 {
     auto copyChainPtr = new Chain(name);
 
@@ -76,16 +76,9 @@ Chain *Chain::Copy() const
 // GetResidues
 ////////////////////////////////////////////////////////////////////////////////
 
-vector<const Residue *> Chain::GetResidues() const
+vector<Residue *> Chain::GetResidues()
 {
-    vector<const Residue *> resPtrList;
-
-    for (auto resPtr: sub)
-    {
-        resPtrList.push_back(resPtr);
-    }
-
-    return resPtrList;
+    return sub;
 }
 
 
@@ -109,22 +102,6 @@ vector<Atom *> Chain::GetAtoms()
 }
 
 
-vector<const Atom *> Chain::GetAtoms() const
-{
-    vector<const Atom *> atomPtrList;
-
-    for (auto resPtr: sub)
-    {
-        for (auto atomPtr: resPtr->sub)
-        {
-            atomPtrList.push_back(atomPtr);
-        }
-    }
-
-    return atomPtrList;
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // subMap
 ////////////////////////////////////////////////////////////////////////////////
@@ -132,19 +109,6 @@ vector<const Atom *> Chain::GetAtoms() const
 unordered_map<string, Residue *> Chain::subMap()
 {
     unordered_map<string, Residue *> resPtrMap;
-
-    for (auto resPtr: sub)
-    {
-        resPtrMap.emplace(resPtr->compNum(), resPtr);
-    }
-
-    return resPtrMap;
-}
-
-
-unordered_map<string, const Residue *> Chain::subMap() const
-{
-    unordered_map<string, const Residue *> resPtrMap;
 
     for (auto resPtr: sub)
     {
