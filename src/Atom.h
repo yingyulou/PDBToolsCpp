@@ -8,7 +8,6 @@
 #define __PDBTOOLS_ATOM_H
 
 #include <string>
-#include <boost/format.hpp>
 #include <Eigen/Dense>
 #include "StructBase.h"
 #include "NotProtein.h"
@@ -22,7 +21,6 @@ namespace PDBTools
 ////////////////////////////////////////////////////////////////////////////////
 
 using std::string;
-using boost::format;
 using Eigen::RowVector3d;
 
 
@@ -55,18 +53,11 @@ public:
 
 
     // str
-    string str() const
-    {
-        return (format("<Atom object: %d %s [%.3f, %.3f, %.3f], at 0x%p>") %
-            num % name % coord[0] % coord[1] % coord[2] % this).str();
-    }
+    string str() const;
 
 
     // Copy
-    Atom *Copy() const
-    {
-        return new Atom(name, num, coord, alt, occ, tempF, ele, chg);
-    }
+    Atom *Copy() const;
 
 
     // Dumps
@@ -74,10 +65,7 @@ public:
 
 
     // operator-
-    double operator-(const Atom &rhs) const
-    {
-        return (coord - rhs.coord).norm();
-    }
+    double operator-(const Atom &rhs) const;
 };
 
 

@@ -1552,7 +1552,7 @@ cout << *proPtr << endl;
 ### 2. IsH
 
 ``` Cpp
-inline bool IsH(const string &atomName);
+bool IsH(const string &atomName);
 ```
 
 判断一个原子名是否为氢原子。
@@ -1574,7 +1574,7 @@ bool isHBool = IsH("1H");
 ### 3. SplitCompNum
 
 ``` Cpp
-inline void SplitCompNum(const string &compNumStr, int &resNum, string &resIns);
+void SplitCompNum(const string &compNumStr, int &resNum, string &resIns);
 ```
 
 将完整残基编号分割为残基编号和残基插入编号。

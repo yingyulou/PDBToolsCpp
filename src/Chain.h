@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include <boost/format.hpp>
 #include "StructBase.h"
 #include "NotAtom.h"
 #include "NotProtein.h"
@@ -28,7 +27,6 @@ namespace PDBTools
 using std::string;
 using std::vector;
 using std::unordered_map;
-using boost::format;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -51,10 +49,7 @@ public:
 
 
     // str
-    string str() const
-    {
-        return (format("<Chain object: %s, at 0x%p>") % name % this).str();
-    }
+    string str() const;
 
 
     // Copy

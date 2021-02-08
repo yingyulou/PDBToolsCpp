@@ -7,7 +7,7 @@
 #ifndef __PDBTOOLS_NOT_PROTEIN_H
 #define __PDBTOOLS_NOT_PROTEIN_H
 
-#include <algorithm>
+#include <vector>
 
 namespace PDBTools
 {
@@ -16,7 +16,7 @@ namespace PDBTools
 // Using
 ////////////////////////////////////////////////////////////////////////////////
 
-using std::find;
+using std::vector;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -29,44 +29,22 @@ class __NotProtein
 public:
 
     // iter
-    typename vector<SelfType *>::iterator iter()
-    {
-        return find(static_cast<SelfType *>(this)->owner->sub.begin(),
-            static_cast<SelfType *>(this)->owner->sub.end(),
-            static_cast<SelfType *>(this));
-    }
-
-
-    typename vector<SelfType *>::const_iterator iter() const
-    {
-        return find(static_cast<const SelfType *>(this)->owner->sub.begin(),
-            static_cast<const SelfType *>(this)->owner->sub.end(),
-            static_cast<const SelfType *>(this));
-    }
+    typename vector<SelfType *>::iterator iter();
+    typename vector<SelfType *>::const_iterator iter() const;
 
 
     // pre
-    SelfType *pre(int shiftLen = 1) { return *(iter() - shiftLen); }
-    const SelfType *pre(int shiftLen = 1) const { return *(iter() - shiftLen); }
+    SelfType *pre(int shiftLen = 1);
+    const SelfType *pre(int shiftLen = 1) const;
 
 
     // next
-    SelfType *next(int shiftLen = 1) { return *(iter() + shiftLen); }
-    const SelfType *next(int shiftLen = 1) const { return *(iter() + shiftLen); }
+    SelfType *next(int shiftLen = 1);
+    const SelfType *next(int shiftLen = 1) const;
 
 
     // Remove
-    typename vector<SelfType *>::iterator Remove(bool deteleBool = true)
-    {
-        auto eraseIter = static_cast<SelfType *>(this)->owner->sub.erase(iter());
-
-        if (deteleBool)
-        {
-            delete static_cast<SelfType *>(this);
-        }
-
-        return eraseIter;
-    }
+    typename vector<SelfType *>::iterator Remove(bool deteleBool = true);
 };
 
 

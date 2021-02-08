@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include <boost/format.hpp>
 #include <Eigen/Dense>
 #include "StructBase.h"
 #include "NotAtom.h"
@@ -29,7 +28,6 @@ namespace PDBTools
 using std::string;
 using std::vector;
 using std::unordered_map;
-using boost::format;
 using Eigen::RowVector3d;
 using Eigen::Matrix3d;
 
@@ -57,10 +55,7 @@ public:
 
 
     // str
-    string str() const
-    {
-        return (format("<Residue object: %d%s %s, at 0x%p>") % num % ins % name % this).str();
-    }
+    string str() const;
 
 
     // Copy
@@ -68,26 +63,18 @@ public:
 
 
     // GetResidues
-    vector<Residue *> GetResidues() { return {this}; }
-    vector<const Residue *> GetResidues() const { return {this}; }
+    vector<Residue *> GetResidues();
+    vector<const Residue *> GetResidues() const;
 
 
     // GetAtoms
-    vector<Atom *> GetAtoms() { return sub; }
+    vector<Atom *> GetAtoms();
     vector<const Atom *> GetAtoms() const;
 
 
     // compNum
-    string compNum() const { return (format("%d%s") % num % ins).str(); }
-
-
-    Residue *compNum(int resNum, const string &resIns = "")
-    {
-        num = resNum;
-        ins = resIns;
-
-        return this;
-    }
+    string compNum() const;
+    Residue *compNum(int resNum, const string &resIns = "");
 
 
     // subMap

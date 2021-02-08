@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <boost/format.hpp>
 #include <Eigen/Dense>
 #include "Residue.h"
 #include "Chain.h"
@@ -27,6 +28,7 @@ namespace PDBTools
 using std::string;
 using std::vector;
 using std::unordered_map;
+using boost::format;
 using Eigen::RowVector3d;
 using Eigen::Matrix3d;
 
@@ -42,6 +44,16 @@ Residue::Residue(const string &resName, int resNum, const string &resIns,
     {
         resOwner->sub.push_back(this);
     }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// str
+////////////////////////////////////////////////////////////////////////////////
+
+string Residue::str() const
+{
+    return (format("<Residue object: %d%s %s, at 0x%p>") % num % ins % name % this).str();
 }
 
 
@@ -65,19 +77,53 @@ Residue *Residue::Copy() const
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// GetResidues
+////////////////////////////////////////////////////////////////////////////////
+
+vector<Residue *> Residue::GetResidues()
+{
+    return {this};
+}
+
+
+vector<const Residue *> Residue::GetResidues() const
+{
+    return {this};
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // GetAtoms
 ////////////////////////////////////////////////////////////////////////////////
 
+vector<Atom *> Residue::GetAtoms()
+{
+    return sub;
+}
+
+
 vector<const Atom *> Residue::GetAtoms() const
 {
-    vector<const Atom *> atomPtrList;
+    return {sub.begin(), sub.end()};
+}
 
-    for (auto atomPtr: sub)
-    {
-        atomPtrList.push_back(atomPtr);
-    }
 
-    return atomPtrList;
+////////////////////////////////////////////////////////////////////////////////
+// compNum
+////////////////////////////////////////////////////////////////////////////////
+
+string Residue::compNum() const
+{
+    return (format("%d%s") % num % ins).str();
+}
+
+
+Residue *Residue::compNum(int resNum, const string &resIns)
+{
+    num = resNum;
+    ins = resIns;
+
+    return this;
 }
 
 

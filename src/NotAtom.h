@@ -45,76 +45,18 @@ public:
 
 
     // Iterator
-    iterator begin()
-    {
-        return static_cast<SelfType *>(this)->sub.begin();
-    }
-
-
-    const_iterator begin() const
-    {
-        return static_cast<const SelfType *>(this)->sub.begin();
-    }
-
-
-    iterator end()
-    {
-        return static_cast<SelfType *>(this)->sub.end();
-    }
-
-
-    const_iterator end() const
-    {
-        return static_cast<const SelfType *>(this)->sub.end();
-    }
-
-
-    const_iterator cbegin() const
-    {
-        return static_cast<const SelfType *>(this)->sub.cbegin();
-    }
-
-
-    const_iterator cend() const
-    {
-        return static_cast<const SelfType *>(this)->sub.cend();
-    }
-
-
-    reverse_iterator rbegin()
-    {
-        return static_cast<SelfType *>(this)->sub.rbegin();
-    }
-
-
-    const_reverse_iterator rbegin() const
-    {
-        return static_cast<const SelfType *>(this)->sub.rbegin();
-    }
-
-
-    reverse_iterator rend()
-    {
-        return static_cast<SelfType *>(this)->sub.rend();
-    }
-
-
-    const_reverse_iterator rend() const
-    {
-        return static_cast<const SelfType *>(this)->sub.rend();
-    }
-
-
-    const_reverse_iterator crbegin() const
-    {
-        return static_cast<const SelfType *>(this)->sub.crbegin();
-    }
-
-
-    const_reverse_iterator crend() const
-    {
-        return static_cast<const SelfType *>(this)->sub.crend();
-    }
+    iterator begin();
+    const_iterator begin() const;
+    iterator end();
+    const_iterator end() const;
+    const_iterator cbegin() const;
+    const_iterator cend() const;
+    reverse_iterator rbegin();
+    const_reverse_iterator rbegin() const;
+    reverse_iterator rend();
+    const_reverse_iterator rend() const;
+    const_reverse_iterator crbegin() const;
+    const_reverse_iterator crend() const;
 
 
     // FilterAtoms
@@ -151,11 +93,7 @@ public:
 
 
     // fasta
-    string fasta(const string &titleStr = "") const
-    {
-        return ">" + (titleStr == "" ? static_cast<const SelfType *>(this)->name :
-            titleStr) + "\n" + seq() + "\n";
-    }
+    string fasta(const string &titleStr = "") const;
 
 
     // DumpFasta

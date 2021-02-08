@@ -38,7 +38,7 @@ using std::pair;
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType>
-inline ostream &operator<<(ostream &os, const __StructBase<SelfType> &structObj)
+ostream &operator<<(ostream &os, const __StructBase<SelfType> &structObj)
 {
     return os << static_cast<const SelfType &>(structObj).str();
 }
@@ -48,7 +48,7 @@ inline ostream &operator<<(ostream &os, const __StructBase<SelfType> &structObj)
 // If An Atom Name is H
 ////////////////////////////////////////////////////////////////////////////////
 
-inline bool IsH(const string &atomName)
+bool IsH(const string &atomName)
 {
     return regex_search(atomName, __H_RE);
 }
@@ -58,7 +58,7 @@ inline bool IsH(const string &atomName)
 // Split CompNum To ResNum + ResIns
 ////////////////////////////////////////////////////////////////////////////////
 
-inline pair<int, string> SplitCompNum(const string &compNumStr)
+pair<int, string> SplitCompNum(const string &compNumStr)
 {
     smatch smatchObj;
 

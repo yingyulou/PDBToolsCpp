@@ -32,7 +32,7 @@ using Eigen::ComputeFullV;
 // Convert Radians To Degrees
 ////////////////////////////////////////////////////////////////////////////////
 
-inline double Degrees(double radiansAngle)
+double Degrees(double radiansAngle)
 {
     return radiansAngle * 180. / M_PI;
 }
@@ -42,7 +42,7 @@ inline double Degrees(double radiansAngle)
 // Convert Degrees To Radians
 ////////////////////////////////////////////////////////////////////////////////
 
-inline double Radians(double degreesAngle)
+double Radians(double degreesAngle)
 {
     return degreesAngle * M_PI / 180.;
 }
@@ -52,7 +52,7 @@ inline double Radians(double degreesAngle)
 // Calc Vector Angle
 ////////////////////////////////////////////////////////////////////////////////
 
-inline double CalcVectorAngle(const RowVector3d &coordA, const RowVector3d &coordB)
+double CalcVectorAngle(const RowVector3d &coordA, const RowVector3d &coordB)
 {
     return acos(coordA.dot(coordB) / (coordA.norm() * coordB.norm()));
 }
@@ -80,7 +80,7 @@ Matrix3d CalcRotationMatrix(const RowVector3d &rotationAxis, double rotationAngl
 // Calc Rotation Matrix By Two Vector (From A To B, Right Multiply Matrix)
 ////////////////////////////////////////////////////////////////////////////////
 
-inline Matrix3d CalcRotationMatrixByTwoVector(const RowVector3d &coordA,
+Matrix3d CalcRotationMatrixByTwoVector(const RowVector3d &coordA,
     const RowVector3d &coordB)
 {
     return CalcRotationMatrix(coordA.cross(coordB), CalcVectorAngle(coordA, coordB));
@@ -143,7 +143,7 @@ double CalcDihedralAngle(const RowVector3d &coordA, const RowVector3d &coordB,
 // Calc RMSD (Root-Mean-Square Deviation)
 ////////////////////////////////////////////////////////////////////////////////
 
-inline double CalcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
+double CalcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
     const Matrix<double, Dynamic, 3> &coordArrayB)
 {
     return sqrt((coordArrayA - coordArrayB).array().square().sum() / coordArrayA.rows());

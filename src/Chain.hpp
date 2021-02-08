@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <boost/format.hpp>
 #include "Chain.h"
 #include "Protein.h"
 #include "Residue.h"
@@ -25,6 +26,7 @@ namespace PDBTools
 using std::string;
 using std::vector;
 using std::unordered_map;
+using boost::format;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -38,6 +40,16 @@ Chain::Chain(const string &chainName, Protein *chainOwner):
     {
         chainOwner->sub.push_back(this);
     }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// str
+////////////////////////////////////////////////////////////////////////////////
+
+string Chain::str() const
+{
+    return (format("<Chain object: %s, at 0x%p>") % name % this).str();
 }
 
 

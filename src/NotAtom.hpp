@@ -13,6 +13,7 @@
 #include <cstdio>
 #include <iterator>
 #include <initializer_list>
+#include <boost/format.hpp>
 #include <Eigen/Dense>
 #include "NotAtom.h"
 #include "Struct.h"
@@ -30,7 +31,108 @@ using std::vector;
 using std::unordered_set;
 using std::distance;
 using std::initializer_list;
+using boost::format;
 using Eigen::RowVector3d;
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Iterator
+////////////////////////////////////////////////////////////////////////////////
+
+template <typename SelfType, typename SubType>
+typename __NotAtom<SelfType, SubType>::iterator
+__NotAtom<SelfType, SubType>::begin()
+{
+    return static_cast<SelfType *>(this)->sub.begin();
+}
+
+
+template <typename SelfType, typename SubType>
+typename __NotAtom<SelfType, SubType>::const_iterator
+__NotAtom<SelfType, SubType>::begin() const
+{
+    return static_cast<const SelfType *>(this)->sub.begin();
+}
+
+
+template <typename SelfType, typename SubType>
+typename __NotAtom<SelfType, SubType>::iterator
+__NotAtom<SelfType, SubType>::end()
+{
+    return static_cast<SelfType *>(this)->sub.end();
+}
+
+
+template <typename SelfType, typename SubType>
+typename __NotAtom<SelfType, SubType>::const_iterator
+__NotAtom<SelfType, SubType>::end() const
+{
+    return static_cast<const SelfType *>(this)->sub.end();
+}
+
+
+template <typename SelfType, typename SubType>
+typename __NotAtom<SelfType, SubType>::const_iterator
+__NotAtom<SelfType, SubType>::cbegin() const
+{
+    return static_cast<const SelfType *>(this)->sub.cbegin();
+}
+
+
+template <typename SelfType, typename SubType>
+typename __NotAtom<SelfType, SubType>::const_iterator
+__NotAtom<SelfType, SubType>::cend() const
+{
+    return static_cast<const SelfType *>(this)->sub.cend();
+}
+
+
+template <typename SelfType, typename SubType>
+typename __NotAtom<SelfType, SubType>::reverse_iterator
+__NotAtom<SelfType, SubType>::rbegin()
+{
+    return static_cast<SelfType *>(this)->sub.rbegin();
+}
+
+
+template <typename SelfType, typename SubType>
+typename __NotAtom<SelfType, SubType>::const_reverse_iterator
+__NotAtom<SelfType, SubType>::rbegin() const
+{
+    return static_cast<const SelfType *>(this)->sub.rbegin();
+}
+
+
+template <typename SelfType, typename SubType>
+typename __NotAtom<SelfType, SubType>::reverse_iterator
+__NotAtom<SelfType, SubType>::rend()
+{
+    return static_cast<SelfType *>(this)->sub.rend();
+}
+
+
+template <typename SelfType, typename SubType>
+typename __NotAtom<SelfType, SubType>::const_reverse_iterator
+__NotAtom<SelfType, SubType>::rend() const
+{
+    return static_cast<const SelfType *>(this)->sub.rend();
+}
+
+
+template <typename SelfType, typename SubType>
+typename __NotAtom<SelfType, SubType>::const_reverse_iterator
+__NotAtom<SelfType, SubType>::crbegin() const
+{
+    return static_cast<const SelfType *>(this)->sub.crbegin();
+}
+
+
+template <typename SelfType, typename SubType>
+typename __NotAtom<SelfType, SubType>::const_reverse_iterator
+__NotAtom<SelfType, SubType>::crend() const
+{
+    return static_cast<const SelfType *>(this)->sub.crend();
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -217,6 +319,19 @@ string __NotAtom<SelfType, SubType>::seq() const
     }
 
     return seqStr;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// fasta
+////////////////////////////////////////////////////////////////////////////////
+
+template <typename SelfType, typename SubType>
+string __NotAtom<SelfType, SubType>::fasta(const string &titleStr) const
+{
+    return (format(">%s\n%s\n") %
+        (titleStr.empty() ? static_cast<const SelfType *>(this)->name : titleStr) %
+        seq()).str();
 }
 
 
