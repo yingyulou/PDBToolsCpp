@@ -11,7 +11,7 @@
 #include <vector>
 #include <climits>
 #include <fstream>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <boost/algorithm/string.hpp>
 #include <Eigen/Dense>
 #include "Protein.h"
@@ -33,7 +33,7 @@ using std::ifstream;
 using std::getline;
 using std::stoi;
 using std::stod;
-using boost::filesystem::path;
+using std::filesystem::path;
 using boost::algorithm::trim_copy;
 using Eigen::RowVector3d;
 

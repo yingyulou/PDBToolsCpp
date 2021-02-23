@@ -16,16 +16,12 @@ PDB文件在PDBToolsCpp中将被解析为4个层级：Protein -> Chain -> Residu
 #include <PDBToolsCpp/PDBTools>
 ```
 
-- 编译依赖项：
+- 编译依赖：
 
 1. boost
 2. Eigen
 
-- 链接依赖项：
-
-1. boost_filesystem
-
-- 编译器需支持C++11或以上标准
+- 编译器需支持GNU C++17或以上标准
 
 - PDBToolsCpp的所有接口均位于namespace PDBTools下
 
