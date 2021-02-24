@@ -1,16 +1,10 @@
 /*
-DESCRIPTION
-
     PDBTools
 
     Collection of modules for PDB file parsing, linear algebra calculations and
     structure modify.
 
     See README file for full description and examples.
-
-VERSION
-
-    1.6.0
 */
 
 #include "src/PDBParser.hpp"

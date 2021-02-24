@@ -678,18 +678,19 @@ proPtr->RenumResidues()->RenumAtoms();
 #### 9. Append, Insert
 
 ``` Cpp
-SelfType *Append(SubType *subPtr);
-SelfType *Insert(iterator insertIter, SubType *subPtr);
+SelfType *Append(SubType *subPtr, copyBool = true);
+SelfType *Insert(iterator insertIter, SubType *subPtr, copyBool = true);
 ```
 
 为this追加/插入子结构。
 
-所有添加至this的子结构都是原结构对象指针调用Copy成员函数得到的拷贝，且会与this建立从属关系。
+所有添加至this的子结构都是原结构对象指针调用Copy成员函数得到的拷贝，且会与this建立从属关系。如果copyBool被设定为false，则拷贝不会发生。
 
 #### 参数：
 
 - subPtr：this对应的子结构对象指针
 - insertIter：插入位置迭代器
+- copyBool：是否拷贝subPtr
 
 #### 返回值：
 

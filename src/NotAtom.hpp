@@ -278,11 +278,15 @@ SelfType *__NotAtom<SelfType, SubType>::RenumAtoms(int startNum)
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::Append(SubType *subPtr)
+SelfType *__NotAtom<SelfType, SubType>::Append(SubType *subPtr, bool copyBool)
 {
-    SubType *copySubPtr = subPtr->Copy();
-    copySubPtr->owner = static_cast<SelfType *>(this);
-    static_cast<SelfType *>(this)->sub.push_back(copySubPtr);
+    if (copyBool)
+    {
+        subPtr = subPtr->Copy();
+    }
+
+    subPtr->owner = static_cast<SelfType *>(this);
+    static_cast<SelfType *>(this)->sub.push_back(subPtr);
 
     return static_cast<SelfType *>(this);
 }
@@ -294,11 +298,15 @@ SelfType *__NotAtom<SelfType, SubType>::Append(SubType *subPtr)
 
 template <typename SelfType, typename SubType>
 SelfType *__NotAtom<SelfType, SubType>::Insert(iterator insertIter,
-    SubType *subPtr)
+    SubType *subPtr, bool copyBool)
 {
-    SubType *copySubPtr = subPtr->Copy();
-    copySubPtr->owner = static_cast<SelfType *>(this);
-    static_cast<SelfType *>(this)->sub.insert(insertIter, copySubPtr);
+    if (copyBool)
+    {
+        subPtr = subPtr->Copy();
+    }
+
+    subPtr->owner = static_cast<SelfType *>(this);
+    static_cast<SelfType *>(this)->sub.insert(insertIter, subPtr);
 
     return static_cast<SelfType *>(this);
 }

@@ -98,12 +98,12 @@ public:
     SelfType *RenumAtoms(int startNum = 1);
 
 
-    // PushBack
-    SelfType *Append(SubType *subPtr);
+    // Append
+    SelfType *Append(SubType *subPtr, bool copyBool = true);
 
 
     // Insert
-    SelfType *Insert(iterator insertIter, SubType *subPtr);
+    SelfType *Insert(iterator insertIter, SubType *subPtr, bool copyBool = true);
 
 
     // RemoveAlt
