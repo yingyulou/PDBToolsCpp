@@ -512,7 +512,7 @@ Matrix<double, Dynamic, 3> FilterAtomsCoord(
     const unordered_set<string> &atomNameSet = {"CA"});
 ```
 
-跨层级直接返回this包含的所有，或按原子的name属性筛选后的原子对象指针或原子坐标指针。
+跨层级直接返回this包含的所有，或按原子的name属性筛选后的原子对象指针列表或原子坐标矩阵。
 
 #### 参数：
 
@@ -520,7 +520,7 @@ Matrix<double, Dynamic, 3> FilterAtomsCoord(
 
 #### 返回值：
 
-- 原子对象指针列表/原子坐标指针列表
+- 原子对象指针列表/原子坐标矩阵
 
 #### 例：
 
@@ -746,7 +746,7 @@ unordered_map<string, Atom *> subMap();
 
 对于Protein对象：得到this包含的所有链名 -> 链对象指针哈希表。
 
-对于Chain对象：得到this包含的所有完整残基名 -> 残基对象指针哈希表。
+对于Chain对象：得到this包含的所有完整残基编号 -> 残基对象指针哈希表。
 
 对于Residue对象：得到this包含的所有原子名 -> 原子对象指针哈希表。
 
@@ -757,7 +757,7 @@ unordered_map<string, Atom *> subMap();
 #### 返回值：
 
 - 对于Protein对象：this包含的所有链名 -> 链对象指针哈希表
-- 对于Chain对象：this包含的所有完整残基名 -> 残基对象指针哈希表
+- 对于Chain对象：this包含的所有完整残基编号 -> 残基对象指针哈希表
 - 对于Residue对象：this包含的所有原子名 -> 原子对象指针哈希表
 
 #### 例：
