@@ -80,7 +80,7 @@ public:
 
 
     // coordMap
-    unordered_map<string, RowVector3d *> coordMap();
+    unordered_map<string, RowVector3d> coordMap();
 
 
     // Calc Backbone Dihedral Angle

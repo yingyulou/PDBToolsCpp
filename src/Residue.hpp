@@ -136,13 +136,13 @@ unordered_map<string, Atom *> Residue::subMap()
 // coordMap
 ////////////////////////////////////////////////////////////////////////////////
 
-unordered_map<string, RowVector3d *> Residue::coordMap()
+unordered_map<string, RowVector3d> Residue::coordMap()
 {
-    unordered_map<string, RowVector3d *> coordPtrMap;
+    unordered_map<string, RowVector3d> coordPtrMap;
 
     for (auto atomPtr: sub)
     {
-        coordPtrMap.emplace(atomPtr->name, &atomPtr->coord);
+        coordPtrMap.emplace(atomPtr->name, atomPtr->coord);
     }
 
     return coordPtrMap;
