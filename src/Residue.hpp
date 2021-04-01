@@ -159,13 +159,13 @@ double Residue::CalcBBDihedralAngle(DIH dihedralEnum)
 
     if (dihedralEnum == DIH::L)
     {
-        return CalcDihedralAngle(*pre()->coordMap().at("C"), *atomCoordMap.at("N"),
-            *atomCoordMap.at("CA"), *atomCoordMap.at("C"));
+        return CalcDihedralAngle(pre()->coordMap().at("C"), atomCoordMap.at("N"),
+            atomCoordMap.at("CA"), atomCoordMap.at("C"));
     }
     else
     {
-        return CalcDihedralAngle(*atomCoordMap.at("N"), *atomCoordMap.at("CA"),
-            *atomCoordMap.at("C"), *next()->coordMap().at("N"));
+        return CalcDihedralAngle(atomCoordMap.at("N"), atomCoordMap.at("CA"),
+            atomCoordMap.at("C"), next()->coordMap().at("N"));
     }
 }
 
@@ -187,13 +187,13 @@ Residue *Residue::CalcBBRotationMatrixByDeltaAngle(DIH dihedralEnum,
 
     if (dihedralEnum == DIH::L)
     {
-        moveCoord = *atomCoordMap.at("N");
-        rotationMatrix = CalcRotationMatrix(*atomCoordMap.at("CA") - moveCoord, deltaAngle);
+        moveCoord = atomCoordMap.at("N");
+        rotationMatrix = CalcRotationMatrix(atomCoordMap.at("CA") - moveCoord, deltaAngle);
     }
     else
     {
-        moveCoord = *atomCoordMap.at("CA");
-        rotationMatrix = CalcRotationMatrix(*atomCoordMap.at("C") - moveCoord, deltaAngle);
+        moveCoord = atomCoordMap.at("CA");
+        rotationMatrix = CalcRotationMatrix(atomCoordMap.at("C") - moveCoord, deltaAngle);
     }
 
     return this;
@@ -323,10 +323,10 @@ double Residue::CalcSCDihedralAngle(int dihedralIdx)
     auto atomCoordMap = coordMap();
 
     return CalcDihedralAngle(
-        *atomCoordMap[__RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(name).at(dihedralIdx)[0]],
-        *atomCoordMap[__RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(name).at(dihedralIdx)[1]],
-        *atomCoordMap[__RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(name).at(dihedralIdx)[2]],
-        *atomCoordMap[__RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(name).at(dihedralIdx)[3]]);
+        atomCoordMap[__RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(name).at(dihedralIdx)[0]],
+        atomCoordMap[__RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(name).at(dihedralIdx)[1]],
+        atomCoordMap[__RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(name).at(dihedralIdx)[2]],
+        atomCoordMap[__RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(name).at(dihedralIdx)[3]]);
 }
 
 
@@ -339,10 +339,10 @@ Residue *Residue::CalcSCRotationMatrixByDeltaAngle(int dihedralIdx,
 {
     auto atomCoordMap = coordMap();
 
-    moveCoord = *atomCoordMap[__RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(
+    moveCoord = atomCoordMap[__RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(
         name).at(dihedralIdx)[1]];
 
-    rotationMatrix = CalcRotationMatrix(*atomCoordMap[
+    rotationMatrix = CalcRotationMatrix(atomCoordMap[
         __RESIDUE_SIDE_CHAIN_ROTATION_ATOMS_NAME_MAP.at(name).at(dihedralIdx)[2]] -
         moveCoord, deltaAngle);
 
