@@ -162,17 +162,7 @@ string __NotAtom<SelfType, SubType>::Dumps()
 template <typename SelfType, typename SubType>
 RowVector3d __NotAtom<SelfType, SubType>::center()
 {
-    auto coordPtrList = GetAtomsCoord();
-    double sumX = 0., sumY = 0., sumZ = 0., coordLen = coordPtrList.size();
-
-    for (auto coordPtr: coordPtrList)
-    {
-        sumX += (*coordPtr)[0];
-        sumY += (*coordPtr)[1];
-        sumZ += (*coordPtr)[2];
-    }
-
-    return RowVector3d(sumX / coordLen, sumY / coordLen, sumZ / coordLen);
+    return GetAtomsCoord().colwise().mean();
 }
 
 
