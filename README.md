@@ -10,20 +10,19 @@ PDB文件在PDBToolsCpp中将被解析为4个层级：Protein -> Chain -> Residu
 
 ## 编译及使用说明
 
-- 导入"PDBTools"头文件即可使用：
+* 导入"PDBTools"头文件即可使用：
 
 ``` Cpp
 #include <PDBToolsCpp/PDBTools>
 ```
 
-- 编译依赖：
+* 编译依赖：
 
 1. boost
 2. Eigen
 
-- 编译器需支持GNU C++17或以上标准
-
-- PDBToolsCpp的所有接口均位于namespace PDBTools下
+* 编译器需支持GNU C++17或以上标准
+* PDBToolsCpp的所有接口均位于namespace PDBTools下
 
 ## PDB文件解析函数
 
@@ -37,12 +36,12 @@ Protein *Load(const string &pdbFilePath, bool parseHBool = false);
 
 #### 参数：
 
-- pdbFilePath：PDB文件路径
-- parseHBool：是否开启氢原子解析
+* pdbFilePath：PDB文件路径
+* parseHBool：是否开启氢原子解析
 
 #### 返回值：
 
-- Protein对象指针
+* Protein对象指针
 
 #### 例：
 
@@ -60,12 +59,12 @@ vector<Protein *> LoadModel(const string &pdbFilePath, bool parseHBool = false);
 
 #### 参数：
 
-- pdbFilePath：PDB文件路径
-- parseHBool：是否开启氢原子解析
+* pdbFilePath：PDB文件路径
+* parseHBool：是否开启氢原子解析
 
 #### 返回值：
 
-- Protein对象指针构成的vector
+* Protein对象指针构成的vector
 
 #### 例：
 
@@ -257,8 +256,8 @@ explicit Protein(const string &proteinID = "", int modelNum = 0);
 
 #### 参数：
 
-- proteinID：蛋白名，用于初始化name属性
-- modelNum：Model编号，用于初始化model属性
+* proteinID：蛋白名，用于初始化name属性
+* modelNum：Model编号，用于初始化model属性
 
 #### 例：
 
@@ -274,8 +273,8 @@ explicit Chain(const string &chainName = "", Protein *chainOwner = nullptr);
 
 #### 参数：
 
-- chainName：链名，用于初始化name属性
-- chainOwner：this的所属Protein，用于初始化owner属性。如果owner不为nullptr，则构造函数将自动在owner与this之间建立从属关系
+* chainName：链名，用于初始化name属性
+* chainOwner：this的所属Protein，用于初始化owner属性。如果owner不为nullptr，则构造函数将自动在owner与this之间建立从属关系
 
 #### 例：
 
@@ -293,10 +292,10 @@ explicit Residue(const string &resName = "", int resNum = 0,
 
 #### 参数：
 
-- resName：残基名，用于初始化name属性
-- resNum：残基编号，用于初始化num属性
-- resIns：残基插入字符，用于初始化ins属性
-- resOwner：this的所属Chain，用于初始化owner属性。如果owner不为nullptr，则构造函数将自动在owner与this之间建立从属关系
+* resName：残基名，用于初始化name属性
+* resNum：残基编号，用于初始化num属性
+* resIns：残基插入字符，用于初始化ins属性
+* resOwner：this的所属Chain，用于初始化owner属性。如果owner不为nullptr，则构造函数将自动在owner与this之间建立从属关系
 
 #### 例：
 
@@ -317,15 +316,15 @@ explicit Atom(const string &atomName = "", int atomNum = 0,
 
 #### 参数：
 
-- atomName：原子名，用于初始化name属性
-- atomNum：原子编号，用于初始化num属性
-- atomCoord：原子坐标，用于初始化coord属性
-- atomAltLoc：备用位置指示符，用于初始化alt属性
-- atomOccupancy：占有，用于初始化occ属性
-- atomTempFactor：温度因子，用于初始化tempF属性
-- atomElement：元素符号，用于初始化ele属性
-- atomCharge：电荷，用于初始化chg属性
-- atomOwner：this的所属Residue，用于初始化owner属性。如果owner不为nullptr，则构造函数将自动在owner与this之间建立从属关系
+* atomName：原子名，用于初始化name属性
+* atomNum：原子编号，用于初始化num属性
+* atomCoord：原子坐标，用于初始化coord属性
+* atomAltLoc：备用位置指示符，用于初始化alt属性
+* atomOccupancy：占有，用于初始化occ属性
+* atomTempFactor：温度因子，用于初始化tempF属性
+* atomElement：元素符号，用于初始化ele属性
+* atomCharge：电荷，用于初始化chg属性
+* atomOwner：this的所属Residue，用于初始化owner属性。如果owner不为nullptr，则构造函数将自动在owner与this之间建立从属关系
 
 #### 例：
 
@@ -388,16 +387,17 @@ string str() const;
 
 #### 参数：
 
-- void
+* void
 
 #### 返回值：
 
-- 结构对象的摘要信息
+* 结构对象的摘要信息
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 cout << proPtr->str() << endl;  // 相当于cout << *proPtr << endl;
 ```
 
@@ -411,17 +411,18 @@ SelfType *Dump(const string &dumpFilePath, const string &fileMode = "w");
 
 #### 参数：
 
-- dumpFilePath：输出PDB文件路径
-- fileMode：文件句柄打开模式
+* dumpFilePath：输出PDB文件路径
+* fileMode：文件句柄打开模式
 
 #### 返回值：
 
-- this
+* this
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 proPtr->Dump("xxxx.pdb");
 ```
 
@@ -435,16 +436,17 @@ string Dumps();
 
 #### 参数：
 
-- void
+* void
 
 #### 返回值：
 
-- 字符串形式的PDB文件内容
+* 字符串形式的PDB文件内容
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 string dumpStr = proPtr->Dumps();
 ```
 
@@ -461,16 +463,17 @@ Atom *Copy();
 
 #### 参数：
 
-- void
+* void
 
 #### 返回值：
 
-- this的深拷贝
+* this的深拷贝
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 Protein *copyProPtr = proPtr->Copy();
 ```
 
@@ -486,16 +489,17 @@ vector<Residue *> GetResidues();
 
 #### 参数：
 
-- void
+* void
 
 #### 返回值：
 
-- this包含的所有残基对象指针
+* this包含的所有残基对象指针
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 vector<Residue *> resPtrList = proPtr->GetResidues();
 ```
 
@@ -516,16 +520,17 @@ Matrix<double, Dynamic, 3> FilterAtomsCoord(
 
 #### 参数：
 
-- atomNameSet：原子名集合
+* atomNameSet：原子名集合
 
 #### 返回值：
 
-- 原子对象指针列表/原子坐标矩阵
+* 原子对象指针列表/原子坐标矩阵
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 vector<Atom *> atomPtrList = proPtr->GetAtoms();
 vector<Atom *> filterAtomPtrList = proPtr->FilterAtoms({"N", "CA", "C"});
 vector<RowVector3d *> atomCoordList = proPtr->GetAtomsCoord();
@@ -542,16 +547,17 @@ RowVector3d center();
 
 #### 参数：
 
-- void
+* void
 
 #### 返回值：
 
-- this的所有原子坐标的几何中心
+* this的所有原子坐标的几何中心
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 RowVector3d centerCoord = proPtr->center();
 ```
 
@@ -565,16 +571,17 @@ SelfType *MoveCenter();
 
 #### 参数：
 
-- void
+* void
 
 #### 返回值：
 
-- this
+* this
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 proPtr->MoveCenter();
 ```
 
@@ -588,16 +595,17 @@ string seq();
 
 #### 参数：
 
-- void
+* void
 
 #### 返回值：
 
-- this的残基序列
+* this的残基序列
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 string seqStr = proPtr->seq();
 ```
 
@@ -611,16 +619,17 @@ string fasta(const string &titleStr = "");
 
 #### 参数：
 
-- titleStr：Fasta文件的标题内容，如果传入空字符串，则标题将被设置为this->name
+* titleStr：Fasta文件的标题内容，如果传入空字符串，则标题将被设置为this->name
 
 #### 返回值：
 
-- 字符串形式的Fasta文件内容
+* 字符串形式的Fasta文件内容
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 string fastaStr = proPtr->fasta("xxxx");
 ```
 
@@ -635,18 +644,19 @@ SelfType *DumpFasta(const string &dumpFilePath,
 
 #### 参数：
 
-- dumpFilePath：输出Fasta文件路径
-- titleStr：Fasta文件的标题内容，如果传入空字符串，则标题将被设置为this->name
-- fileMode：文件句柄打开模式
+* dumpFilePath：输出Fasta文件路径
+* titleStr：Fasta文件的标题内容，如果传入空字符串，则标题将被设置为this->name
+* fileMode：文件句柄打开模式
 
 #### 返回值：
 
-- this
+* this
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 proPtr->DumpFasta("xxxx.fasta", "xxxx");
 ```
 
@@ -654,7 +664,6 @@ proPtr->DumpFasta("xxxx.fasta", "xxxx");
 
 ``` Cpp
 SelfType *RenumResidues(int startNum = 1);
-
 SelfType *RenumAtoms(int startNum = 1);
 ```
 
@@ -662,16 +671,17 @@ SelfType *RenumAtoms(int startNum = 1);
 
 #### 参数：
 
-- startNum：起始编号
+* startNum：起始编号
 
 #### 返回值：
 
-- this
+* this
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 proPtr->RenumResidues()->RenumAtoms();
 ```
 
@@ -688,13 +698,13 @@ SelfType *Insert(iterator insertIter, SubType *subPtr, copyBool = true);
 
 #### 参数：
 
-- subPtr：this对应的子结构对象指针
-- insertIter：插入位置迭代器
-- copyBool：是否拷贝subPtr
+* subPtr：this对应的子结构对象指针
+* insertIter：插入位置迭代器
+* copyBool：是否拷贝subPtr
 
 #### 返回值：
 
-- this
+* this
 
 #### 例：
 
@@ -716,16 +726,17 @@ SelfType *RemoveAlt();
 
 #### 参数：
 
-- void
+* void
 
 #### 返回值：
 
-- this
+* this
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 proPtr->RemoveAlt();
 ```
 
@@ -735,10 +746,8 @@ proPtr->RemoveAlt();
 // Protein
 unordered_map<string, Chain *> subMap();
 
-
 // Chain
 unordered_map<string, Residue *> subMap();
-
 
 // Residue
 unordered_map<string, Atom *> subMap();
@@ -752,18 +761,19 @@ unordered_map<string, Atom *> subMap();
 
 #### 参数：
 
-- void
+* void
 
 #### 返回值：
 
-- 对于Protein对象：this包含的所有链名 -> 链对象指针哈希表
-- 对于Chain对象：this包含的所有完整残基编号 -> 残基对象指针哈希表
-- 对于Residue对象：this包含的所有原子名 -> 原子对象指针哈希表
+* 对于Protein对象：this包含的所有链名 -> 链对象指针哈希表
+* 对于Chain对象：this包含的所有完整残基编号 -> 残基对象指针哈希表
+* 对于Residue对象：this包含的所有原子名 -> 原子对象指针哈希表
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 unordered_map<string, Chain *> proSubMap = proPtr->subMap();
 unordered_map<string, Residue *> chainSubMap = proPtr->sub[0]->subMap();
 unordered_map<string, Atom *> resSubMap = proPtr->sub[0]->sub[0]->subMap();
@@ -781,16 +791,17 @@ typename vector<SelfType *>::iterator iter();
 
 #### 参数：
 
-- void
+* void
 
 #### 返回值：
 
-- this在this->owner->sub中的位置迭代器
+* this在this->owner->sub中的位置迭代器
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 vector<Chain *>::iterator iterInOwner = proPtr->sub[0]->iter();  // begin
 ```
 
@@ -805,16 +816,17 @@ SelfType *next(int shiftLen = 1);
 
 #### 参数：
 
-- shiftLen：偏移量
+* shiftLen：偏移量
 
 #### 返回值：
 
-- this的前/后第N个同级结构对象指针
+* this的前/后第N个同级结构对象指针
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 Chain *chainPtr = proPtr->sub[1];
 Chain *preChainPtr = chainPtr->pre();
 Chain *nextChainPtr = chainPtr->next();
@@ -831,16 +843,17 @@ typename vector<SelfType *>::iterator Remove(bool deteleBool = true);
 
 #### 参数：
 
-- deteleBool：如果deteleBool参数为false，则不会析构this
+* deteleBool：如果deteleBool参数为false，则不会析构this
 
 #### 返回值：
 
-- 删除this后，this的后继元素位置迭代器
+* 删除this后，this的后继元素位置迭代器
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 proPtr->sub[0]->Remove();
 ```
 
@@ -865,17 +878,18 @@ Residue *compNum(int resNum, const string &resIns = "");
 
 #### 参数：
 
-- resNum：残基编号
-- resIns：残基插入字符
+* resNum：残基编号
+* resIns：残基插入字符
 
 #### 返回值：
 
-- 残基对象的num + ins属性字符串（对于无参版本）/this（对于有参版本）
+* 残基对象的num + ins属性字符串（对于无参版本）/this（对于有参版本）
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 Residue *resPtr = proPtr->sub[0]->sub[0];
 resPtr->compNum(0, "");
 string compNum = resPtr->compNum();
@@ -891,17 +905,18 @@ unordered_map<string, RowVector3d *> coordMap();
 
 #### 参数：
 
-- void
+* void
 
 #### 返回值：
 
-- this包含的所有原子名 -> 原子坐标指针哈希表
+* this包含的所有原子名 -> 原子坐标指针哈希表
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
 Residue *resPtr = proPtr->sub[0]->sub[0];
+
 unordered_map<string, RowVector3d *> coordMap = resPtr->coordMap();
 ```
 
@@ -921,16 +936,17 @@ double operator-(const Atom &rhs) const;
 
 #### 参数：
 
-- rhs：另一个原子对象
+* rhs：另一个原子对象
 
 #### 返回值：
 
-- 两原子间的欧几里得距离
+* 两原子间的欧几里得距离
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 double atomDis = *proPtr->sub[0]->sub[0]->sub[0] - *proPtr->sub[0]->sub[0]->sub[1];
 ```
 
@@ -952,17 +968,18 @@ double CalcBBDihedralAngle(DIH dihedralEnum);
 
 #### 参数：
 
-- dihedralEnum：主链二面角种类。DIH::PHI或DIH::L表示Phi；DIH::PSI或DIH::R表示Psi
+* dihedralEnum：主链二面角种类。DIH::PHI或DIH::L表示Phi；DIH::PSI或DIH::R表示Psi
 
 #### 返回值：
 
-- 有符号二面角值（-pi ~ pi）
+* 有符号二面角值（-pi ~ pi）
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
 Residue *resPtr = proPtr->sub[0]->sub[1];
+
 double dihedralAngle = resPtr->CalcBBDihedralAngle(DIH::PHI);
 ```
 
@@ -982,23 +999,25 @@ Residue *CalcBBRotationMatrixByTargetAngle(DIH dihedralEnum,
 
 #### 参数：
 
-- dihedralEnum：主链二面角种类。DIH::PHI或DIH::L表示Phi；DIH::PSI或DIH::R表示Psi
-- sideEnum：转动侧。SIDE::N或SIDE::L表示转动N端；SIDE::C或SIDE::R表示转动C端
-- deltaAngle/targetAngle：旋转角度/目标角度
-- moveCoord：旋转前/后平移向量（返回值）
-- rotationMatrix：旋转矩阵（返回值）
+* dihedralEnum：主链二面角种类。DIH::PHI或DIH::L表示Phi；DIH::PSI或DIH::R表示Psi
+* sideEnum：转动侧。SIDE::N或SIDE::L表示转动N端；SIDE::C或SIDE::R表示转动C端
+* deltaAngle/targetAngle：旋转角度/目标角度
+* moveCoord：旋转前/后平移向量（返回值）
+* rotationMatrix：旋转矩阵（返回值）
 
 #### 返回值：
 
-- this
+* this
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
 Residue *resPtr = proPtr->sub[0]->sub[1];
+
 RowVector3d moveCoord;
 Matrix3d rotationMatrix;
+
 resPtr->CalcBBRotationMatrixByDeltaAngle(DIH::PHI, SIDE::N, 1., moveCoord, rotationMatrix);
 resPtr->CalcBBRotationMatrixByTargetAngle(DIH::PHI, SIDE::N, 0., moveCoord, rotationMatrix);
 ```
@@ -1013,18 +1032,19 @@ vector<Atom *> GetBBRotationAtomPtr(DIH dihedralEnum, SIDE sideEnum);
 
 #### 参数：
 
-- dihedralEnum：主链二面角种类。DIH::PHI或DIH::L表示Phi；DIH::PSI或DIH::R表示Psi
-- sideEnum：转动侧。SIDE::N或SIDE::L表示转动N端；SIDE::C或SIDE::R表示转动C端
+* dihedralEnum：主链二面角种类。DIH::PHI或DIH::L表示Phi；DIH::PSI或DIH::R表示Psi
+* sideEnum：转动侧。SIDE::N或SIDE::L表示转动N端；SIDE::C或SIDE::R表示转动C端
 
 #### 返回值：
 
-- 所有需要旋转的原子对象指针列表
+* 所有需要旋转的原子对象指针列表
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
 Residue *resPtr = proPtr->sub[0]->sub[1];
+
 vector<Atom *> rotationAtomPtrList = resPtr->GetBBRotationAtomPtr(DIH::PHI, SIDE::N);
 ```
 
@@ -1042,19 +1062,20 @@ Residue *RotateBBDihedralAngleByTargetAngle(DIH dihedralEnum,
 
 #### 参数：
 
-- dihedralEnum：主链二面角种类。DIH::PHI或DIH::L表示Phi；DIH::PSI或DIH::R表示Psi
-- sideEnum：转动侧。SIDE::N或SIDE::L表示转动N端；SIDE::C或SIDE::R表示转动C端
-- deltaAngle/targetAngle：旋转角度/目标角度
+* dihedralEnum：主链二面角种类。DIH::PHI或DIH::L表示Phi；DIH::PSI或DIH::R表示Psi
+* sideEnum：转动侧。SIDE::N或SIDE::L表示转动N端；SIDE::C或SIDE::R表示转动C端
+* deltaAngle/targetAngle：旋转角度/目标角度
 
 #### 返回值：
 
-- this
+* this
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
 Residue *resPtr = proPtr->sub[0]->sub[1];
+
 resPtr->RotateBBDihedralAngleByDeltaAngle(DIH::PHI, SIDE::N, 1.);
 resPtr->RotateBBDihedralAngleByTargetAngle(DIH::PHI, SIDE::N, 0.);
 ```
@@ -1073,17 +1094,18 @@ double CalcSCDihedralAngle(int dihedralIdx);
 
 #### 参数：
 
-- dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
+* dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
 
 #### 返回值：
 
-- 有符号二面角值（-pi ~ pi）
+* 有符号二面角值（-pi ~ pi）
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
 Residue *resPtr = proPtr->sub[0]->sub[1];
+
 double dihedralAngle = resPtr->CalcSCDihedralAngle(0);
 ```
 
@@ -1101,22 +1123,24 @@ Residue *CalcSCRotationMatrixByTargetAngle(int dihedralIdx, double targetAngle,
 
 #### 参数：
 
-- dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
-- deltaAngle/targetAngle：旋转角度/目标角度
-- moveCoord：旋转前/后平移向量（返回值）
-- rotationMatrix：旋转矩阵（返回值）
+* dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
+* deltaAngle/targetAngle：旋转角度/目标角度
+* moveCoord：旋转前/后平移向量（返回值）
+* rotationMatrix：旋转矩阵（返回值）
 
 #### 返回值：
 
-- this
+* this
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
 Residue *resPtr = proPtr->sub[0]->sub[1];
+
 RowVector3d moveCoord;
 Matrix3d rotationMatrix;
+
 resPtr->CalcSCRotationMatrixByDeltaAngle(0, 1., moveCoord, rotationMatrix);
 resPtr->CalcSCRotationMatrixByTargetAngle(0, 0., moveCoord, rotationMatrix);
 ```
@@ -1131,17 +1155,18 @@ vector<Atom *> GetSCRotationAtomPtr(int dihedralIdx);
 
 #### 参数：
 
-- dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
+* dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
 
 #### 返回值：
 
-- 所有需要旋转的原子对象指针列表
+* 所有需要旋转的原子对象指针列表
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
 Residue *resPtr = proPtr->sub[0]->sub[1];
+
 vector<Atom *> rotationAtomPtrList = resPtr->GetSCRotationAtomPtr(0);
 ```
 
@@ -1157,18 +1182,19 @@ Residue *RotateSCDihedralAngleByTargetAngle(int dihedralIdx, double targetAngle)
 
 #### 参数：
 
-- dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
-- deltaAngle/targetAngle：旋转角度/目标角度
+* dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
+* deltaAngle/targetAngle：旋转角度/目标角度
 
 #### 返回值：
 
-- this
+* this
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
 Residue *resPtr = proPtr->sub[0]->sub[1];
+
 resPtr->RotateSCDihedralAngleByDeltaAngle(0, 1.);
 resPtr->RotateSCDihedralAngleByTargetAngle(0, 0.);
 ```
@@ -1186,11 +1212,11 @@ double Radians(double degreesAngle);
 
 #### 参数：
 
-- radiansAngle，degreesAngle：弧度值/角度值
+* radiansAngle，degreesAngle：弧度值/角度值
 
 #### 返回值：
 
-- 转换后的角度值/弧度值
+* 转换后的角度值/弧度值
 
 #### 例：
 
@@ -1209,11 +1235,11 @@ double CalcVectorAngle(const RowVector3d &coordA, const RowVector3d &coordB);
 
 #### 参数：
 
-- coordA，coordB：两个三维向量
+* coordA，coordB：两个三维向量
 
 #### 返回值：
 
-- 两向量夹角值（0 ~ pi）
+* 两向量夹角值（0 ~ pi）
 
 #### 例：
 
@@ -1231,12 +1257,12 @@ Matrix3d CalcRotationMatrix(const RowVector3d &rotationAxis, double rotationAngl
 
 #### 参数：
 
-- rotationAxis：旋转轴向量，无需缩放至单位长度
-- rotationAngle：旋转角
+* rotationAxis：旋转轴向量，无需缩放至单位长度
+* rotationAngle：旋转角
 
 #### 返回值：
 
-- 旋转矩阵
+* 旋转矩阵
 
 #### 例：
 
@@ -1247,19 +1273,18 @@ Matrix3d rotationMatrix = CalcRotationMatrix(RowVector3d(1., 2., 3.), 1.);
 ### 4. CalcRotationMatrixByTwoVector
 
 ``` Cpp
-Matrix3d CalcRotationMatrixByTwoVector(
-    const RowVector3d &coordA, const RowVector3d &coordB);
+Matrix3d CalcRotationMatrixByTwoVector(const RowVector3d &coordA, const RowVector3d &coordB);
 ```
 
 计算从向量A旋转至向量B所需要的旋转矩阵。
 
 #### 参数：
 
-- coordA，coordB：两个三维向量
+* coordA，coordB：两个三维向量
 
 #### 返回值：
 
-- 旋转矩阵
+* 旋转矩阵
 
 #### 例：
 
@@ -1280,11 +1305,11 @@ double CalcDihedralAngle(
 
 #### 参数：
 
-- coordA，coordB，coordC，coordD：四个三维向量
+* coordA，coordB，coordC，coordD：四个三维向量
 
 #### 返回值：
 
-- 有符号二面角值（-pi ~ pi）
+* 有符号二面角值（-pi ~ pi）
 
 #### 例：
 
@@ -1304,90 +1329,91 @@ double CalcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
 
 #### 参数：
 
-- coordArrayA，coordArrayB：两组等长的矩阵（N * 3）
+* coordArrayA，coordArrayB：两组等长的矩阵（N * 3）
 
 #### 返回值：
 
-- RMSD值
+* RMSD值
 
 #### 例：
 
 ``` Cpp
 Matrix<double, 2, 3> coordArrayA, coordArrayB;
+
 coordArrayA << 1., 2., 3., 4., 5., 6.;
 coordArrayB << 7., 8., 9., 10., 11., 12.;
+
 double rmsdValue = CalcRMSD(coordArrayA, coordArrayB);
 ```
 
 ### 7. CalcSuperimposeRotationMatrix
 
 ``` Cpp
-void CalcSuperimposeRotationMatrix(
-    const Matrix<double, Dynamic, 3> &sourceCoordArray,
-    const Matrix<double, Dynamic, 3> &targetCoordArray,
-    RowVector3d &sourceCenterCoord,
-    Matrix3d &rotationMatrix,
-    RowVector3d &targetCenterCoord);
+void CalcSuperimposeRotationMatrix(const Matrix<double, Dynamic, 3> &refCoordArray,
+    const Matrix<double, Dynamic, 3> &tarCoordArray, RowVector3d &refCenterCoord,
+    Matrix3d &rotationMatrix, RowVector3d &tarCenterCoord);
 ```
 
-计算从sourceCoordArray到targetCoordArray的叠合旋转矩阵。
+计算从tarCoordArray到refCoordArray的叠合旋转矩阵。
 
-此函数将使得((sourceCoordArray.rowwise() - sourceCenterCoord) * rotationMatrix).rowwise() + targetCenterCoord与targetCoordArray形成叠合（RMSD最小）。
+此函数将使得((tarCoordArray.rowwise() - tarCenterCoord) * rotationMatrix).rowwise() + refCenterCoord与refCoordArray形成叠合（RMSD最小）。
 
 #### 参数：
 
-- sourceCoordArray, targetCoordArray：两组等长的矩阵（N * 3）
-- sourceCenterCoord, targetCenterCoord：前/后平移向量（返回值）
-- rotationMatrix：旋转矩阵（返回值）
+* refCoordArray, tarCoordArray：两组等长的矩阵（N * 3）
+* refCenterCoord, tarCenterCoord：平移向量（返回值）
+* rotationMatrix：旋转矩阵（返回值）
 
 #### 返回值：
 
-- void
+* void
 
 #### 例：
 
 ``` Cpp
-Matrix<double, 2, 3> coordArrayA, coordArrayB;
-coordArrayA << 1., 2., 3., 4., 5., 6.;
-coordArrayB << 7., 8., 9., 10., 11., 12.;
+Matrix<double, 2, 3> refCoordArray, tarCoordArray;
 
-RowVector3d sourceCenterCoord, targetCenterCoord;
+refCoordArray << 1., 2., 3., 4., 5., 6.;
+tarCoordArray << 7., 8., 9., 10., 11., 12.;
+
+RowVector3d refCenterCoord, tarCenterCoord;
 Matrix3d rotationMatrix;
 
-CalcSuperimposeRotationMatrix(coordArrayA, coordArrayB,
-    sourceCenterCoord, rotationMatrix, targetCenterCoord);
+CalcSuperimposeRotationMatrix(refCoordArray, tarCoordArray,
+    refCenterCoord, rotationMatrix, tarCenterCoord);
 
-cout << ((coordArrayA.rowwise() - sourceCenterCoord) * rotationMatrix).rowwise() +
-    targetCenterCoord << endl << coordArrayB << endl;
+cout << ((tarCoordArray.rowwise() - tarCenterCoord) * rotationMatrix).rowwise() +
+    refCenterCoord << endl << refCoordArray << endl;
 ```
 
 ### 8. CalcRMSDAfterSuperimpose
 
 ``` Cpp
-double CalcRMSDAfterSuperimpose(
-    const Matrix<double, Dynamic, 3> &coordArrayA,
-    const Matrix<double, Dynamic, 3> &coordArrayB);
+double CalcRMSDAfterSuperimpose(const Matrix<double, Dynamic, 3> &refCoordArray,
+    const Matrix<double, Dynamic, 3> &tarCoordArray);
 ```
 
 叠合并计算RMSD。
 
-此函数会将coordArrayA通过CalcSuperimposeRotationMatrix函数向coordArrayB进行叠合，然后计算两组坐标之间的RMSD。
+此函数会将tarCoordArray通过CalcSuperimposeRotationMatrix函数向refCoordArray进行叠合，然后计算两组坐标之间的RMSD。
 
 #### 参数：
 
-- coordArrayA，coordArrayB：两组等长的矩阵（N * 3）
+* refCoordArray, tarCoordArray：两组等长的矩阵（N * 3）
 
 #### 返回值：
 
-- RMSD值
+* RMSD值
 
 #### 例：
 
 ``` Cpp
-Matrix<double, 2, 3> coordArrayA, coordArrayB;
-coordArrayA << 1., 2., 3., 4., 5., 6.;
-coordArrayB << 7., 8., 9., 10., 11., 12.;
-double rmsdValue = CalcRMSDAfterSuperimpose(coordArrayA, coordArrayB);
+Matrix<double, 2, 3> refCoordArray, tarCoordArray;
+
+refCoordArray << 1., 2., 3., 4., 5., 6.;
+tarCoordArray << 7., 8., 9., 10., 11., 12.;
+
+double rmsdValue = CalcRMSDAfterSuperimpose(refCoordArray, tarCoordArray);
 ```
 
 ## 常量
@@ -1430,17 +1456,18 @@ ostream &operator<<(ostream &os, const __StructBase<SelfType> &structObj);
 
 #### 参数：
 
-- os：输出流对象
-- structPtr：任何层级对象
+* os：输出流对象
+* structPtr：任何层级对象
 
 #### 返回值：
 
-- 输出流对象
+* 输出流对象
 
 #### 例：
 
 ``` Cpp
 Protein *proPtr = Load("xxxx.pdb");
+
 cout << *proPtr << endl;
 ```
 
@@ -1454,11 +1481,11 @@ bool IsH(const string &atomName);
 
 #### 参数：
 
-- atomName：原子名
+* atomName：原子名
 
 #### 返回值：
 
-- 原子名是否为氢原子
+* 原子名是否为氢原子
 
 #### 例：
 
@@ -1476,19 +1503,20 @@ void SplitCompNum(const string &compNumStr, int &resNum, string &resIns);
 
 #### 参数：
 
-- compNumStr：完整残基编号
-- resNum：残基编号（返回值）
-- resIns：残基插入编号（返回值）
+* compNumStr：完整残基编号
+* resNum：残基编号（返回值）
+* resIns：残基插入编号（返回值）
 
 #### 返回值：
 
-- void
+* void
 
 #### 例：
 
 ``` Cpp
 int resNum;
 string resIns;
+
 SplitCompNum("1A", resNum, resIns);
 ```
 
@@ -1504,18 +1532,19 @@ void Dumpl(const vector<SelfType *> &structPtrList,
 
 #### 参数：
 
-- structPtrList：任何层级对象指针构成的vector
-- dumpFilePath：输出PDB文件路径
-- fileMode：文件句柄打开模式
+* structPtrList：任何层级对象指针构成的vector
+* dumpFilePath：输出PDB文件路径
+* fileMode：文件句柄打开模式
 
 #### 返回值：
 
-- void
+* void
 
 #### 例：
 
 ``` Cpp
 vector<Protein *> proPtrList = LoadModel("xxxx.pdb");
+
 Dumpl(proPtrList, "xxxx.pdb");
 ```
 
@@ -1530,16 +1559,17 @@ string Dumpls(const vector<SelfType *> &structPtrList);
 
 #### 参数：
 
-- structPtrList：任何层级对象指针构成的vector
+* structPtrList：任何层级对象指针构成的vector
 
 #### 返回值：
 
-- 字符串形式的Dumpl函数输出内容
+* 字符串形式的Dumpl函数输出内容
 
 #### 例：
 
 ``` Cpp
 vector<Protein *> proPtrList = LoadModel("xxxx.pdb");
+
 string dumpStr = Dumpls(proPtrList);
 ```
 
@@ -1555,18 +1585,19 @@ void DumpFastal(const vector<SelfType *> &structPtrList,
 
 #### 参数：
 
-- structPtrList：非Atom对象指针构成的vector
-- dumpFilePath：输出Fasta文件路径
-- fileMode：文件句柄打开模式
+* structPtrList：非Atom对象指针构成的vector
+* dumpFilePath：输出Fasta文件路径
+* fileMode：文件句柄打开模式
 
 #### 返回值：
 
-- void
+* void
 
 #### 例：
 
 ``` Cpp
 vector<Protein *> proPtrList = LoadModel("xxxx.pdb");
+
 DumpFastal(proPtrList, "xxxx.fasta");
 ```
 
@@ -1581,16 +1612,17 @@ string DumpFastals(const vector<SelfType *> &structPtrList);
 
 #### 参数：
 
-- structPtrList：非Atom对象指针构成的vector
+* structPtrList：非Atom对象指针构成的vector
 
 #### 返回值：
 
-- 字符串形式的DumpFastal函数输出内容
+* 字符串形式的DumpFastal函数输出内容
 
 #### 例：
 
 ``` Cpp
 vector<Protein *> proPtrList = LoadModel("xxxx.pdb");
+
 string dumpStr = DumpFastals(proPtrList);
 ```
 
@@ -1598,22 +1630,22 @@ string dumpStr = DumpFastals(proPtrList);
 
 ### 解析函数
 
-- PDB文件解析函数（Load、LoadModel）将完全按照PDB文件内容进行解析，不会对结构进行任何排序、合并或重组操作
-- Load函数在解析时会跳过任何非"ATOM"关键词开头的行（包括"MODEL"）；而LoadModel函数会跳过任何非"ATOM"或"MODEL"关键词开头的行
-- 解析时会去除所有字符串类型属性双端的空格字符
+* PDB文件解析函数（Load、LoadModel）将完全按照PDB文件内容进行解析，不会对结构进行任何排序、合并或重组操作
+* Load函数在解析时会跳过任何非"ATOM"关键词开头的行（包括"MODEL"）；而LoadModel函数会跳过任何非"ATOM"或"MODEL"关键词开头的行
+* 解析时会去除所有字符串类型属性双端的空格字符
 
 ### 对于创建新对象指针的判定
 
 #### 1. Load函数：
 
-- Protein：只会在解析开始前创建唯一的一个，并最终返回这个对象指针
-- Chain：解析开始时，以及每次检测到链名发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的链对象指针
-- Residue：解析开始时，创建新链时，以及每次检测到残基名、残基编号或残基插入字符三者之一发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的残基对象指针
-- Atom：每检测到一个新的"ATOM"行都会创建一个新的Atom对象指针
+* Protein：只会在解析开始前创建唯一的一个，并最终返回这个对象指针
+* Chain：解析开始时，以及每次检测到链名发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的链对象指针
+* Residue：解析开始时，创建新链时，以及每次检测到残基名、残基编号或残基插入字符三者之一发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的残基对象指针
+* Atom：每检测到一个新的"ATOM"行都会创建一个新的Atom对象指针
 
 #### 2. LoadModel函数：
 
-- Protein：解析开始前，以及每次检测到"MODEL"关键词时，都会创建一个新的蛋白对象指针。如果解析开始前创建的这个蛋白对象指针在函数返回前仍然为空，则其将在函数返回前被删除并析构
-- Chain：解析开始时，创建新Model时，以及每次检测到链名发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的链对象指针
-- Residue：解析开始时，创建新Model时，创建新链时，以及每次检测到残基名、残基编号或残基插入字符三者之一发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的残基对象指针
-- Atom：每检测到一个新的"ATOM"行都会创建一个新的Atom对象指针
+* Protein：解析开始前，以及每次检测到"MODEL"关键词时，都会创建一个新的蛋白对象指针。如果解析开始前创建的这个蛋白对象指针在函数返回前仍然为空，则其将在函数返回前被删除并析构
+* Chain：解析开始时，创建新Model时，以及每次检测到链名发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的链对象指针
+* Residue：解析开始时，创建新Model时，创建新链时，以及每次检测到残基名、残基编号或残基插入字符三者之一发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的残基对象指针
+* Atom：每检测到一个新的"ATOM"行都会创建一个新的Atom对象指针

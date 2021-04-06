@@ -154,16 +154,16 @@ double CalcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
 // Calc Superimpose Rotation Matrix (Kabsch Algorithm)
 ////////////////////////////////////////////////////////////////////////////////
 
-void CalcSuperimposeRotationMatrix(const Matrix<double, Dynamic, 3> &sourceCoordArray,
-    const Matrix<double, Dynamic, 3> &targetCoordArray, RowVector3d &sourceCenterCoord,
-    Matrix3d &rotationMatrix, RowVector3d &targetCenterCoord)
+void CalcSuperimposeRotationMatrix(const Matrix<double, Dynamic, 3> &refCoordArray,
+    const Matrix<double, Dynamic, 3> &tarCoordArray, RowVector3d &refCenterCoord,
+    Matrix3d &rotationMatrix, RowVector3d &tarCenterCoord)
 {
-    sourceCenterCoord = sourceCoordArray.colwise().mean();
-    targetCenterCoord = targetCoordArray.colwise().mean();
+    refCenterCoord = refCoordArray.colwise().mean();
+    tarCenterCoord = tarCoordArray.colwise().mean();
 
     JacobiSVD<Matrix3d> svd(
-        (sourceCoordArray.rowwise() - sourceCenterCoord).transpose() *
-        (targetCoordArray.rowwise() - targetCenterCoord),
+        (tarCoordArray.rowwise() - tarCenterCoord).transpose() *
+        (refCoordArray.rowwise() - refCenterCoord),
         ComputeFullU | ComputeFullV);
 
     Matrix3d U = svd.matrixU(), V = svd.matrixV().transpose();
@@ -178,21 +178,20 @@ void CalcSuperimposeRotationMatrix(const Matrix<double, Dynamic, 3> &sourceCoord
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Calc RMSD After Superimpose A => B
+// Calc RMSD After Superimpose A <= B
 ////////////////////////////////////////////////////////////////////////////////
 
-double CalcRMSDAfterSuperimpose(const Matrix<double, Dynamic, 3> &coordArrayA,
-    const Matrix<double, Dynamic, 3> &coordArrayB)
+double CalcRMSDAfterSuperimpose(const Matrix<double, Dynamic, 3> &refCoordArray,
+    const Matrix<double, Dynamic, 3> &tarCoordArray)
 {
-    RowVector3d sourceCenterCoord;
+    RowVector3d refCenterCoord, tarCenterCoord;
     Matrix3d rotationMatrix;
-    RowVector3d targetCenterCoord;
 
-    CalcSuperimposeRotationMatrix(coordArrayA, coordArrayB, sourceCenterCoord,
-        rotationMatrix, targetCenterCoord);
+    CalcSuperimposeRotationMatrix(refCoordArray, tarCoordArray, refCenterCoord,
+        rotationMatrix, tarCenterCoord);
 
-    return CalcRMSD((((coordArrayA.rowwise() - sourceCenterCoord) * rotationMatrix).rowwise() +
-        targetCenterCoord).eval(), coordArrayB);
+    return CalcRMSD(refCoordArray, (((tarCoordArray.rowwise() - tarCenterCoord) *
+        rotationMatrix).rowwise() + refCenterCoord).eval());
 }
 
 
