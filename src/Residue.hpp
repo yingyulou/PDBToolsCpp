@@ -174,9 +174,9 @@ double Residue::CalcBBDihedralAngle(DIH dihedralEnum)
 // Calc Backbone Rotation Matrix By Delta Angle
 ////////////////////////////////////////////////////////////////////////////////
 
-Residue *Residue::CalcBBRotationMatrixByDeltaAngle(DIH dihedralEnum,
-    SIDE sideEnum, double deltaAngle, RowVector3d &moveCoord,
-    Matrix3d &rotationMatrix)
+Residue *Residue::CalcBBRotationMatrixByDeltaAngle(
+    RowVector3d &moveCoord, Matrix3d &rotationMatrix,
+    DIH dihedralEnum, SIDE sideEnum, double deltaAngle)
 {
     auto atomCoordMap = coordMap();
 
@@ -204,12 +204,12 @@ Residue *Residue::CalcBBRotationMatrixByDeltaAngle(DIH dihedralEnum,
 // Calc Backbone Rotation Matrix By Target Angle
 ////////////////////////////////////////////////////////////////////////////////
 
-Residue *Residue::CalcBBRotationMatrixByTargetAngle(DIH dihedralEnum,
-    SIDE sideEnum, double targetAngle, RowVector3d &moveCoord,
-    Matrix3d &rotationMatrix)
+Residue *Residue::CalcBBRotationMatrixByTargetAngle(
+    RowVector3d &moveCoord, Matrix3d &rotationMatrix,
+    DIH dihedralEnum, SIDE sideEnum, double targetAngle)
 {
-    return CalcBBRotationMatrixByDeltaAngle(dihedralEnum, sideEnum,
-        targetAngle - CalcBBDihedralAngle(dihedralEnum), moveCoord, rotationMatrix);
+    return CalcBBRotationMatrixByDeltaAngle(moveCoord, rotationMatrix,
+        dihedralEnum, sideEnum, targetAngle - CalcBBDihedralAngle(dihedralEnum));
 }
 
 
@@ -290,8 +290,8 @@ Residue *Residue::RotateBBDihedralAngleByDeltaAngle(DIH dihedralEnum,
     RowVector3d moveCoord;
     Matrix3d rotationMatrix;
 
-    CalcBBRotationMatrixByDeltaAngle(dihedralEnum, sideEnum, deltaAngle,
-        moveCoord, rotationMatrix);
+    CalcBBRotationMatrixByDeltaAngle(moveCoord, rotationMatrix,
+        dihedralEnum, sideEnum, deltaAngle);
 
     for (auto atomPtr: GetBBRotationAtomPtr(dihedralEnum, sideEnum))
     {
@@ -334,8 +334,9 @@ double Residue::CalcSCDihedralAngle(int dihedralIdx)
 // Calc Side Chain Rotation Matrix By Delta Angle
 ////////////////////////////////////////////////////////////////////////////////
 
-Residue *Residue::CalcSCRotationMatrixByDeltaAngle(int dihedralIdx,
-    double deltaAngle, RowVector3d &moveCoord, Matrix3d &rotationMatrix)
+Residue *Residue::CalcSCRotationMatrixByDeltaAngle(
+    RowVector3d &moveCoord, Matrix3d &rotationMatrix,
+    int dihedralIdx, double deltaAngle)
 {
     auto atomCoordMap = coordMap();
 
@@ -354,11 +355,12 @@ Residue *Residue::CalcSCRotationMatrixByDeltaAngle(int dihedralIdx,
 // Calc Side Chain Rotation Matrix By Target Angle
 ////////////////////////////////////////////////////////////////////////////////
 
-Residue *Residue::CalcSCRotationMatrixByTargetAngle(int dihedralIdx,
-    double targetAngle, RowVector3d &moveCoord, Matrix3d &rotationMatrix)
+Residue *Residue::CalcSCRotationMatrixByTargetAngle(
+    RowVector3d &moveCoord, Matrix3d &rotationMatrix,
+    int dihedralIdx, double targetAngle)
 {
-    return CalcSCRotationMatrixByDeltaAngle(dihedralIdx, targetAngle -
-        CalcSCDihedralAngle(dihedralIdx), moveCoord, rotationMatrix);
+    return CalcSCRotationMatrixByDeltaAngle(moveCoord, rotationMatrix,
+        dihedralIdx, targetAngle - CalcSCDihedralAngle(dihedralIdx));
 }
 
 
@@ -395,7 +397,7 @@ Residue *Residue::RotateSCDihedralAngleByDeltaAngle(int dihedralIdx, double delt
     RowVector3d moveCoord;
     Matrix3d rotationMatrix;
 
-    CalcSCRotationMatrixByDeltaAngle(dihedralIdx, deltaAngle, moveCoord, rotationMatrix);
+    CalcSCRotationMatrixByDeltaAngle(moveCoord, rotationMatrix, dihedralIdx, deltaAngle);
 
     for (auto atomPtr: GetSCRotationAtomPtr(dihedralIdx))
     {

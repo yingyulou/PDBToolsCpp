@@ -154,9 +154,10 @@ double CalcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
 // Calc Superimpose Rotation Matrix (Kabsch Algorithm)
 ////////////////////////////////////////////////////////////////////////////////
 
-void CalcSuperimposeRotationMatrix(const Matrix<double, Dynamic, 3> &refCoordArray,
-    const Matrix<double, Dynamic, 3> &tarCoordArray, RowVector3d &refCenterCoord,
-    Matrix3d &rotationMatrix, RowVector3d &tarCenterCoord)
+void CalcSuperimposeRotationMatrix(RowVector3d &refCenterCoord,
+    Matrix3d &rotationMatrix, RowVector3d &tarCenterCoord,
+    const Matrix<double, Dynamic, 3> &refCoordArray,
+    const Matrix<double, Dynamic, 3> &tarCoordArray)
 {
     refCenterCoord = refCoordArray.colwise().mean();
     tarCenterCoord = tarCoordArray.colwise().mean();
@@ -187,8 +188,8 @@ double CalcRMSDAfterSuperimpose(const Matrix<double, Dynamic, 3> &refCoordArray,
     RowVector3d refCenterCoord, tarCenterCoord;
     Matrix3d rotationMatrix;
 
-    CalcSuperimposeRotationMatrix(refCoordArray, tarCoordArray, refCenterCoord,
-        rotationMatrix, tarCenterCoord);
+    CalcSuperimposeRotationMatrix(refCenterCoord, rotationMatrix, tarCenterCoord,
+        refCoordArray, tarCoordArray);
 
     return CalcRMSD(refCoordArray, (((tarCoordArray.rowwise() - tarCenterCoord) *
         rotationMatrix).rowwise() + refCenterCoord).eval());

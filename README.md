@@ -986,24 +986,24 @@ double dihedralAngle = resPtr->CalcBBDihedralAngle(DIH::PHI);
 #### 2. CalcBBRotationMatrixByDeltaAngle, CalcBBRotationMatrixByTargetAngle
 
 ``` Cpp
-Residue *CalcBBRotationMatrixByDeltaAngle(DIH dihedralEnum,
-    SIDE sideEnum, double deltaAngle, RowVector3d &moveCoord,
-    Matrix3d &rotationMatrix);
+Residue *CalcBBRotationMatrixByDeltaAngle(
+    RowVector3d &moveCoord, Matrix3d &rotationMatrix,
+    DIH dihedralEnum, SIDE sideEnum, double deltaAngle);
 
-Residue *CalcBBRotationMatrixByTargetAngle(DIH dihedralEnum,
-    SIDE sideEnum, double targetAngle, RowVector3d &moveCoord,
-    Matrix3d &rotationMatrix);
+Residue *CalcBBRotationMatrixByTargetAngle(
+    RowVector3d &moveCoord, Matrix3d &rotationMatrix,
+    DIH dihedralEnum, SIDE sideEnum, double targetAngle);
 ```
 
 以旋转角度/目标角度作为参数，计算主链旋转矩阵。
 
 #### 参数：
 
+* moveCoord：旋转前/后平移向量（返回值）
+* rotationMatrix：旋转矩阵（返回值）
 * dihedralEnum：主链二面角种类。DIH::PHI或DIH::L表示Phi；DIH::PSI或DIH::R表示Psi
 * sideEnum：转动侧。SIDE::N或SIDE::L表示转动N端；SIDE::C或SIDE::R表示转动C端
 * deltaAngle/targetAngle：旋转角度/目标角度
-* moveCoord：旋转前/后平移向量（返回值）
-* rotationMatrix：旋转矩阵（返回值）
 
 #### 返回值：
 
@@ -1018,8 +1018,8 @@ Residue *resPtr = proPtr->sub[0]->sub[1];
 RowVector3d moveCoord;
 Matrix3d rotationMatrix;
 
-resPtr->CalcBBRotationMatrixByDeltaAngle(DIH::PHI, SIDE::N, 1., moveCoord, rotationMatrix);
-resPtr->CalcBBRotationMatrixByTargetAngle(DIH::PHI, SIDE::N, 0., moveCoord, rotationMatrix);
+resPtr->CalcBBRotationMatrixByDeltaAngle(moveCoord, rotationMatrix, DIH::PHI, SIDE::N, 1.);
+resPtr->CalcBBRotationMatrixByTargetAngle(moveCoord, rotationMatrix, DIH::PHI, SIDE::N, 0.);
 ```
 
 #### 3. GetBBRotationAtomObj
@@ -1112,21 +1112,23 @@ double dihedralAngle = resPtr->CalcSCDihedralAngle(0);
 #### 2. CalcSCRotationMatrixByDeltaAngle, CalcSCRotationMatrixByDeltaAngle
 
 ``` Cpp
-Residue *CalcSCRotationMatrixByDeltaAngle(int dihedralIdx, double deltaAngle,
-    RowVector3d &moveCoord, Matrix3d &rotationMatrix);
+Residue *CalcSCRotationMatrixByDeltaAngle(
+    RowVector3d &moveCoord, Matrix3d &rotationMatrix,
+    int dihedralIdx, double deltaAngle);
 
-Residue *CalcSCRotationMatrixByTargetAngle(int dihedralIdx, double targetAngle,
-    RowVector3d &moveCoord, Matrix3d &rotationMatrix);
+Residue *CalcSCRotationMatrixByTargetAngle(
+    RowVector3d &moveCoord, Matrix3d &rotationMatrix,
+    int dihedralIdx, double targetAngle);
 ```
 
 以旋转角度/目标角度作为参数，计算侧链旋转矩阵。
 
 #### 参数：
 
-* dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
-* deltaAngle/targetAngle：旋转角度/目标角度
 * moveCoord：旋转前/后平移向量（返回值）
 * rotationMatrix：旋转矩阵（返回值）
+* dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
+* deltaAngle/targetAngle：旋转角度/目标角度
 
 #### 返回值：
 
@@ -1141,8 +1143,8 @@ Residue *resPtr = proPtr->sub[0]->sub[1];
 RowVector3d moveCoord;
 Matrix3d rotationMatrix;
 
-resPtr->CalcSCRotationMatrixByDeltaAngle(0, 1., moveCoord, rotationMatrix);
-resPtr->CalcSCRotationMatrixByTargetAngle(0, 0., moveCoord, rotationMatrix);
+resPtr->CalcSCRotationMatrixByDeltaAngle(moveCoord, rotationMatrix, 0, 1.);
+resPtr->CalcSCRotationMatrixByTargetAngle(moveCoord, rotationMatrix, 0, 0.);
 ```
 
 #### 3. GetSCRotationAtomObj
@@ -1349,9 +1351,10 @@ double rmsdValue = CalcRMSD(coordArrayA, coordArrayB);
 ### 7. CalcSuperimposeRotationMatrix
 
 ``` Cpp
-void CalcSuperimposeRotationMatrix(const Matrix<double, Dynamic, 3> &refCoordArray,
-    const Matrix<double, Dynamic, 3> &tarCoordArray, RowVector3d &refCenterCoord,
-    Matrix3d &rotationMatrix, RowVector3d &tarCenterCoord);
+void CalcSuperimposeRotationMatrix(RowVector3d &refCenterCoord,
+    Matrix3d &rotationMatrix, RowVector3d &tarCenterCoord,
+    const Matrix<double, Dynamic, 3> &refCoordArray,
+    const Matrix<double, Dynamic, 3> &tarCoordArray);
 ```
 
 计算从tarCoordArray到refCoordArray的叠合旋转矩阵。
@@ -1360,9 +1363,9 @@ void CalcSuperimposeRotationMatrix(const Matrix<double, Dynamic, 3> &refCoordArr
 
 #### 参数：
 
-* refCoordArray, tarCoordArray：两组等长的矩阵（N * 3）
 * refCenterCoord, tarCenterCoord：平移向量（返回值）
 * rotationMatrix：旋转矩阵（返回值）
+* refCoordArray, tarCoordArray：两组等长的矩阵（N * 3）
 
 #### 返回值：
 
@@ -1379,8 +1382,8 @@ tarCoordArray << 7., 8., 9., 10., 11., 12.;
 RowVector3d refCenterCoord, tarCenterCoord;
 Matrix3d rotationMatrix;
 
-CalcSuperimposeRotationMatrix(refCoordArray, tarCoordArray,
-    refCenterCoord, rotationMatrix, tarCenterCoord);
+CalcSuperimposeRotationMatrix(refCenterCoord, rotationMatrix, tarCenterCoord,
+    refCoordArray, tarCoordArray);
 
 cout << ((tarCoordArray.rowwise() - tarCenterCoord) * rotationMatrix).rowwise() +
     refCenterCoord << endl << refCoordArray << endl;
