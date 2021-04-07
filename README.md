@@ -1275,14 +1275,15 @@ Matrix3d rotationMatrix = CalcRotationMatrix(RowVector3d(1., 2., 3.), 1.);
 ### 4. CalcRotationMatrixByTwoVector
 
 ``` Cpp
-Matrix3d CalcRotationMatrixByTwoVector(const RowVector3d &coordA, const RowVector3d &coordB);
+Matrix3d CalcRotationMatrixByTwoVector(const RowVector3d &refCoord,
+    const RowVector3d &tarCoord);
 ```
 
-计算从向量A旋转至向量B所需要的旋转矩阵。
+计算从向量tarCoord旋转至向量refCoord所需要的旋转矩阵。
 
 #### 参数：
 
-* coordA，coordB：两个三维向量
+* refCoord, tarCoord：两个三维向量
 
 #### 返回值：
 
