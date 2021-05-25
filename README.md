@@ -349,19 +349,14 @@ delete proPtr;
 非Atom层级均支持委托至sub属性的迭代器：
 
 ``` Cpp
-typedef typename vector<SubType *>::iterator iterator;
-typedef typename vector<SubType *>::reverse_iterator reverse_iterator;
-
-iterator begin();
-iterator end();
-reverse_iterator rbegin();
-reverse_iterator rend();
+typename vector<SubType *>::iterator begin();
+typename vector<SubType *>::iterator end();
 ```
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = Load("6urw.pdb");
+Protein *proPtr = Load("xxxx.pdb");
 
 for (Chain *chainPtr: *proPtr)
 {
@@ -689,7 +684,7 @@ proPtr->RenumResidues()->RenumAtoms();
 
 ``` Cpp
 SelfType *Append(SubType *subPtr, copyBool = true);
-SelfType *Insert(iterator insertIter, SubType *subPtr, copyBool = true);
+SelfType *Insert(typename vector<SubType *>::iterator insertIter, SubType *subPtr, copyBool = true);
 ```
 
 为this追加/插入子结构。

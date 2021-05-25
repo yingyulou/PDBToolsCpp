@@ -42,34 +42,16 @@ using Eigen::Dynamic;
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-typename __NotAtom<SelfType, SubType>::iterator
-__NotAtom<SelfType, SubType>::begin()
+typename vector<SubType *>::iterator __NotAtom<SelfType, SubType>::begin()
 {
     return static_cast<SelfType *>(this)->sub.begin();
 }
 
 
 template <typename SelfType, typename SubType>
-typename __NotAtom<SelfType, SubType>::iterator
-__NotAtom<SelfType, SubType>::end()
+typename vector<SubType *>::iterator __NotAtom<SelfType, SubType>::end()
 {
     return static_cast<SelfType *>(this)->sub.end();
-}
-
-
-template <typename SelfType, typename SubType>
-typename __NotAtom<SelfType, SubType>::reverse_iterator
-__NotAtom<SelfType, SubType>::rbegin()
-{
-    return static_cast<SelfType *>(this)->sub.rbegin();
-}
-
-
-template <typename SelfType, typename SubType>
-typename __NotAtom<SelfType, SubType>::reverse_iterator
-__NotAtom<SelfType, SubType>::rend()
-{
-    return static_cast<SelfType *>(this)->sub.rend();
 }
 
 
@@ -287,8 +269,8 @@ SelfType *__NotAtom<SelfType, SubType>::Append(SubType *subPtr, bool copyBool)
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::Insert(iterator insertIter,
-    SubType *subPtr, bool copyBool)
+SelfType *__NotAtom<SelfType, SubType>::Insert(
+    typename vector<SubType *>::iterator insertIter, SubType *subPtr, bool copyBool)
 {
     if (copyBool)
     {

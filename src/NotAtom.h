@@ -39,16 +39,9 @@ class __NotAtom
 {
 public:
 
-    // Iterator typedef
-    typedef typename vector<SubType *>::iterator iterator;
-    typedef typename vector<SubType *>::reverse_iterator reverse_iterator;
-
-
     // Iterator
-    iterator begin();
-    iterator end();
-    reverse_iterator rbegin();
-    reverse_iterator rend();
+    typename vector<SubType *>::iterator begin();
+    typename vector<SubType *>::iterator end();
 
 
     // FilterAtoms
@@ -103,7 +96,8 @@ public:
 
 
     // Insert
-    SelfType *Insert(iterator insertIter, SubType *subPtr, bool copyBool = true);
+    SelfType *Insert(typename vector<SubType *>::iterator insertIter,
+        SubType *subPtr, bool copyBool = true);
 
 
     // RemoveAlt
