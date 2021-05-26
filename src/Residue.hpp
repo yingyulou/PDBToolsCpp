@@ -15,7 +15,7 @@
 #include "Residue.h"
 #include "Chain.h"
 #include "Atom.h"
-#include "MathUtil.hpp"
+#include "Math.hpp"
 #include "Constants.hpp"
 
 namespace PDBTools

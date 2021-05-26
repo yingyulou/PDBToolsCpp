@@ -1,11 +1,11 @@
 /*
-    StructUtil.hpp
-    ==============
-        Struct utils implementation.
+    Util.hpp
+    ========
+        Utility functions implementation.
 */
 
-#ifndef __PDBTOOLS_STRUCT_UTIL_HPP
-#define __PDBTOOLS_STRUCT_UTIL_HPP
+#ifndef __PDBTOOLS_UTIL_HPP
+#define __PDBTOOLS_UTIL_HPP
 
 #include <string>
 #include <vector>
@@ -13,7 +13,7 @@
 #include <cstdio>
 #include <regex>
 #include <utility>
-#include "StructBase.h"
+#include "BaseStruct.h"
 #include "Constants.hpp"
 
 namespace PDBTools
@@ -38,7 +38,7 @@ using std::pair;
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType>
-ostream &operator<<(ostream &os, const __StructBase<SelfType> &structObj)
+ostream &operator<<(ostream &os, const __BaseStruct<SelfType> &structObj)
 {
     return os << static_cast<const SelfType &>(structObj).str();
 }
@@ -145,4 +145,4 @@ void DumpFastal(const vector<SelfType *> &structPtrList, const string &dumpFileP
 }  // End namespace PDBTools
 
 
-#endif  // __PDBTOOLS_STRUCT_UTIL_HPP
+#endif  // __PDBTOOLS_UTIL_HPP

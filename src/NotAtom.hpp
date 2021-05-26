@@ -16,7 +16,7 @@
 #include <boost/format.hpp>
 #include <Eigen/Dense>
 #include "NotAtom.h"
-#include "Struct.h"
+#include "Predeclaration.h"
 #include "Constants.hpp"
 
 namespace PDBTools

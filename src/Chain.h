@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "StructBase.h"
+#include "BaseStruct.h"
 #include "NotAtom.h"
 #include "NotProtein.h"
 #include "Protein.h"
@@ -33,7 +33,7 @@ using std::unordered_map;
 // Class Chain
 ////////////////////////////////////////////////////////////////////////////////
 
-class Chain: public __StructBase<Chain>, public __NotAtom<Chain, Residue>,
+class Chain: public __BaseStruct<Chain>, public __NotAtom<Chain, Residue>,
     public __NotProtein<Chain, Protein>
 {
 public:

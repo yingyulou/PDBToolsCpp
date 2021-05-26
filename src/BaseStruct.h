@@ -1,11 +1,11 @@
 /*
-    StructBase.h
+    BaseStruct.h
     ============
-        Class __StructBase header.
+        Class __BaseStruct header.
 */
 
-#ifndef __PDBTOOLS_STRUCT_BASE_H
-#define __PDBTOOLS_STRUCT_BASE_H
+#ifndef __PDBTOOLS_BASE_STRUCT_H
+#define __PDBTOOLS_BASE_STRUCT_H
 
 #include <string>
 
@@ -20,11 +20,11 @@ using std::string;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Class __StructBase
+// Class __BaseStruct
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType>
-class __StructBase
+class __BaseStruct
 {
 public:
 
@@ -36,4 +36,4 @@ public:
 }  // End namespace PDBTools
 
 
-#endif  // __PDBTOOLS_STRUCT_BASE_H
+#endif  // __PDBTOOLS_BASE_STRUCT_H

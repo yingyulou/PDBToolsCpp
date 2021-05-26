@@ -1,11 +1,11 @@
 /*
-    Struct.h
-    ========
+    Predeclaration.h
+    ================
         Struct class predeclaration.
 */
 
-#ifndef __PDBTOOLS_STRUCT_H
-#define __PDBTOOLS_STRUCT_H
+#ifndef __PDBTOOLS_PREDECLARATION_H
+#define __PDBTOOLS_PREDECLARATION_H
 
 namespace PDBTools
 {
@@ -23,4 +23,4 @@ class Atom;
 }  // End namespace PDBTools
 
 
-#endif  // __PDBTOOLS_STRUCT_H
+#endif  // __PDBTOOLS_PREDECLARATION_H

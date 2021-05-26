@@ -1,11 +1,11 @@
 /*
-    MathUtil.hpp
-    ============
-        Math utils implementation.
+    Math.hpp
+    ========
+        Math functions implementation.
 */
 
-#ifndef __PDBTOOLS_MATH_UTIL_HPP
-#define __PDBTOOLS_MATH_UTIL_HPP
+#ifndef __PDBTOOLS_MATH_HPP
+#define __PDBTOOLS_MATH_HPP
 
 #include <cmath>
 #include <vector>
@@ -200,4 +200,4 @@ double CalcRMSDAfterSuperimpose(const Matrix<double, Dynamic, 3> &refCoordArray,
 }  // End namespace PDBTools
 
 
-#endif  // __PDBTOOLS_MATH_UTIL_HPP
+#endif  // __PDBTOOLS_MATH_HPP

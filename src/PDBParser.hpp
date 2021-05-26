@@ -18,7 +18,7 @@
 #include "Chain.h"
 #include "Residue.h"
 #include "Atom.h"
-#include "StructUtil.hpp"
+#include "Util.hpp"
 
 namespace PDBTools
 {

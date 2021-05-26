@@ -12,7 +12,7 @@
 #include <unordered_set>
 #include <initializer_list>
 #include <Eigen/Dense>
-#include "Struct.h"
+#include "Predeclaration.h"
 
 namespace PDBTools
 {
