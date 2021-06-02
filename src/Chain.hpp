@@ -4,8 +4,7 @@
         Class Chain implementation.
 */
 
-#ifndef __PDBTOOLS_CHAIN_HPP
-#define __PDBTOOLS_CHAIN_HPP
+#pragma once
 
 #include <string>
 #include <vector>
@@ -133,6 +132,3 @@ Chain::~Chain()
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_CHAIN_HPP

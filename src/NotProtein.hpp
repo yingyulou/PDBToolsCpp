@@ -4,8 +4,7 @@
         Class __NotProtein implementation.
 */
 
-#ifndef __PDBTOOLS_NOT_PROTEIN_HPP
-#define __PDBTOOLS_NOT_PROTEIN_HPP
+#pragma once
 
 #include <vector>
 #include <algorithm>
@@ -77,6 +76,3 @@ typename vector<SelfType *>::iterator __NotProtein<SelfType, OwnerType>::Remove(
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_NOT_PROTEIN_HPP

@@ -4,8 +4,7 @@
         Class __NotProtein header.
 */
 
-#ifndef __PDBTOOLS_NOT_PROTEIN_H
-#define __PDBTOOLS_NOT_PROTEIN_H
+#pragma once
 
 #include <vector>
 
@@ -46,6 +45,3 @@ public:
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_NOT_PROTEIN_H

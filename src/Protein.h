@@ -4,8 +4,7 @@
         Class Protein header.
 */
 
-#ifndef __PDBTOOLS_PROTEIN_H
-#define __PDBTOOLS_PROTEIN_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -72,6 +71,3 @@ public:
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_PROTEIN_H

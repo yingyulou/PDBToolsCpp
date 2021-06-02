@@ -4,8 +4,7 @@
         Class __NotAtom header.
 */
 
-#ifndef __PDBTOOLS_NOT_ATOM_H
-#define __PDBTOOLS_NOT_ATOM_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -106,6 +105,3 @@ public:
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_NOT_ATOM_H

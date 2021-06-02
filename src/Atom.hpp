@@ -4,8 +4,7 @@
         Class Atom implementation.
 */
 
-#ifndef __PDBTOOLS_ATOM_HPP
-#define __PDBTOOLS_ATOM_HPP
+#pragma once
 
 #include <string>
 #include <cctype>
@@ -114,6 +113,3 @@ double Atom::operator-(const Atom &rhs) const
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_ATOM_HPP

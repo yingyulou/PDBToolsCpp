@@ -4,8 +4,7 @@
         Constants define.
 */
 
-#ifndef __PDBTOOLS_CONSTANTS_HPP
-#define __PDBTOOLS_CONSTANTS_HPP
+#pragma once
 
 #include <string>
 #include <unordered_map>
@@ -231,6 +230,3 @@ const unordered_map<string, vector<vector<string>>>
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_CONSTANTS_HPP

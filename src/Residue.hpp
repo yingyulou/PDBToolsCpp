@@ -4,8 +4,7 @@
         Class Residue implementation.
 */
 
-#ifndef __PDBTOOLS_RESIDUE_HPP
-#define __PDBTOOLS_RESIDUE_HPP
+#pragma once
 
 #include <string>
 #include <vector>
@@ -433,6 +432,3 @@ Residue::~Residue()
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_RESIDUE_HPP

@@ -4,8 +4,7 @@
         Class __BaseStruct header.
 */
 
-#ifndef __PDBTOOLS_BASE_STRUCT_H
-#define __PDBTOOLS_BASE_STRUCT_H
+#pragma once
 
 #include <string>
 
@@ -34,6 +33,3 @@ public:
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_BASE_STRUCT_H

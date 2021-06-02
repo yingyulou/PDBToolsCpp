@@ -4,8 +4,7 @@
         Utility functions implementation.
 */
 
-#ifndef __PDBTOOLS_UTIL_HPP
-#define __PDBTOOLS_UTIL_HPP
+#pragma once
 
 #include <string>
 #include <vector>
@@ -143,6 +142,3 @@ void DumpFastal(const vector<SelfType *> &structPtrList, const string &dumpFileP
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_UTIL_HPP

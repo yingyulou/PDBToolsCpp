@@ -4,8 +4,7 @@
         Class Atom header.
 */
 
-#ifndef __PDBTOOLS_ATOM_H
-#define __PDBTOOLS_ATOM_H
+#pragma once
 
 #include <string>
 #include <Eigen/Dense>
@@ -70,6 +69,3 @@ public:
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_ATOM_H

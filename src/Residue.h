@@ -4,8 +4,7 @@
         Class Residue header.
 */
 
-#ifndef __PDBTOOLS_RESIDUE_H
-#define __PDBTOOLS_RESIDUE_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -147,6 +146,3 @@ public:
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_RESIDUE_H

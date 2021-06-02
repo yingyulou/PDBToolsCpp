@@ -4,8 +4,7 @@
         Class __BaseStruct implementation.
 */
 
-#ifndef __PDBTOOLS_BASE_STRUCT_HPP
-#define __PDBTOOLS_BASE_STRUCT_HPP
+#pragma once
 
 #include <string>
 #include <cstdio>
@@ -58,6 +57,3 @@ Atom *__BaseStruct<Atom>::Dump(const string &dumpFilePath,
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_BASE_STRUCT_HPP

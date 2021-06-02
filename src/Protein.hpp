@@ -4,8 +4,7 @@
         Class Protein implementation.
 */
 
-#ifndef __PDBTOOLS_PROTEIN_HPP
-#define __PDBTOOLS_PROTEIN_HPP
+#pragma once
 
 #include <string>
 #include <vector>
@@ -138,6 +137,3 @@ Protein::~Protein()
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_PROTEIN_HPP

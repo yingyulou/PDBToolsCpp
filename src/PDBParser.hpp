@@ -4,8 +4,7 @@
         PDB parser functions implementation.
 */
 
-#ifndef __PDBTOOLS_PDB_PARSER_HPP
-#define __PDBTOOLS_PDB_PARSER_HPP
+#pragma once
 
 #include <string>
 #include <vector>
@@ -235,6 +234,3 @@ vector<Protein *> LoadModel(const string &pdbFilePath, bool parseHBool = false)
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_PDB_PARSER_HPP

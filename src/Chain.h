@@ -4,8 +4,7 @@
         Class Chain header.
 */
 
-#ifndef __PDBTOOLS_CHAIN_H
-#define __PDBTOOLS_CHAIN_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -74,6 +73,3 @@ public:
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_CHAIN_H

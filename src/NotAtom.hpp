@@ -4,8 +4,7 @@
         Class __NotAtom implementation.
 */
 
-#ifndef __PDBTOOLS_NOT_ATOM_HPP
-#define __PDBTOOLS_NOT_ATOM_HPP
+#pragma once
 
 #include <string>
 #include <vector>
@@ -308,6 +307,3 @@ SelfType *__NotAtom<SelfType, SubType>::RemoveAlt()
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_NOT_ATOM_HPP

@@ -4,8 +4,7 @@
         Struct class predeclaration.
 */
 
-#ifndef __PDBTOOLS_PREDECLARATION_H
-#define __PDBTOOLS_PREDECLARATION_H
+#pragma once
 
 namespace PDBTools
 {
@@ -21,6 +20,3 @@ class Atom;
 
 
 }  // End namespace PDBTools
-
-
-#endif  // __PDBTOOLS_PREDECLARATION_H
