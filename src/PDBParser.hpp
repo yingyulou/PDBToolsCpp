@@ -52,51 +52,39 @@ Protein *Load(const string &pdbFilePath, bool parseHBool = false)
     int lastResNum       = INT_MAX;
     string lastResIns    = " ";
 
-    string atomName;
-    int atomNum;
-    string atomAltLoc;
-    string resName;
-    string chainName;
-    int resNum;
-    string resIns;
-    RowVector3d atomCoord;
-    string atomOccupancy;
-    string atomTempFactor;
-    string atomElement;
-    string atomCharge;
-
     ifstream f(pdbFilePath);
     string line;
 
     while (getline(f, line))
     {
-        if (line.compare(0, 4, "ATOM") != 0)
+        if (line.substr(0, 4) != "ATOM")
         {
             continue;
         }
 
-        atomName = trim_copy(line.substr(12, 4));
+        string atomName = trim_copy(line.substr(12, 4));
 
         if (IsH(atomName) && !parseHBool)
         {
             continue;
         }
 
-        atomNum    = stoi(line.substr(6, 5));
-        atomAltLoc = trim_copy(line.substr(16, 1));
-        resName    = trim_copy(line.substr(17, 3));
-        chainName  = trim_copy(line.substr(21, 1));
-        resNum     = stoi(line.substr(22, 4));
-        resIns     = trim_copy(line.substr(26, 1));
+        int atomNum       = stoi(line.substr(6, 5));
+        string atomAltLoc = trim_copy(line.substr(16, 1));
+        string resName    = trim_copy(line.substr(17, 3));
+        string chainName  = trim_copy(line.substr(21, 1));
+        int resNum        = stoi(line.substr(22, 4));
+        string resIns     = trim_copy(line.substr(26, 1));
 
-        atomCoord << stod(line.substr(30, 8)),
-                     stod(line.substr(38, 8)),
-                     stod(line.substr(46, 8));
+        RowVector3d atomCoord(
+            stod(line.substr(30, 8)),
+            stod(line.substr(38, 8)),
+            stod(line.substr(46, 8)));
 
-        atomOccupancy  = trim_copy(line.substr(54, 6));
-        atomTempFactor = trim_copy(line.substr(60, 6));
-        atomElement    = trim_copy(line.substr(76, 2));
-        atomCharge     = trim_copy(line.substr(78, 2));
+        string atomOccupancy  = trim_copy(line.substr(54, 6));
+        string atomTempFactor = trim_copy(line.substr(60, 6));
+        string atomElement    = trim_copy(line.substr(76, 2));
+        string atomCharge     = trim_copy(line.substr(78, 2));
 
         if (chainName != lastChainName)
         {
@@ -142,19 +130,6 @@ vector<Protein *> LoadModel(const string &pdbFilePath, bool parseHBool = false)
     int lastResNum       = INT_MAX;
     string lastResIns    = " ";
 
-    string atomName;
-    int atomNum;
-    string atomAltLoc;
-    string resName;
-    string chainName;
-    int resNum;
-    string resIns;
-    RowVector3d atomCoord;
-    string atomOccupancy;
-    string atomTempFactor;
-    string atomElement;
-    string atomCharge;
-
     ifstream f(pdbFilePath);
     string line;
 
@@ -177,28 +152,29 @@ vector<Protein *> LoadModel(const string &pdbFilePath, bool parseHBool = false)
             continue;
         }
 
-        atomName = trim_copy(line.substr(12, 4));
+        string atomName = trim_copy(line.substr(12, 4));
 
         if (IsH(atomName) && !parseHBool)
         {
             continue;
         }
 
-        atomNum    = stoi(line.substr(6, 5));
-        atomAltLoc = trim_copy(line.substr(16, 1));
-        resName    = trim_copy(line.substr(17, 3));
-        chainName  = trim_copy(line.substr(21, 1));
-        resNum     = stoi(line.substr(22, 4));
-        resIns     = trim_copy(line.substr(26, 1));
+        int atomNum       = stoi(line.substr(6, 5));
+        string atomAltLoc = trim_copy(line.substr(16, 1));
+        string resName    = trim_copy(line.substr(17, 3));
+        string chainName  = trim_copy(line.substr(21, 1));
+        int resNum        = stoi(line.substr(22, 4));
+        string resIns     = trim_copy(line.substr(26, 1));
 
-        atomCoord << stod(line.substr(30, 8)),
-                     stod(line.substr(38, 8)),
-                     stod(line.substr(46, 8));
+        RowVector3d atomCoord(
+            stod(line.substr(30, 8)),
+            stod(line.substr(38, 8)),
+            stod(line.substr(46, 8)));
 
-        atomOccupancy  = trim_copy(line.substr(54, 6));
-        atomTempFactor = trim_copy(line.substr(60, 6));
-        atomElement    = trim_copy(line.substr(76, 2));
-        atomCharge     = trim_copy(line.substr(78, 2));
+        string atomOccupancy  = trim_copy(line.substr(54, 6));
+        string atomTempFactor = trim_copy(line.substr(60, 6));
+        string atomElement    = trim_copy(line.substr(76, 2));
+        string atomCharge     = trim_copy(line.substr(78, 2));
 
         if (chainName != lastChainName)
         {

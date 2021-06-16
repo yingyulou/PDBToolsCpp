@@ -10,7 +10,7 @@
 #include <vector>
 #include <unordered_map>
 #include <Eigen/Dense>
-#include "BaseStruct.h"
+#include "StructBase.h"
 #include "NotAtom.h"
 #include "NotProtein.h"
 #include "Chain.h"
@@ -35,7 +35,7 @@ using Eigen::Matrix3d;
 // Class Residue
 ////////////////////////////////////////////////////////////////////////////////
 
-class Residue: public __BaseStruct<Residue>, public __NotAtom<Residue, Atom>,
+class Residue: public __StructBase<Residue>, public __NotAtom<Residue, Atom>,
     public __NotProtein<Residue, Chain>
 {
 public:

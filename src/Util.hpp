@@ -12,7 +12,7 @@
 #include <cstdio>
 #include <regex>
 #include <utility>
-#include "BaseStruct.h"
+#include "StructBase.h"
 #include "Constants.hpp"
 
 namespace PDBTools
@@ -37,7 +37,7 @@ using std::pair;
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType>
-ostream &operator<<(ostream &os, const __BaseStruct<SelfType> &structObj)
+ostream &operator<<(ostream &os, const __StructBase<SelfType> &structObj)
 {
     return os << static_cast<const SelfType &>(structObj).str();
 }

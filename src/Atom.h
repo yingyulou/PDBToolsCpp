@@ -8,7 +8,7 @@
 
 #include <string>
 #include <Eigen/Dense>
-#include "BaseStruct.h"
+#include "StructBase.h"
 #include "NotProtein.h"
 #include "Residue.h"
 
@@ -27,7 +27,7 @@ using Eigen::RowVector3d;
 // Class Atom
 ////////////////////////////////////////////////////////////////////////////////
 
-class Atom: public __BaseStruct<Atom>, public __NotProtein<Atom, Residue>
+class Atom: public __StructBase<Atom>, public __NotProtein<Atom, Residue>
 {
 public:
 

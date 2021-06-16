@@ -1,14 +1,14 @@
 /*
-    BaseStruct.hpp
+    StructBase.hpp
     ==============
-        Class __BaseStruct implementation.
+        Class __StructBase implementation.
 */
 
 #pragma once
 
 #include <string>
 #include <cstdio>
-#include "BaseStruct.h"
+#include "StructBase.h"
 #include "Predeclaration.h"
 
 namespace PDBTools
@@ -26,7 +26,7 @@ using std::string;
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType>
-SelfType *__BaseStruct<SelfType>::Dump(const string &dumpFilePath,
+SelfType *__StructBase<SelfType>::Dump(const string &dumpFilePath,
     const string &fileMode)
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
@@ -43,7 +43,7 @@ SelfType *__BaseStruct<SelfType>::Dump(const string &dumpFilePath,
 
 
 template <>
-Atom *__BaseStruct<Atom>::Dump(const string &dumpFilePath,
+Atom *__StructBase<Atom>::Dump(const string &dumpFilePath,
     const string &fileMode)
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());

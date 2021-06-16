@@ -1,7 +1,7 @@
 /*
-    BaseStruct.h
+    StructBase.h
     ============
-        Class __BaseStruct header.
+        Class __StructBase header.
 */
 
 #pragma once
@@ -19,11 +19,11 @@ using std::string;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Class __BaseStruct
+// Class __StructBase
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType>
-class __BaseStruct
+class __StructBase
 {
 public:
 
