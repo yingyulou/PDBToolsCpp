@@ -1495,7 +1495,7 @@ bool isHBool = IsH("1H");
 ### 3. SplitCompNum
 
 ``` Cpp
-void SplitCompNum(const string &compNumStr, int &resNum, string &resIns);
+pair<int, string> SplitCompNum(const string &compNumStr);
 ```
 
 将完整残基编号分割为残基编号和残基插入编号。
