@@ -111,24 +111,19 @@ double CalcDihedralAngle(const RowVector3d &coordA, const RowVector3d &coordB,
 
     double rotationAngle = CalcVectorAngle(OC, RowVector3d(1., 0., 0.));
 
-    if (rotationAngle != 0.)
-    {
-        Matrix3d rotationMatrix = CalcRotationMatrix(
-            OC.cross(RowVector3d(1., 0., 0.)), rotationAngle);
+    Matrix3d rotationMatrix = CalcRotationMatrix(
+        OC.cross(RowVector3d(1., 0., 0.)), rotationAngle);
 
-        OA *= rotationMatrix;
-        OD *= rotationMatrix;
-    }
+    OA *= rotationMatrix;
+    OD *= rotationMatrix;
 
     OA[0] = 0.;
     OD[0] = 0.;
 
-    rotationAngle = CalcVectorAngle(OA, RowVector3d(0., 0., 1.));
+    rotationAngle  = CalcVectorAngle(OA, RowVector3d(0., 0., 1.));
+    rotationMatrix = CalcRotationMatrix(OA.cross(RowVector3d(0., 0., 1.)), rotationAngle);
 
-    if (rotationAngle != 0.)
-    {
-        OD *= CalcRotationMatrix(OA.cross(RowVector3d(0., 0., 1.)), rotationAngle);
-    }
+    OD *= rotationMatrix;
 
     if (OD[1] > 0.)
     {
