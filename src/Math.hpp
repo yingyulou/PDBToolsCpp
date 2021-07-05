@@ -8,6 +8,7 @@
 
 #include <cmath>
 #include <vector>
+#include <algorithm>
 #include <Eigen/Dense>
 
 namespace PDBTools
@@ -18,6 +19,8 @@ namespace PDBTools
 ////////////////////////////////////////////////////////////////////////////////
 
 using std::vector;
+using std::min;
+using std::max;
 using Eigen::RowVector3d;
 using Eigen::Matrix3d;
 using Eigen::Dynamic;
@@ -53,7 +56,7 @@ double Radians(double degreesAngle)
 
 double CalcVectorAngle(const RowVector3d &coordA, const RowVector3d &coordB)
 {
-    return acos(coordA.dot(coordB) / (coordA.norm() * coordB.norm()));
+    return acos(min(max(coordA.dot(coordB) / (coordA.norm() * coordB.norm()), -1.), 1.));
 }
 
 
@@ -66,12 +69,12 @@ Matrix3d CalcRotationMatrix(const RowVector3d &rotationAxis, double rotationAngl
     auto normRotationAxis = rotationAxis.normalized();
 
     double x = normRotationAxis[0], y = normRotationAxis[1], z = normRotationAxis[2],
-        s = sin(rotationAngle), c = cos(rotationAngle), one_c = 1 - c;
+        s = sin(rotationAngle), c = cos(rotationAngle), _1c = 1. - c;
 
     return (Matrix3d() <<
-        c + x * x * one_c, x * y * one_c + z * s, x * z * one_c - y * s,
-        x * y * one_c - z * s, c + y * y * one_c, y * z * one_c + x * s,
-        x * z * one_c + y * s, y * z * one_c - x * s, c + z * z * one_c).finished();
+        c + x * x * _1c, x * y * _1c + z * s, x * z * _1c - y * s,
+        x * y * _1c - z * s, c + y * y * _1c, y * z * _1c + x * s,
+        x * z * _1c + y * s, y * z * _1c - x * s, c + z * z * _1c).finished();
 }
 
 
