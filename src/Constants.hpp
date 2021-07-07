@@ -90,6 +90,7 @@ const unordered_map<string, string> RESIDUE_NAME_THREE_TO_ONE_MAP
     {"TRP", "W"},
     {"TYR", "Y"},
     {"VAL", "V"},
+    {"UNK", "X"},
 };
 
 
@@ -119,6 +120,7 @@ const unordered_map<string, string> RESIDUE_NAME_ONE_TO_THREE_MAP
     {"W", "TRP"},
     {"Y", "TYR"},
     {"V", "VAL"},
+    {"X", "UNK"},
 };
 
 
