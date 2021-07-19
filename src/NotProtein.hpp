@@ -61,7 +61,7 @@ SelfType *__NotProtein<SelfType, OwnerType>::next(int shiftLen)
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename OwnerType>
-typename vector<SelfType *>::iterator __NotProtein<SelfType, OwnerType>::Remove(
+typename vector<SelfType *>::iterator __NotProtein<SelfType, OwnerType>::remove(
     bool deteleBool)
 {
     auto eraseIter = static_cast<SelfType *>(this)->owner->sub.erase(iter());

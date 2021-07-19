@@ -56,13 +56,13 @@ string Chain::str() const
 // Copy
 ////////////////////////////////////////////////////////////////////////////////
 
-Chain *Chain::Copy()
+Chain *Chain::copy()
 {
     auto copyChainPtr = new Chain(name);
 
     for (auto resPtr: sub)
     {
-        auto copyResPtr = resPtr->Copy();
+        auto copyResPtr = resPtr->copy();
         copyResPtr->owner = copyChainPtr;
         copyChainPtr->sub.push_back(copyResPtr);
     }
@@ -75,7 +75,7 @@ Chain *Chain::Copy()
 // GetResidues
 ////////////////////////////////////////////////////////////////////////////////
 
-vector<Residue *> Chain::GetResidues()
+vector<Residue *> Chain::getResidues()
 {
     return sub;
 }
@@ -85,7 +85,7 @@ vector<Residue *> Chain::GetResidues()
 // GetAtoms
 ////////////////////////////////////////////////////////////////////////////////
 
-vector<Atom *> Chain::GetAtoms()
+vector<Atom *> Chain::getAtoms()
 {
     vector<Atom *> atomPtrList;
 

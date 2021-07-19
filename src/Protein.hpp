@@ -51,13 +51,13 @@ string Protein::str() const
 // Copy
 ////////////////////////////////////////////////////////////////////////////////
 
-Protein *Protein::Copy()
+Protein *Protein::copy()
 {
     auto copyProPtr = new Protein(name);
 
     for (auto chainPtr: sub)
     {
-        auto copyChainPtr = chainPtr->Copy();
+        auto copyChainPtr = chainPtr->copy();
         copyChainPtr->owner = copyProPtr;
         copyProPtr->sub.push_back(copyChainPtr);
     }
@@ -70,7 +70,7 @@ Protein *Protein::Copy()
 // GetResidues
 ////////////////////////////////////////////////////////////////////////////////
 
-vector<Residue *> Protein::GetResidues()
+vector<Residue *> Protein::getResidues()
 {
     vector<Residue *> resPtrList;
 
@@ -90,7 +90,7 @@ vector<Residue *> Protein::GetResidues()
 // GetAtoms
 ////////////////////////////////////////////////////////////////////////////////
 
-vector<Atom *> Protein::GetAtoms()
+vector<Atom *> Protein::getAtoms()
 {
     vector<Atom *> atomPtrList;
 
@@ -117,7 +117,10 @@ unordered_map<string, Chain *> Protein::subMap()
 {
     unordered_map<string, Chain *> chainPtrMap;
 
-    for (auto chainPtr: sub) chainPtrMap.emplace(chainPtr->name, chainPtr);
+    for (auto chainPtr: sub)
+    {
+        chainPtrMap.emplace(chainPtr->name, chainPtr);
+    }
 
     return chainPtrMap;
 }

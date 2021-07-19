@@ -47,7 +47,7 @@ ostream &operator<<(ostream &os, const __StructBase<SelfType> &structObj)
 // If An Atom Name is H
 ////////////////////////////////////////////////////////////////////////////////
 
-bool IsH(const string &atomName)
+bool isH(const string &atomName)
 {
     return regex_search(atomName, __H_RE);
 }
@@ -57,7 +57,7 @@ bool IsH(const string &atomName)
 // Split CompNum To ResNum + ResIns
 ////////////////////////////////////////////////////////////////////////////////
 
-pair<int, string> SplitCompNum(const string &compNumStr)
+pair<int, string> splitCompNum(const string &compNumStr)
 {
     smatch smatchObj;
 
@@ -72,7 +72,7 @@ pair<int, string> SplitCompNum(const string &compNumStr)
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType>
-string Dumpls(const vector<SelfType *> &structPtrList)
+string dumpls(const vector<SelfType *> &structPtrList)
 {
     string dumpStr;
 
@@ -90,7 +90,7 @@ string Dumpls(const vector<SelfType *> &structPtrList)
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType>
-void Dumpl(const vector<SelfType *> &structPtrList, const string &dumpFilePath,
+void dumpl(const vector<SelfType *> &structPtrList, const string &dumpFilePath,
     const string &fileMode = "w")
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
@@ -109,7 +109,7 @@ void Dumpl(const vector<SelfType *> &structPtrList, const string &dumpFilePath,
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType>
-string DumpFastals(const vector<SelfType *> &structPtrList)
+string dumpFastals(const vector<SelfType *> &structPtrList)
 {
     string dumpStr;
 
@@ -127,7 +127,7 @@ string DumpFastals(const vector<SelfType *> &structPtrList)
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType>
-void DumpFastal(const vector<SelfType *> &structPtrList, const string &dumpFilePath,
+void dumpFastal(const vector<SelfType *> &structPtrList, const string &dumpFilePath,
     const string &fileMode = "w")
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());

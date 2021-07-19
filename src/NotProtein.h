@@ -40,7 +40,7 @@ public:
 
 
     // Remove
-    typename vector<SelfType *>::iterator Remove(bool deteleBool = true);
+    typename vector<SelfType *>::iterator remove(bool deteleBool = true);
 };
 
 

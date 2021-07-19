@@ -26,14 +26,14 @@ using std::string;
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType>
-SelfType *__StructBase<SelfType>::Dump(const string &dumpFilePath,
+SelfType *__StructBase<SelfType>::dump(const string &dumpFilePath,
     const string &fileMode)
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
 
-    for (auto atomPtr: static_cast<SelfType *>(this)->GetAtoms())
+    for (auto atomPtr: static_cast<SelfType *>(this)->getAtoms())
     {
-        fprintf(fo, atomPtr->Dumps().c_str());
+        fprintf(fo, atomPtr->dumps().c_str());
     }
 
     fclose(fo);
@@ -43,12 +43,12 @@ SelfType *__StructBase<SelfType>::Dump(const string &dumpFilePath,
 
 
 template <>
-Atom *__StructBase<Atom>::Dump(const string &dumpFilePath,
+Atom *__StructBase<Atom>::dump(const string &dumpFilePath,
     const string &fileMode)
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
 
-    fprintf(fo, static_cast<Atom *>(this)->Dumps().c_str());
+    fprintf(fo, static_cast<Atom *>(this)->dumps().c_str());
 
     fclose(fo);
 

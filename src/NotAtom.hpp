@@ -59,12 +59,12 @@ typename vector<SubType *>::iterator __NotAtom<SelfType, SubType>::end()
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-vector<Atom *> __NotAtom<SelfType, SubType>::FilterAtoms(
+vector<Atom *> __NotAtom<SelfType, SubType>::filterAtoms(
     const unordered_set<string> &atomNameSet)
 {
     vector<Atom *> atomPtrList;
 
-    for (auto atomPtr: static_cast<SelfType *>(this)->GetAtoms())
+    for (auto atomPtr: static_cast<SelfType *>(this)->getAtoms())
     {
         if (atomNameSet.count(atomPtr->name))
         {
@@ -81,9 +81,9 @@ vector<Atom *> __NotAtom<SelfType, SubType>::FilterAtoms(
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::GetAtomsCoord()
+Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::getAtomsCoord()
 {
-    auto atomPtrList = static_cast<SelfType *>(this)->GetAtoms();
+    auto atomPtrList = static_cast<SelfType *>(this)->getAtoms();
     Matrix<double, Dynamic, 3> coordMatrix(atomPtrList.size(), 3);
 
     for (int idx = 0; idx < atomPtrList.size(); idx++)
@@ -100,10 +100,10 @@ Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::GetAtomsCoord()
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::FilterAtomsCoord(
+Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::filterAtomsCoord(
     const unordered_set<string> &atomNameSet)
 {
-    auto atomPtrList = static_cast<SelfType *>(this)->GetAtoms();
+    auto atomPtrList = static_cast<SelfType *>(this)->getAtoms();
     Matrix<double, Dynamic, 3> coordMatrix(atomPtrList.size(), 3);
 
     for (int idx = 0; idx < atomPtrList.size(); idx++)
@@ -123,11 +123,11 @@ Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::FilterAtomsCoord(
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-string __NotAtom<SelfType, SubType>::Dumps()
+string __NotAtom<SelfType, SubType>::dumps()
 {
     string dumpStr;
 
-    for (auto atomPtr: static_cast<SelfType *>(this)->GetAtoms())
+    for (auto atomPtr: static_cast<SelfType *>(this)->getAtoms())
     {
         dumpStr += atomPtr->Dumps();
     }
@@ -143,7 +143,7 @@ string __NotAtom<SelfType, SubType>::Dumps()
 template <typename SelfType, typename SubType>
 RowVector3d __NotAtom<SelfType, SubType>::center()
 {
-    return GetAtomsCoord().colwise().mean();
+    return getAtomsCoord().colwise().mean();
 }
 
 
@@ -152,11 +152,11 @@ RowVector3d __NotAtom<SelfType, SubType>::center()
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::MoveCenter()
+SelfType *__NotAtom<SelfType, SubType>::moveCenter()
 {
     auto centerCoord = center();
 
-    for (auto atomPtr: static_cast<SelfType *>(this)->GetAtoms())
+    for (auto atomPtr: static_cast<SelfType *>(this)->getAtoms())
     {
         atomPtr->coord -= centerCoord;
     }
@@ -174,7 +174,7 @@ string __NotAtom<SelfType, SubType>::seq()
 {
     string seqStr;
 
-    for (auto resPtr: static_cast<SelfType *>(this)->GetResidues())
+    for (auto resPtr: static_cast<SelfType *>(this)->getResidues())
     {
         seqStr += RESIDUE_NAME_THREE_TO_ONE_MAP.at(resPtr->name);
     }
@@ -201,7 +201,7 @@ string __NotAtom<SelfType, SubType>::fasta(const string &titleStr)
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::DumpFasta(const string &dumpFilePath,
+SelfType *__NotAtom<SelfType, SubType>::dumpFasta(const string &dumpFilePath,
     const string &titleStr, const string &fileMode)
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
@@ -217,9 +217,9 @@ SelfType *__NotAtom<SelfType, SubType>::DumpFasta(const string &dumpFilePath,
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::RenumResidues(int startNum)
+SelfType *__NotAtom<SelfType, SubType>::renumResidues(int startNum)
 {
-    for (auto resPtr: static_cast<SelfType *>(this)->GetResidues())
+    for (auto resPtr: static_cast<SelfType *>(this)->getResidues())
     {
         resPtr->compNum(startNum++, "");
     }
@@ -233,9 +233,9 @@ SelfType *__NotAtom<SelfType, SubType>::RenumResidues(int startNum)
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::RenumAtoms(int startNum)
+SelfType *__NotAtom<SelfType, SubType>::renumAtoms(int startNum)
 {
-    for (auto atomPtr: static_cast<SelfType *>(this)->GetAtoms())
+    for (auto atomPtr: static_cast<SelfType *>(this)->getAtoms())
     {
         atomPtr->num = startNum++;
     }
@@ -249,11 +249,11 @@ SelfType *__NotAtom<SelfType, SubType>::RenumAtoms(int startNum)
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::Append(SubType *subPtr, bool copyBool)
+SelfType *__NotAtom<SelfType, SubType>::append(SubType *subPtr, bool copyBool)
 {
     if (copyBool)
     {
-        subPtr = subPtr->Copy();
+        subPtr = subPtr->copy();
     }
 
     subPtr->owner = static_cast<SelfType *>(this);
@@ -268,12 +268,12 @@ SelfType *__NotAtom<SelfType, SubType>::Append(SubType *subPtr, bool copyBool)
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::Insert(
+SelfType *__NotAtom<SelfType, SubType>::insert(
     typename vector<SubType *>::iterator insertIter, SubType *subPtr, bool copyBool)
 {
     if (copyBool)
     {
-        subPtr = subPtr->Copy();
+        subPtr = subPtr->copy();
     }
 
     subPtr->owner = static_cast<SelfType *>(this);
@@ -288,9 +288,9 @@ SelfType *__NotAtom<SelfType, SubType>::Insert(
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::RemoveAlt()
+SelfType *__NotAtom<SelfType, SubType>::removeAlt()
 {
-    for (auto atomPtr: static_cast<SelfType *>(this)->GetAtoms())
+    for (auto atomPtr: static_cast<SelfType *>(this)->getAtoms())
     {
         if (atomPtr->alt == "A")
         {
@@ -298,7 +298,7 @@ SelfType *__NotAtom<SelfType, SubType>::RemoveAlt()
         }
         else if (atomPtr->alt != "")
         {
-            atomPtr->Remove();
+            atomPtr->remove();
         }
     }
 

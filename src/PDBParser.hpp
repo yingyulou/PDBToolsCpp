@@ -41,7 +41,7 @@ using Eigen::RowVector3d;
 // Load PDB File
 ////////////////////////////////////////////////////////////////////////////////
 
-Protein *Load(const string &pdbFilePath, bool parseHBool = false)
+Protein *load(const string &pdbFilePath, bool parseHBool = false)
 {
     Protein *proPtr = new Protein(path(pdbFilePath).stem().string());
     Chain *chainPtr;
@@ -64,7 +64,7 @@ Protein *Load(const string &pdbFilePath, bool parseHBool = false)
 
         string atomName = trim_copy(line.substr(12, 4));
 
-        if (IsH(atomName) && !parseHBool)
+        if (isH(atomName) && !parseHBool)
         {
             continue;
         }
@@ -117,7 +117,7 @@ Protein *Load(const string &pdbFilePath, bool parseHBool = false)
 // Load PDB File With Model
 ////////////////////////////////////////////////////////////////////////////////
 
-vector<Protein *> LoadModel(const string &pdbFilePath, bool parseHBool = false)
+vector<Protein *> loadModel(const string &pdbFilePath, bool parseHBool = false)
 {
     string proName = path(pdbFilePath).stem().string();
     Protein *proPtr = new Protein(proName);
@@ -154,7 +154,7 @@ vector<Protein *> LoadModel(const string &pdbFilePath, bool parseHBool = false)
 
         string atomName = trim_copy(line.substr(12, 4));
 
-        if (IsH(atomName) && !parseHBool)
+        if (isH(atomName) && !parseHBool)
         {
             continue;
         }

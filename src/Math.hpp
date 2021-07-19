@@ -9,6 +9,7 @@
 #include <cmath>
 #include <vector>
 #include <algorithm>
+#include <tuple>
 #include <Eigen/Dense>
 
 namespace PDBTools
@@ -21,6 +22,7 @@ namespace PDBTools
 using std::vector;
 using std::min;
 using std::max;
+using std::tuple;
 using Eigen::RowVector3d;
 using Eigen::Matrix3d;
 using Eigen::Dynamic;
@@ -34,7 +36,7 @@ using Eigen::ComputeFullV;
 // Convert Radians To Degrees
 ////////////////////////////////////////////////////////////////////////////////
 
-double Degrees(double radiansAngle)
+double degrees(double radiansAngle)
 {
     return radiansAngle * 180. / M_PI;
 }
@@ -44,7 +46,7 @@ double Degrees(double radiansAngle)
 // Convert Degrees To Radians
 ////////////////////////////////////////////////////////////////////////////////
 
-double Radians(double degreesAngle)
+double radians(double degreesAngle)
 {
     return degreesAngle * M_PI / 180.;
 }
@@ -54,7 +56,7 @@ double Radians(double degreesAngle)
 // Calc Vector Angle
 ////////////////////////////////////////////////////////////////////////////////
 
-double CalcVectorAngle(const RowVector3d &coordA, const RowVector3d &coordB)
+double calcVectorAngle(const RowVector3d &coordA, const RowVector3d &coordB)
 {
     return acos(min(max(coordA.dot(coordB) / (coordA.norm() * coordB.norm()), -1.), 1.));
 }
@@ -64,7 +66,7 @@ double CalcVectorAngle(const RowVector3d &coordA, const RowVector3d &coordB)
 // Calc Rotation Matrix (Right Multiply Matrix)
 ////////////////////////////////////////////////////////////////////////////////
 
-Matrix3d CalcRotationMatrix(const RowVector3d &rotationAxis, double rotationAngle)
+Matrix3d calcRotationMatrix(const RowVector3d &rotationAxis, double rotationAngle)
 {
     auto normRotationAxis = rotationAxis.normalized();
 
@@ -82,11 +84,11 @@ Matrix3d CalcRotationMatrix(const RowVector3d &rotationAxis, double rotationAngl
 // Calc Rotation Matrix By Two Vector (Right Multiply Matrix)
 ////////////////////////////////////////////////////////////////////////////////
 
-Matrix3d CalcRotationMatrixByTwoVector(const RowVector3d &refCoord,
+Matrix3d calcRotationMatrixByTwoVector(const RowVector3d &refCoord,
     const RowVector3d &tarCoord)
 {
-    return CalcRotationMatrix(tarCoord.cross(refCoord),
-        CalcVectorAngle(tarCoord, refCoord));
+    return calcRotationMatrix(tarCoord.cross(refCoord),
+        calcVectorAngle(tarCoord, refCoord));
 }
 
 
@@ -94,7 +96,7 @@ Matrix3d CalcRotationMatrixByTwoVector(const RowVector3d &refCoord,
 // Calc Dihedral Angle
 ////////////////////////////////////////////////////////////////////////////////
 
-double CalcDihedralAngle(const RowVector3d &coordA, const RowVector3d &coordB,
+double calcDihedralAngle(const RowVector3d &coordA, const RowVector3d &coordB,
     const RowVector3d &coordC, const RowVector3d &coordD)
 {
     RowVector3d AB = coordB - coordA;
@@ -105,17 +107,17 @@ double CalcDihedralAngle(const RowVector3d &coordA, const RowVector3d &coordB,
     RowVector3d ABAC = AB.cross(AC);
     RowVector3d DBDC = DB.cross(DC);
 
-    double dihedralAngle = CalcVectorAngle(ABAC, DBDC);
+    double dihedralAngle = calcVectorAngle(ABAC, DBDC);
 
     // Calc Sign
     RowVector3d OA = coordA - coordB;
     RowVector3d OC = coordC - coordB;
     RowVector3d OD = coordD - coordB;
 
-    double rotationAngle = CalcVectorAngle(OC, RowVector3d(1., 0., 0.));
+    double rotationAngle = calcVectorAngle(OC, RowVector3d(1., 0., 0.));
 
-    Matrix3d rotationMatrix = CalcRotationMatrix(
-        OC.cross(RowVector3d(1., 0., 0.)), rotationAngle);
+    Matrix3d rotationMatrix = calcRotationMatrix(OC.cross(RowVector3d(1., 0., 0.)),
+        rotationAngle);
 
     OA *= rotationMatrix;
     OD *= rotationMatrix;
@@ -123,8 +125,8 @@ double CalcDihedralAngle(const RowVector3d &coordA, const RowVector3d &coordB,
     OA[0] = 0.;
     OD[0] = 0.;
 
-    rotationAngle  = CalcVectorAngle(OA, RowVector3d(0., 0., 1.));
-    rotationMatrix = CalcRotationMatrix(OA.cross(RowVector3d(0., 0., 1.)), rotationAngle);
+    rotationAngle  = calcVectorAngle(OA, RowVector3d(0., 0., 1.));
+    rotationMatrix = calcRotationMatrix(OA.cross(RowVector3d(0., 0., 1.)), rotationAngle);
 
     OD *= rotationMatrix;
 
@@ -141,7 +143,7 @@ double CalcDihedralAngle(const RowVector3d &coordA, const RowVector3d &coordB,
 // Calc RMSD (Root-Mean-Square Deviation)
 ////////////////////////////////////////////////////////////////////////////////
 
-double CalcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
+double calcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
     const Matrix<double, Dynamic, 3> &coordArrayB)
 {
     return sqrt((coordArrayA - coordArrayB).array().square().sum() / coordArrayA.rows());
@@ -152,17 +154,16 @@ double CalcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
 // Calc Superimpose Rotation Matrix (Kabsch Algorithm)
 ////////////////////////////////////////////////////////////////////////////////
 
-void CalcSuperimposeRotationMatrix(RowVector3d &refCenterCoord,
-    Matrix3d &rotationMatrix, RowVector3d &tarCenterCoord,
-    const Matrix<double, Dynamic, 3> &refCoordArray,
-    const Matrix<double, Dynamic, 3> &tarCoordArray)
+tuple<RowVector3d, Matrix3d, RowVector3d> calcSuperimposeRotationMatrix(
+    const Matrix<double, Dynamic, 3> &tarCoordArray,
+    const Matrix<double, Dynamic, 3> &srcCoordArray)
 {
-    refCenterCoord = refCoordArray.colwise().mean();
-    tarCenterCoord = tarCoordArray.colwise().mean();
+    RowVector3d srcCenterCoord = srcCoordArray.colwise().mean();
+    RowVector3d tarCenterCoord = tarCoordArray.colwise().mean();
 
     JacobiSVD<Matrix3d> svd(
-        (tarCoordArray.rowwise() - tarCenterCoord).transpose() *
-        (refCoordArray.rowwise() - refCenterCoord),
+        (srcCoordArray.rowwise() - srcCenterCoord).transpose() *
+        (tarCoordArray.rowwise() - tarCenterCoord),
         ComputeFullU | ComputeFullV);
 
     Matrix3d U = svd.matrixU(), V = svd.matrixV().transpose();
@@ -172,7 +173,9 @@ void CalcSuperimposeRotationMatrix(RowVector3d &refCenterCoord,
         U.col(2) = -U.col(2);
     }
 
-    rotationMatrix = U * V;
+    auto rotationMatrix = U * V;
+
+    return {srcCenterCoord, rotationMatrix, tarCenterCoord};
 }
 
 
@@ -180,17 +183,15 @@ void CalcSuperimposeRotationMatrix(RowVector3d &refCenterCoord,
 // Calc RMSD After Superimpose A <= B
 ////////////////////////////////////////////////////////////////////////////////
 
-double CalcRMSDAfterSuperimpose(const Matrix<double, Dynamic, 3> &refCoordArray,
-    const Matrix<double, Dynamic, 3> &tarCoordArray)
+double calcRMSDAfterSuperimpose(
+    const Matrix<double, Dynamic, 3> &tarCoordArray,
+    const Matrix<double, Dynamic, 3> &srcCoordArray)
 {
-    RowVector3d refCenterCoord, tarCenterCoord;
-    Matrix3d rotationMatrix;
+    auto [srcCenterCoord, rotationMatrix, tarCenterCoord] =
+        calcSuperimposeRotationMatrix(tarCoordArray, srcCoordArray);
 
-    CalcSuperimposeRotationMatrix(refCenterCoord, rotationMatrix, tarCenterCoord,
-        refCoordArray, tarCoordArray);
-
-    return CalcRMSD(refCoordArray, (((tarCoordArray.rowwise() - tarCenterCoord) *
-        rotationMatrix).rowwise() + refCenterCoord).eval());
+    return calcRMSD(tarCoordArray, (((srcCoordArray.rowwise() - srcCenterCoord) *
+        rotationMatrix).rowwise() + tarCenterCoord).eval());
 }
 
 

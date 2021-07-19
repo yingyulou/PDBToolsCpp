@@ -56,11 +56,11 @@ public:
 
 
     // Copy
-    Atom *Copy();
+    Atom *copy();
 
 
     // Dumps
-    string Dumps();
+    string dumps();
 
 
     // operator-
