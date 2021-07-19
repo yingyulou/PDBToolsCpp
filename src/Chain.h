@@ -52,15 +52,15 @@ public:
 
 
     // Copy
-    Chain *Copy();
+    Chain *copy();
 
 
     // GetResidues
-    vector<Residue *> GetResidues();
+    vector<Residue *> getResidues();
 
 
     // GetAtoms
-    vector<Atom *> GetAtoms();
+    vector<Atom *> getAtoms();
 
 
     // subMap

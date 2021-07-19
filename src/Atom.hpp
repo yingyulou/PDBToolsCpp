@@ -58,7 +58,7 @@ string Atom::str() const
 // Copy
 ////////////////////////////////////////////////////////////////////////////////
 
-Atom *Atom::Copy()
+Atom *Atom::copy()
 {
     return new Atom(name, num, coord, alt, occ, tempF, ele, chg);
 }
@@ -68,7 +68,7 @@ Atom *Atom::Copy()
 // Dumps
 ////////////////////////////////////////////////////////////////////////////////
 
-string Atom::Dumps()
+string Atom::dumps()
 {
     string chainName, resName, resIns, dumpStr;
     int resNum = 0;
@@ -88,14 +88,40 @@ string Atom::Dumps()
     if (isdigit(name[0]) || name.size() == 4)
     {
         dumpStr = (format("ATOM  %5d %-4s%1s%3s %1s%4d%1s   %8.3f%8.3f%8.3f%6s%6s          %2s%2s\n") %
-            num % name % alt % resName % chainName % resNum % resIns % coord[0] %
-            coord[1] % coord[2] % occ % tempF % ele % chg).str();
+            num                                                                                       %
+            name                                                                                      %
+            alt                                                                                       %
+            resName                                                                                   %
+            chainName                                                                                 %
+            resNum                                                                                    %
+            resIns                                                                                    %
+            coord[0]                                                                                  %
+            coord[1]                                                                                  %
+            coord[2]                                                                                  %
+            occ                                                                                       %
+            tempF                                                                                     %
+            ele                                                                                       %
+            chg
+        ).str();
     }
     else
     {
         dumpStr = (format("ATOM  %5d  %-3s%1s%3s %1s%4d%1s   %8.3f%8.3f%8.3f%6s%6s          %2s%2s\n") %
-            num % name % alt % resName % chainName % resNum % resIns % coord[0] %
-            coord[1] % coord[2] % occ % tempF % ele % chg).str();
+            num                                                                                        %
+            name                                                                                       %
+            alt                                                                                        %
+            resName                                                                                    %
+            chainName                                                                                  %
+            resNum                                                                                     %
+            resIns                                                                                     %
+            coord[0]                                                                                   %
+            coord[1]                                                                                   %
+            coord[2]                                                                                   %
+            occ                                                                                        %
+            tempF                                                                                      %
+            ele                                                                                        %
+            chg
+        ).str();
     }
 
     return dumpStr;

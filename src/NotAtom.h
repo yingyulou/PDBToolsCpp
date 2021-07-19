@@ -44,21 +44,21 @@ public:
 
 
     // FilterAtoms
-    vector<Atom *> FilterAtoms(
+    vector<Atom *> filterAtoms(
         const unordered_set<string> &atomNameSet = {"CA"});
 
 
     // GetAtomsCoord
-    Matrix<double, Dynamic, 3> GetAtomsCoord();
+    Matrix<double, Dynamic, 3> getAtomsCoord();
 
 
     // FilterAtomsCoord
-    Matrix<double, Dynamic, 3> FilterAtomsCoord(
+    Matrix<double, Dynamic, 3> filterAtomsCoord(
         const unordered_set<string> &atomNameSet = {"CA"});
 
 
     // Dumps
-    string Dumps();
+    string dumps();
 
 
     // center
@@ -66,7 +66,7 @@ public:
 
 
     // MoveCenter
-    SelfType *MoveCenter();
+    SelfType *moveCenter();
 
 
     // seq
@@ -78,29 +78,29 @@ public:
 
 
     // DumpFasta
-    SelfType *DumpFasta(const string &dumpFilePath,
+    SelfType *dumpFasta(const string &dumpFilePath,
         const string &titleStr = "", const string &fileMode = "w");
 
 
     // Renum Residues
-    SelfType *RenumResidues(int startNum = 1);
+    SelfType *renumResidues(int startNum = 1);
 
 
     // Renum Atoms
-    SelfType *RenumAtoms(int startNum = 1);
+    SelfType *renumAtoms(int startNum = 1);
 
 
     // Append
-    SelfType *Append(SubType *subPtr, bool copyBool = true);
+    SelfType *append(SubType *subPtr, bool copyBool = true);
 
 
     // Insert
-    SelfType *Insert(typename vector<SubType *>::iterator insertIter,
+    SelfType *insert(typename vector<SubType *>::iterator insertIter,
         SubType *subPtr, bool copyBool = true);
 
 
     // RemoveAlt
-    SelfType *RemoveAlt();
+    SelfType *removeAlt();
 };
 
 
