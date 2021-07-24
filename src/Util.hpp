@@ -71,14 +71,14 @@ pair<int, string> splitCompNum(const string &compNumStr)
 // Get Dump String Of Struct Object List
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename SelfType>
-string dumpls(const vector<SelfType *> &structPtrList)
+template <typename T>
+string dumpls(const T &structPtrList)
 {
     string dumpStr;
 
     for (auto structPtr: structPtrList)
     {
-        dumpStr += structPtr->Dumps();
+        dumpStr += structPtr->dumps();
     }
 
     return dumpStr;
@@ -89,15 +89,15 @@ string dumpls(const vector<SelfType *> &structPtrList)
 // Dump Struct Object List To PDB File
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename SelfType>
-void dumpl(const vector<SelfType *> &structPtrList, const string &dumpFilePath,
+template <typename T>
+void dumpl(const T &structPtrList, const string &dumpFilePath,
     const string &fileMode = "w")
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
 
     for (auto structPtr: structPtrList)
     {
-        fprintf(fo, "%s", structPtr->Dumps().c_str());
+        fprintf(fo, "%s", structPtr->dumps().c_str());
     }
 
     fclose(fo);
@@ -108,8 +108,8 @@ void dumpl(const vector<SelfType *> &structPtrList, const string &dumpFilePath,
 // Get Fasta String Of Struct Object List
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename SelfType>
-string dumpFastals(const vector<SelfType *> &structPtrList)
+template <typename T>
+string dumpFastals(const T &structPtrList)
 {
     string dumpStr;
 
@@ -126,8 +126,8 @@ string dumpFastals(const vector<SelfType *> &structPtrList)
 // Dump Struct Object List To Fasta File
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename SelfType>
-void dumpFastal(const vector<SelfType *> &structPtrList, const string &dumpFilePath,
+template <typename T>
+void dumpFastal(const T &structPtrList, const string &dumpFilePath,
     const string &fileMode = "w")
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
