@@ -116,6 +116,15 @@ Residue *Residue::compNum(int resNum, const string &resIns)
 }
 
 
+Residue *Residue::compNum(const pair<int, string> &compNumPair)
+{
+    num = compNumPair.first;
+    ins = compNumPair.second;
+
+    return this;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 // subMap
 ////////////////////////////////////////////////////////////////////////////////

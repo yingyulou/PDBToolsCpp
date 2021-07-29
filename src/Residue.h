@@ -74,6 +74,7 @@ public:
     // compNum
     string compNum();
     Residue *compNum(int resNum, const string &resIns = "");
+    Residue *compNum(const pair<int, string> &compNumPair);
 
 
     // subMap

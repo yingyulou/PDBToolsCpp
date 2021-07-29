@@ -867,6 +867,7 @@ proPtr->sub[0]->remove();
 ``` Cpp
 string compNum();
 Residue *compNum(int resNum, const string &resIns = "");
+Residue *compNum(const pair<int, string> &compNumPair);
 ```
 
 同时获取/设定残基对象的num + ins属性。
@@ -875,6 +876,7 @@ Residue *compNum(int resNum, const string &resIns = "");
 
 * resNum：残基编号
 * resIns：残基插入字符
+* compNumPair：残基编号 + 残基插入字符
 
 #### 返回值：
 
