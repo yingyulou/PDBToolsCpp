@@ -11,6 +11,7 @@
 #include <climits>
 #include <fstream>
 #include <filesystem>
+#include <stdexcept>
 #include <boost/algorithm/string.hpp>
 #include <Eigen/Dense>
 #include "Protein.h"
@@ -33,6 +34,8 @@ using std::getline;
 using std::stoi;
 using std::stod;
 using std::filesystem::path;
+using std::filesystem::exists;
+using std::runtime_error;
 using boost::algorithm::trim_copy;
 using Eigen::RowVector3d;
 
@@ -43,6 +46,11 @@ using Eigen::RowVector3d;
 
 Protein *load(const string &pdbFilePath, bool parseHBool = false)
 {
+    if (!exists(pdbFilePath))
+    {
+        throw runtime_error(pdbFilePath + " not exists");
+    }
+
     Protein *proPtr = new Protein(path(pdbFilePath).stem().string());
     Chain *chainPtr;
     Residue *resPtr;
@@ -119,6 +127,11 @@ Protein *load(const string &pdbFilePath, bool parseHBool = false)
 
 vector<Protein *> loadModel(const string &pdbFilePath, bool parseHBool = false)
 {
+    if (!exists(pdbFilePath))
+    {
+        throw runtime_error(pdbFilePath + " not exists");
+    }
+
     string proName = path(pdbFilePath).stem().string();
     Protein *proPtr = new Protein(proName);
     vector<Protein *> proPtrList {proPtr};
