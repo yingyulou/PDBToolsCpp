@@ -30,10 +30,17 @@ using Eigen::RowVector3d;
 ////////////////////////////////////////////////////////////////////////////////
 
 Atom::Atom(const string &atomName, int atomNum, const RowVector3d &atomCoord,
-    const string &atomAltLoc, const string &atomOccupancy, const string &atomTempFactor,
-    const string &atomElement, const string &atomCharge, Residue *atomOwner):
-    name(atomName), num(atomNum), coord(atomCoord), alt(atomAltLoc),
-    occ(atomOccupancy), tempF(atomTempFactor), ele(atomElement), chg(atomCharge),
+    const string &atomAltLoc, const string &atomOccupancy,
+    const string &atomTempFactor, const string &atomElement,
+    const string &atomCharge, Residue *atomOwner):
+    name (atomName),
+    num  (atomNum),
+    coord(atomCoord),
+    alt  (atomAltLoc),
+    occ  (atomOccupancy),
+    tempF(atomTempFactor),
+    ele  (atomElement),
+    chg  (atomCharge),
     owner(atomOwner)
 {
     if (atomOwner)
@@ -50,7 +57,13 @@ Atom::Atom(const string &atomName, int atomNum, const RowVector3d &atomCoord,
 string Atom::str() const
 {
     return (format("<Atom object: %d %s [%.3f, %.3f, %.3f], at 0x%p>") %
-        num % name % coord[0] % coord[1] % coord[2] % this).str();
+        num                                                            %
+        name                                                           %
+        coord[0]                                                       %
+        coord[1]                                                       %
+        coord[2]                                                       %
+        this
+    ).str();
 }
 
 

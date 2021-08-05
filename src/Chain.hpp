@@ -33,7 +33,8 @@ using boost::format;
 ////////////////////////////////////////////////////////////////////////////////
 
 Chain::Chain(const string &chainName, Protein *chainOwner):
-    name(chainName), owner(chainOwner)
+    name (chainName),
+    owner(chainOwner)
 {
     if (chainOwner)
     {
@@ -48,7 +49,10 @@ Chain::Chain(const string &chainName, Protein *chainOwner):
 
 string Chain::str() const
 {
-    return (format("<Chain object: %s, at 0x%p>") % name % this).str();
+    return (format("<Chain object: %s, at 0x%p>") %
+        name                                      %
+        this
+    ).str();
 }
 
 

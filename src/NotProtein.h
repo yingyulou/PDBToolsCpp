@@ -31,8 +31,8 @@ public:
     typename vector<SelfType *>::iterator iter();
 
 
-    // pre
-    SelfType *pre(int shiftLen = 1);
+    // prev
+    SelfType *prev(int shiftLen = 1);
 
 
     // next

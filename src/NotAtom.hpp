@@ -84,6 +84,7 @@ template <typename SelfType, typename SubType>
 Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::getAtomsCoord()
 {
     auto atomPtrList = static_cast<SelfType *>(this)->getAtoms();
+
     Matrix<double, Dynamic, 3> coordMatrix(atomPtrList.size(), 3);
 
     for (int idx = 0; idx < atomPtrList.size(); idx++)
@@ -103,7 +104,8 @@ template <typename SelfType, typename SubType>
 Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::filterAtomsCoord(
     const unordered_set<string> &atomNameSet)
 {
-    auto atomPtrList = static_cast<SelfType *>(this)->getAtoms();
+    auto atomPtrList = static_cast<SelfType *>(this)->filterAtoms();
+
     Matrix<double, Dynamic, 3> coordMatrix(atomPtrList.size(), 3);
 
     for (int idx = 0; idx < atomPtrList.size(); idx++)

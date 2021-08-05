@@ -39,7 +39,11 @@ using Eigen::Matrix3d;
 ////////////////////////////////////////////////////////////////////////////////
 
 Residue::Residue(const string &resName, int resNum, const string &resIns,
-    Chain *resOwner): name(resName), num(resNum), ins(resIns), owner(resOwner)
+    Chain *resOwner):
+    name (resName),
+    num  (resNum),
+    ins  (resIns),
+    owner(resOwner)
 {
     if (resOwner)
     {
@@ -54,7 +58,12 @@ Residue::Residue(const string &resName, int resNum, const string &resIns,
 
 string Residue::str() const
 {
-    return (format("<Residue object: %d%s %s, at 0x%p>") % num % ins % name % this).str();
+    return (format("<Residue object: %d%s %s, at 0x%p>") %
+        num                                              %
+        ins                                              %
+        name                                             %
+        this
+    ).str();
 }
 
 
@@ -103,7 +112,10 @@ vector<Atom *> Residue::getAtoms()
 
 string Residue::compNum()
 {
-    return (format("%d%s") % num % ins).str();
+    return (format("%d%s") %
+        num                %
+        ins
+    ).str();
 }
 
 
@@ -169,7 +181,7 @@ double Residue::calcBBDihedralAngle(DIH dihedralEnum)
 
     if (dihedralEnum == DIH::L)
     {
-        return calcDihedralAngle(pre()->coordMap().at("C"), atomCoordMap.at("N"),
+        return calcDihedralAngle(prev()->coordMap().at("C"), atomCoordMap.at("N"),
             atomCoordMap.at("CA"), atomCoordMap.at("C"));
     }
     else

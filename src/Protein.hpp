@@ -33,7 +33,8 @@ using boost::format;
 ////////////////////////////////////////////////////////////////////////////////
 
 Protein::Protein(const string &proteinID, int modelNum):
-    name(proteinID), model(modelNum) {}
+    name (proteinID),
+    model(modelNum) {}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +44,10 @@ Protein::Protein(const string &proteinID, int modelNum):
 string Protein::str() const
 {
     return (format("<Protein object: %s (Model: %d), at 0x%p>") %
-        name % model % this).str();
+        name                                                    %
+        model                                                   %
+        this
+    ).str();
 }
 
 

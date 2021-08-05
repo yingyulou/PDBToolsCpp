@@ -800,10 +800,10 @@ Protein *proPtr = load("xxxx.pdb");
 vector<Chain *>::iterator iterInOwner = proPtr->sub[0]->iter();  // begin
 ```
 
-#### 2. pre, next
+#### 2. prev, next
 
 ``` Cpp
-SelfType *pre(int shiftLen = 1);
+SelfType *prev(int shiftLen = 1);
 SelfType *next(int shiftLen = 1);
 ```
 
@@ -823,9 +823,9 @@ SelfType *next(int shiftLen = 1);
 Protein *proPtr = load("xxxx.pdb");
 
 Chain *chainPtr = proPtr->sub[1];
-Chain *preChainPtr = chainPtr->pre();
+Chain *preChainPtr = chainPtr->prev();
 Chain *nextChainPtr = chainPtr->next();
-chainPtr->pre(2);  // Error!
+chainPtr->prev(2);  // Error!
 ```
 
 #### 3. remove
