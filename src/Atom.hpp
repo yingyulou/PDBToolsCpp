@@ -7,6 +7,7 @@
 #pragma once
 
 #include <string>
+#include <cstdio>
 #include <cctype>
 #include <boost/format.hpp>
 #include <Eigen/Dense>
@@ -78,10 +79,20 @@ Atom *Atom::copy()
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Dumps
+// operator-
 ////////////////////////////////////////////////////////////////////////////////
 
-string Atom::dumps()
+double Atom::operator-(const Atom &rhs) const
+{
+    return (coord - rhs.coord).norm();
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Dump
+////////////////////////////////////////////////////////////////////////////////
+
+Atom *Atom::dump(const string &dumpFilePath, const string &fileMode)
 {
     string chainName, resName, resIns, dumpStr;
     int resNum = 0;
@@ -98,56 +109,101 @@ string Atom::dumps()
         }
     }
 
+    FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
+
     if (isdigit(name[0]) || name.size() == 4)
     {
-        dumpStr = (format("ATOM  %5d %-4s%1s%3s %1s%4d%1s   %8.3f%8.3f%8.3f%6s%6s          %2s%2s\n") %
-            num                                                                                       %
-            name                                                                                      %
-            alt                                                                                       %
-            resName                                                                                   %
-            chainName                                                                                 %
-            resNum                                                                                    %
-            resIns                                                                                    %
-            coord[0]                                                                                  %
-            coord[1]                                                                                  %
-            coord[2]                                                                                  %
-            occ                                                                                       %
-            tempF                                                                                     %
-            ele                                                                                       %
-            chg
-        ).str();
+        fprintf(fo, "ATOM  %5d %-4s%1s%3s %1s%4d%1s   %8.3f%8.3f%8.3f%6s%6s          %2s%2s\n",
+            num,
+            name.c_str(),
+            alt.c_str(),
+            resName.c_str(),
+            chainName.c_str(),
+            resNum,
+            resIns.c_str(),
+            coord[0],
+            coord[1],
+            coord[2],
+            occ.c_str(),
+            tempF.c_str(),
+            ele.c_str(),
+            chg.c_str()
+        );
     }
     else
     {
-        dumpStr = (format("ATOM  %5d  %-3s%1s%3s %1s%4d%1s   %8.3f%8.3f%8.3f%6s%6s          %2s%2s\n") %
-            num                                                                                        %
-            name                                                                                       %
-            alt                                                                                        %
-            resName                                                                                    %
-            chainName                                                                                  %
-            resNum                                                                                     %
-            resIns                                                                                     %
-            coord[0]                                                                                   %
-            coord[1]                                                                                   %
-            coord[2]                                                                                   %
-            occ                                                                                        %
-            tempF                                                                                      %
-            ele                                                                                        %
-            chg
-        ).str();
+        fprintf(fo, "ATOM  %5d  %-3s%1s%3s %1s%4d%1s   %8.3f%8.3f%8.3f%6s%6s          %2s%2s\n",
+            num,
+            name.c_str(),
+            alt.c_str(),
+            resName.c_str(),
+            chainName.c_str(),
+            resNum,
+            resIns.c_str(),
+            coord[0],
+            coord[1],
+            coord[2],
+            occ.c_str(),
+            tempF.c_str(),
+            ele.c_str(),
+            chg.c_str()
+        );
     }
 
-    return dumpStr;
+    fclose(fo);
+
+    return this;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// operator-
+// Dumps
 ////////////////////////////////////////////////////////////////////////////////
 
-double Atom::operator-(const Atom &rhs) const
+string Atom::dumps()
 {
-    return (coord - rhs.coord).norm();
+    string chainName, resName, resIns, dumpStr, formatStr;
+    int resNum = 0;
+
+    if (owner)
+    {
+        resName = owner->name;
+        resNum  = owner->num;
+        resIns  = owner->ins;
+
+        if (owner->owner)
+        {
+            chainName = owner->owner->name;
+        }
+    }
+
+    if (isdigit(name[0]) || name.size() == 4)
+    {
+        formatStr = "ATOM  %5d %-4s%1s%3s %1s%4d%1s   %8.3f%8.3f%8.3f%6s%6s          %2s%2s\n";
+    }
+    else
+    {
+        formatStr = "ATOM  %5d  %-3s%1s%3s %1s%4d%1s   %8.3f%8.3f%8.3f%6s%6s          %2s%2s\n";
+    }
+
+    dumpStr = (format(formatStr) %
+        num                      %
+        name                     %
+        alt                      %
+        resName                  %
+        chainName                %
+        resNum                   %
+        resIns                   %
+        coord[0]                 %
+        coord[1]                 %
+        coord[2]                 %
+        occ                      %
+        tempF                    %
+        ele                      %
+        chg
+    ).str();
+
+    return dumpStr;
 }
 
 

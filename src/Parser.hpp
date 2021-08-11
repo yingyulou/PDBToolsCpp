@@ -1,7 +1,7 @@
 /*
-    PDBParser.hpp
-    =============
-        PDB parser functions implementation.
+    Parser.hpp
+    ==========
+        Parser functions implementation.
 */
 
 #pragma once

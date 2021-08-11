@@ -8,7 +8,6 @@
 
 #include <string>
 #include <Eigen/Dense>
-#include "StructBase.h"
 #include "NotProtein.h"
 #include "Residue.h"
 
@@ -27,7 +26,7 @@ using Eigen::RowVector3d;
 // Class Atom
 ////////////////////////////////////////////////////////////////////////////////
 
-class Atom: public __StructBase<Atom>, public __NotProtein<Atom, Residue>
+class Atom: public __NotProtein<Atom, Residue>
 {
 public:
 
@@ -59,12 +58,16 @@ public:
     Atom *copy();
 
 
-    // Dumps
-    string dumps();
-
-
     // operator-
     double operator-(const Atom &rhs) const;
+
+
+    // Dump
+    Atom *dump(const string &dumpFilePath, const string &fileMode = "w");
+
+
+    // Dumps
+    string dumps();
 };
 
 

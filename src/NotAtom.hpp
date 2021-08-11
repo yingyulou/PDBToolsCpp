@@ -121,24 +121,6 @@ Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::filterAtomsCoord(
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Dumps
-////////////////////////////////////////////////////////////////////////////////
-
-template <typename SelfType, typename SubType>
-string __NotAtom<SelfType, SubType>::dumps()
-{
-    string dumpStr;
-
-    for (auto atomPtr: static_cast<SelfType *>(this)->getAtoms())
-    {
-        dumpStr += atomPtr->Dumps();
-    }
-
-    return dumpStr;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 // center
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -305,6 +287,24 @@ SelfType *__NotAtom<SelfType, SubType>::removeAlt()
     }
 
     return static_cast<SelfType *>(this);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Dumps
+////////////////////////////////////////////////////////////////////////////////
+
+template <typename SelfType, typename SubType>
+string __NotAtom<SelfType, SubType>::dumps()
+{
+    string dumpStr;
+
+    for (auto atomPtr: static_cast<SelfType *>(this)->getAtoms())
+    {
+        dumpStr += atomPtr->dumps();
+    }
+
+    return dumpStr;
 }
 
 

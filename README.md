@@ -349,8 +349,14 @@ delete proPtr;
 非Atom层级均支持委托至sub属性的迭代器：
 
 ``` Cpp
-typename vector<SubType *>::iterator begin();
-typename vector<SubType *>::iterator end();
+typename vector<Chain *>::iterator begin();
+typename vector<Chain *>::iterator end();
+
+typename vector<Residue *>::iterator begin();
+typename vector<Residue *>::iterator end();
+
+typename vector<Atom *>::iterator begin();
+typename vector<Atom *>::iterator end();
 ```
 
 #### 例：
@@ -396,56 +402,7 @@ Protein *proPtr = load("xxxx.pdb");
 cout << proPtr->str() << endl;  // 相当于cout << *proPtr << endl;
 ```
 
-#### 2. dump
-
-``` Cpp
-SelfType *dump(const string &dumpFilePath, const string &fileMode = "w");
-```
-
-将this输出到PDB文件。
-
-#### 参数：
-
-* dumpFilePath：输出PDB文件路径
-* fileMode：文件句柄打开模式
-
-#### 返回值：
-
-* this
-
-#### 例：
-
-``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-
-proPtr->dump("xxxx.pdb");
-```
-
-#### 3. dumps
-
-``` Cpp
-string dumps();
-```
-
-得到字符串形式的PDB文件内容。
-
-#### 参数：
-
-* void
-
-#### 返回值：
-
-* 字符串形式的PDB文件内容
-
-#### 例：
-
-``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-
-string dumpStr = proPtr->dumps();
-```
-
-#### 4. copy
+#### 2. copy
 
 ``` Cpp
 Protein *copy();
@@ -470,6 +427,58 @@ Atom *copy();
 Protein *proPtr = load("xxxx.pdb");
 
 Protein *copyProPtr = proPtr->copy();
+```
+
+#### 3. dump
+
+``` Cpp
+Protein *dump(const string &dumpFilePath, const string &fileMode = "w");
+Chain *dump(const string &dumpFilePath, const string &fileMode = "w");
+Residue *dump(const string &dumpFilePath, const string &fileMode = "w");
+Atom *dump(const string &dumpFilePath, const string &fileMode = "w");
+```
+
+将this输出到PDB文件。
+
+#### 参数：
+
+* dumpFilePath：输出PDB文件路径
+* fileMode：文件句柄打开模式
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+Protein *proPtr = load("xxxx.pdb");
+
+proPtr->dump("xxxx.pdb");
+```
+
+#### 4. dumps
+
+``` Cpp
+string dumps();
+```
+
+得到字符串形式的PDB文件内容。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* 字符串形式的PDB文件内容
+
+#### 例：
+
+``` Cpp
+Protein *proPtr = load("xxxx.pdb");
+
+string dumpStr = proPtr->dumps();
 ```
 
 ### 非Atom层级公有成员函数
@@ -559,7 +568,9 @@ RowVector3d centerCoord = proPtr->center();
 #### 4. moveCenter
 
 ``` Cpp
-SelfType *moveCenter();
+Protein *moveCenter();
+Chain *moveCenter();
+Residue *moveCenter();
 ```
 
 将this的所有原子坐标减去center()向量。
@@ -631,7 +642,13 @@ string fastaStr = proPtr->fasta("xxxx");
 #### 7. dumpFasta
 
 ``` Cpp
-SelfType *dumpFasta(const string &dumpFilePath,
+Protein *dumpFasta(const string &dumpFilePath,
+    const string &titleStr = "", const string &fileMode = "w");
+
+Chain *dumpFasta(const string &dumpFilePath,
+    const string &titleStr = "", const string &fileMode = "w");
+
+Residue *dumpFasta(const string &dumpFilePath,
     const string &titleStr = "", const string &fileMode = "w");
 ```
 
@@ -658,8 +675,13 @@ proPtr->dumpFasta("xxxx.fasta", "xxxx");
 #### 8. renumResidues, renumAtoms
 
 ``` Cpp
-SelfType *renumResidues(int startNum = 1);
-SelfType *renumAtoms(int startNum = 1);
+Protein *renumResidues(int startNum = 1);
+Chain *renumResidues(int startNum = 1);
+Residue *renumResidues(int startNum = 1);
+
+Protein *renumAtoms(int startNum = 1);
+Chain *renumAtoms(int startNum = 1);
+Residue *renumAtoms(int startNum = 1);
 ```
 
 对this的所有残基/原子进行重编号。
@@ -683,8 +705,13 @@ proPtr->renumResidues()->renumAtoms();
 #### 9. append, insert
 
 ``` Cpp
-SelfType *append(SubType *subPtr, copyBool = true);
-SelfType *insert(typename vector<SubType *>::iterator insertIter, SubType *subPtr, copyBool = true);
+Protein *append(Chain *subPtr, copyBool = true);
+Chain *append(Residue *subPtr, copyBool = true);
+Residue *append(Atom *subPtr, copyBool = true);
+
+Protein *insert(typename vector<Chain *>::iterator insertIter, Chain *subPtr, copyBool = true);
+Chain *insert(typename vector<Residue *>::iterator insertIter, Residue *subPtr, copyBool = true);
+Residue *insert(typename vector<Atom *>::iterator insertIter, Atom *subPtr, copyBool = true);
 ```
 
 为this追加/插入子结构。
@@ -714,7 +741,9 @@ proPtr->
 #### 10. removeAlt
 
 ``` Cpp
-SelfType *removeAlt();
+Protein *removeAlt();
+Chain *removeAlt();
+Residue *removeAlt();
 ```
 
 遍历this包含的所有原子对象指针，如果原子对象指针的alt属性为""，则忽略，如果为"A"，则修改为""，否则删除当前原子。
@@ -779,7 +808,9 @@ unordered_map<string, Atom *> resSubMap = proPtr->sub[0]->sub[0]->subMap();
 #### 1. iter
 
 ``` Cpp
-typename vector<SelfType *>::iterator iter();
+typename vector<Chain *>::iterator iter();
+typename vector<Residue *>::iterator iter();
+typename vector<Atom *>::iterator iter();
 ```
 
 得到this在this->owner->sub中的位置迭代器。
@@ -803,8 +834,13 @@ vector<Chain *>::iterator iterInOwner = proPtr->sub[0]->iter();  // begin
 #### 2. prev, next
 
 ``` Cpp
-SelfType *prev(int shiftLen = 1);
-SelfType *next(int shiftLen = 1);
+Chain *prev(int shiftLen = 1);
+Residue *prev(int shiftLen = 1);
+Atom *prev(int shiftLen = 1);
+
+Chain *next(int shiftLen = 1);
+Residue *next(int shiftLen = 1);
+Atom *next(int shiftLen = 1);
 ```
 
 得到this在this->owner->sub中的前/后第N个同级结构对象指针
@@ -831,7 +867,9 @@ chainPtr->prev(2);  // Error!
 #### 3. remove
 
 ``` Cpp
-typename vector<SelfType *>::iterator remove(bool deteleBool = true);
+typename vector<Chain *>::iterator remove(bool deteleBool = true);
+typename vector<Residue *>::iterator remove(bool deteleBool = true);
+typename vector<Atom *>::iterator remove(bool deteleBool = true);
 ```
 
 从this->owner->sub中删除并析构this。
@@ -1434,8 +1472,10 @@ const unordered_map<string, string> RESIDUE_NAME_ONE_TO_THREE_MAP;
 ### 1. operator<<
 
 ``` Cpp
-template <typename SelfType>
-ostream &operator<<(ostream &os, const __StructBase<SelfType> &structObj);
+ostream &operator<<(ostream &os, const Protein &proObj);
+ostream &operator<<(ostream &os, const Chain &chainObj);
+ostream &operator<<(ostream &os, const Residue &resObj);
+ostream &operator<<(ostream &os, const Atom &atomObj);
 ```
 
 任何结构对象均可用通过operator\<\<输出此对象的信息摘要。
@@ -1508,8 +1548,16 @@ auto [resNum, resIns] = splitCompNum("1A");
 ### 4. dumpl
 
 ``` Cpp
-template <typename SelfType>
-void dumpl(const vector<SelfType *> &structPtrList,
+void dumpl(const vector<Protein *> &structPtrList,
+    const string &dumpFilePath, const string &fileMode = "w");
+
+void dumpl(const vector<Chain *> &structPtrList,
+    const string &dumpFilePath, const string &fileMode = "w");
+
+void dumpl(const vector<Residue *> &structPtrList,
+    const string &dumpFilePath, const string &fileMode = "w");
+
+void dumpl(const vector<Atom *> &structPtrList,
     const string &dumpFilePath, const string &fileMode = "w");
 ```
 
@@ -1536,8 +1584,10 @@ dumpl(proPtrList, "xxxx.pdb");
 ### 5. dumpls
 
 ``` Cpp
-template <typename SelfType>
-string dumpls(const vector<SelfType *> &structPtrList);
+string dumpls(const vector<Protein *> &structPtrList);
+string dumpls(const vector<Chain *> &structPtrList);
+string dumpls(const vector<Residue *> &structPtrList);
+string dumpls(const vector<Atom *> &structPtrList);
 ```
 
 得到字符串形式的Dumpl函数输出内容。
@@ -1561,8 +1611,13 @@ string dumpStr = dumpls(proPtrList);
 ### 6. dumpFastal
 
 ``` Cpp
-template <typename SelfType>
-void dumpFastal(const vector<SelfType *> &structPtrList,
+void dumpFastal(const vector<Protein *> &structPtrList,
+    const string &dumpFilePath, const string &fileMode = "w");
+
+void dumpFastal(const vector<Chain *> &structPtrList,
+    const string &dumpFilePath, const string &fileMode = "w");
+
+void dumpFastal(const vector<Residue *> &structPtrList,
     const string &dumpFilePath, const string &fileMode = "w");
 ```
 
@@ -1589,8 +1644,9 @@ dumpFastal(proPtrList, "xxxx.fasta");
 ### 7. dumpFastals
 
 ``` Cpp
-template <typename SelfType>
-string dumpFastals(const vector<SelfType *> &structPtrList);
+string dumpFastals(const vector<Protein *> &structPtrList);
+string dumpFastals(const vector<Chain *> &structPtrList);
+string dumpFastals(const vector<Residue *> &structPtrList);
 ```
 
 得到字符串形式的DumpFastal函数输出内容。

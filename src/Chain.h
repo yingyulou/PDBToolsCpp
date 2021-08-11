@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "StructBase.h"
 #include "NotAtom.h"
 #include "NotProtein.h"
 #include "Protein.h"
@@ -32,7 +31,7 @@ using std::unordered_map;
 // Class Chain
 ////////////////////////////////////////////////////////////////////////////////
 
-class Chain: public __StructBase<Chain>, public __NotAtom<Chain, Residue>,
+class Chain: public __NotAtom<Chain, Residue>,
     public __NotProtein<Chain, Protein>
 {
 public:
@@ -65,6 +64,10 @@ public:
 
     // subMap
     unordered_map<string, Residue *> subMap();
+
+
+    // Dump
+    Chain *dump(const string &dumpFilePath, const string &fileMode = "w");
 
 
     // Destructor

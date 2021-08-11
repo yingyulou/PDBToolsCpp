@@ -11,7 +11,6 @@
 #include <unordered_map>
 #include <utility>
 #include <Eigen/Dense>
-#include "StructBase.h"
 #include "NotAtom.h"
 #include "NotProtein.h"
 #include "Chain.h"
@@ -37,7 +36,7 @@ using Eigen::Matrix3d;
 // Class Residue
 ////////////////////////////////////////////////////////////////////////////////
 
-class Residue: public __StructBase<Residue>, public __NotAtom<Residue, Atom>,
+class Residue: public __NotAtom<Residue, Atom>,
     public __NotProtein<Residue, Chain>
 {
 public:
@@ -137,6 +136,10 @@ public:
 
     // Rotate Side Chain Dihedral Angle By Target Angle
     Residue *rotateSCDihedralAngleByTargetAngle(int dihedralIdx, double targetAngle);
+
+
+    // Dump
+    Residue *dump(const string &dumpFilePath, const string &fileMode = "w");
 
 
     // Destructor

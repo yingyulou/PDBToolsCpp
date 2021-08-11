@@ -6,8 +6,7 @@
 
 */
 
-#include "src/PDBParser.hpp"
-#include "src/StructBase.hpp"
+#include "src/Parser.hpp"
 #include "src/NotProtein.hpp"
 #include "src/NotAtom.hpp"
 #include "src/Protein.hpp"

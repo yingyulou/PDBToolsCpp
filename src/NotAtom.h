@@ -57,10 +57,6 @@ public:
         const unordered_set<string> &atomNameSet = {"CA"});
 
 
-    // Dumps
-    string dumps();
-
-
     // center
     RowVector3d center();
 
@@ -101,6 +97,10 @@ public:
 
     // RemoveAlt
     SelfType *removeAlt();
+
+
+    // Dumps
+    string dumps();
 };
 
 
