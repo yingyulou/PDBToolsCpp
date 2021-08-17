@@ -34,7 +34,6 @@ using std::getline;
 using std::stoi;
 using std::stod;
 using std::filesystem::path;
-using std::filesystem::exists;
 using std::runtime_error;
 using boost::algorithm::trim_copy;
 using Eigen::RowVector3d;
@@ -46,7 +45,10 @@ using Eigen::RowVector3d;
 
 Protein *load(const string &pdbFilePath, bool parseHBool = false)
 {
-    if (!exists(pdbFilePath))
+    ifstream f(pdbFilePath);
+    string line;
+
+    if (!f)
     {
         throw runtime_error(pdbFilePath + " not exists");
     }
@@ -59,9 +61,6 @@ Protein *load(const string &pdbFilePath, bool parseHBool = false)
     string lastResName   = " ";
     int lastResNum       = INT_MAX;
     string lastResIns    = " ";
-
-    ifstream f(pdbFilePath);
-    string line;
 
     while (getline(f, line))
     {
@@ -127,7 +126,10 @@ Protein *load(const string &pdbFilePath, bool parseHBool = false)
 
 vector<Protein *> loadModel(const string &pdbFilePath, bool parseHBool = false)
 {
-    if (!exists(pdbFilePath))
+    ifstream f(pdbFilePath);
+    string line;
+
+    if (!f)
     {
         throw runtime_error(pdbFilePath + " not exists");
     }
@@ -142,9 +144,6 @@ vector<Protein *> loadModel(const string &pdbFilePath, bool parseHBool = false)
     string lastResName   = " ";
     int lastResNum       = INT_MAX;
     string lastResIns    = " ";
-
-    ifstream f(pdbFilePath);
-    string line;
 
     while (getline(f, line))
     {
