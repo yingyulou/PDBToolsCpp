@@ -211,7 +211,7 @@ vector<Protein *> loadModel(const string &pdbFilePath, bool parseHBool = false)
 
     f.close();
 
-    if (proPtrList[0]->sub.size() == 0)
+    if (proPtrList[0]->sub().size() == 0)
     {
         delete proPtrList[0];
         proPtrList.erase(proPtrList.begin());

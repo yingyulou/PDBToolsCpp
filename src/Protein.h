@@ -34,14 +34,32 @@ class Protein: public __NotAtom<Protein, Chain>
 {
 public:
 
-    // Attribute
-    string name;
-    int model;
-    vector<Chain *> sub;
-
-
     // Constructor
-    explicit Protein(const string &proteinID = "", int modelNum = 0);
+    explicit Protein(const string &name = "", int model = 0);
+
+
+    // Getter: __name
+    string &name();
+
+
+    // Getter: __model
+    int model();
+
+
+    // Getter: __sub
+    vector<Chain *> &sub();
+
+
+    // Setter: __name
+    Protein *name(const string &val);
+
+
+    // Setter: __model
+    Protein *model(int val);
+
+
+    // Setter: __sub
+    Protein *sub(const vector<Chain *> &val);
 
 
     // str
@@ -70,6 +88,14 @@ public:
 
     // Destructor
     ~Protein();
+
+
+private:
+
+    // Attribute
+    string __name;
+    int __model;
+    vector<Chain *> __sub;
 };
 
 

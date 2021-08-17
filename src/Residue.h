@@ -41,17 +41,61 @@ class Residue: public __NotAtom<Residue, Atom>,
 {
 public:
 
-    // Attribute
-    string name;
-    int num;
-    string ins;
-    Chain *owner;
-    vector<Atom *> sub;
-
-
     // Constructor
-    explicit Residue(const string &resName = "", int resNum = 0,
-        const string &resIns = "", Chain *resOwner = nullptr);
+    explicit Residue(const string &name = "", int num = 0,
+        const string &ins = "", Chain *owner = nullptr);
+
+
+    // Getter: __name
+    string &name();
+
+
+    // Getter: __num
+    int num();
+
+
+    // Getter: __ins
+    string &ins();
+
+
+    // Getter: __owner
+    Chain *owner();
+
+
+    // Getter: __sub
+    vector<Atom *> &sub();
+
+
+    // Setter: __name
+    Residue *name(const string &val);
+
+
+    // Setter: __num
+    Residue *num(int val);
+
+
+    // Setter: __ins
+    Residue *ins(const string &val);
+
+
+    // Setter: __owner
+    Residue *owner(Chain *val);
+
+
+    // Setter: __sub
+    Residue *sub(const vector<Atom *> &val);
+
+
+    // Getter: compNum
+    string compNum();
+
+
+    // Setter: compNum
+    Residue *compNum(int num, const string &ins = "");
+
+
+    // Setter: compNum (by compNumPair)
+    Residue *compNum(const pair<int, string> &compNumPair);
 
 
     // str
@@ -68,12 +112,6 @@ public:
 
     // GetAtoms
     vector<Atom *> getAtoms();
-
-
-    // compNum
-    string compNum();
-    Residue *compNum(int resNum, const string &resIns = "");
-    Residue *compNum(const pair<int, string> &compNumPair);
 
 
     // subMap
@@ -144,6 +182,16 @@ public:
 
     // Destructor
     ~Residue();
+
+
+private:
+
+    // Attribute
+    string __name;
+    int __num;
+    string __ins;
+    Chain *__owner;
+    vector<Atom *> __sub;
 };
 
 

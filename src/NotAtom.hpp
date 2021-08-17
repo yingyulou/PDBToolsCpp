@@ -43,14 +43,14 @@ using Eigen::Dynamic;
 template <typename SelfType, typename SubType>
 typename vector<SubType *>::iterator __NotAtom<SelfType, SubType>::begin()
 {
-    return static_cast<SelfType *>(this)->sub.begin();
+    return static_cast<SelfType *>(this)->sub().begin();
 }
 
 
 template <typename SelfType, typename SubType>
 typename vector<SubType *>::iterator __NotAtom<SelfType, SubType>::end()
 {
-    return static_cast<SelfType *>(this)->sub.end();
+    return static_cast<SelfType *>(this)->sub().end();
 }
 
 
@@ -66,7 +66,7 @@ vector<Atom *> __NotAtom<SelfType, SubType>::filterAtoms(
 
     for (auto atomPtr: static_cast<SelfType *>(this)->getAtoms())
     {
-        if (atomNameSet.count(atomPtr->name))
+        if (atomNameSet.count(atomPtr->name()))
         {
             atomPtrList.push_back(atomPtr);
         }
@@ -89,7 +89,7 @@ Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::getAtomsCoord()
 
     for (int idx = 0; idx < atomPtrList.size(); idx++)
     {
-        coordMatrix.row(idx) = atomPtrList[idx]->coord;
+        coordMatrix.row(idx) = atomPtrList[idx]->coord();
     }
 
     return coordMatrix;
@@ -110,9 +110,9 @@ Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::filterAtomsCoord(
 
     for (int idx = 0; idx < atomPtrList.size(); idx++)
     {
-        if (atomNameSet.count(atomPtrList[idx]->name))
+        if (atomNameSet.count(atomPtrList[idx]->name()))
         {
-            coordMatrix.row(idx) = atomPtrList[idx]->coord;
+            coordMatrix.row(idx) = atomPtrList[idx]->coord();
         }
     }
 
@@ -142,7 +142,7 @@ SelfType *__NotAtom<SelfType, SubType>::moveCenter()
 
     for (auto atomPtr: static_cast<SelfType *>(this)->getAtoms())
     {
-        atomPtr->coord -= centerCoord;
+        atomPtr->coord() -= centerCoord;
     }
 
     return static_cast<SelfType *>(this);
@@ -160,7 +160,7 @@ string __NotAtom<SelfType, SubType>::seq()
 
     for (auto resPtr: static_cast<SelfType *>(this)->getResidues())
     {
-        seqStr += RESIDUE_NAME_THREE_TO_ONE_MAP.at(resPtr->name);
+        seqStr += RESIDUE_NAME_THREE_TO_ONE_MAP.at(resPtr->name());
     }
 
     return seqStr;
@@ -174,9 +174,10 @@ string __NotAtom<SelfType, SubType>::seq()
 template <typename SelfType, typename SubType>
 string __NotAtom<SelfType, SubType>::fasta(const string &titleStr)
 {
-    return (format(">%s\n%s\n") %
-        (titleStr.empty() ? static_cast<SelfType *>(this)->name : titleStr) %
-        seq()).str();
+    return (format(">%s\n%s\n")                                               %
+        (titleStr.empty() ? static_cast<SelfType *>(this)->name() : titleStr) %
+        seq()
+    ).str();
 }
 
 
@@ -189,7 +190,9 @@ SelfType *__NotAtom<SelfType, SubType>::dumpFasta(const string &dumpFilePath,
     const string &titleStr, const string &fileMode)
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
+
     fprintf(fo, "%s", fasta(titleStr).c_str());
+
     fclose(fo);
 
     return static_cast<SelfType *>(this);
@@ -221,7 +224,7 @@ SelfType *__NotAtom<SelfType, SubType>::renumAtoms(int startNum)
 {
     for (auto atomPtr: static_cast<SelfType *>(this)->getAtoms())
     {
-        atomPtr->num = startNum++;
+        atomPtr->num(startNum++);
     }
 
     return static_cast<SelfType *>(this);
@@ -240,8 +243,9 @@ SelfType *__NotAtom<SelfType, SubType>::append(SubType *subPtr, bool copyBool)
         subPtr = subPtr->copy();
     }
 
-    subPtr->owner = static_cast<SelfType *>(this);
-    static_cast<SelfType *>(this)->sub.push_back(subPtr);
+    subPtr->owner(static_cast<SelfType *>(this));
+
+    static_cast<SelfType *>(this)->sub().push_back(subPtr);
 
     return static_cast<SelfType *>(this);
 }
@@ -260,8 +264,9 @@ SelfType *__NotAtom<SelfType, SubType>::insert(
         subPtr = subPtr->copy();
     }
 
-    subPtr->owner = static_cast<SelfType *>(this);
-    static_cast<SelfType *>(this)->sub.insert(insertIter, subPtr);
+    subPtr->owner(static_cast<SelfType *>(this));
+
+    static_cast<SelfType *>(this)->sub().insert(insertIter, subPtr);
 
     return static_cast<SelfType *>(this);
 }
@@ -276,11 +281,11 @@ SelfType *__NotAtom<SelfType, SubType>::removeAlt()
 {
     for (auto atomPtr: static_cast<SelfType *>(this)->getAtoms())
     {
-        if (atomPtr->alt == "A")
+        if (atomPtr->alt() == "A")
         {
-            atomPtr->alt = "";
+            atomPtr->alt("");
         }
-        else if (atomPtr->alt != "")
+        else if (atomPtr->alt() != "")
         {
             atomPtr->remove();
         }

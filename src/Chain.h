@@ -36,14 +36,32 @@ class Chain: public __NotAtom<Chain, Residue>,
 {
 public:
 
-    // Attribute
-    string name;
-    Protein *owner;
-    vector<Residue *> sub;
-
-
     // Constructor
-    explicit Chain(const string &chainName = "", Protein *chainOwner = nullptr);
+    explicit Chain(const string &name = "", Protein *owner = nullptr);
+
+
+    // Getter: __name
+    string &name();
+
+
+    // Getter: __owner
+    Protein *owner();
+
+
+    // Getter: __sub
+    vector<Residue *> &sub();
+
+
+    // Setter: __name
+    Chain *name(const string &val);
+
+
+    // Setter: __owner
+    Chain *owner(Protein *val);
+
+
+    // Setter: __sub
+    Chain *sub(const vector<Residue *> &val);
 
 
     // str
@@ -72,6 +90,14 @@ public:
 
     // Destructor
     ~Chain();
+
+
+private:
+
+    // Attribute
+    string __name;
+    Protein *__owner;
+    vector<Residue *> __sub;
 };
 
 

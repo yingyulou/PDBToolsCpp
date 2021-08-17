@@ -30,24 +30,221 @@ using Eigen::RowVector3d;
 // Constructor
 ////////////////////////////////////////////////////////////////////////////////
 
-Atom::Atom(const string &atomName, int atomNum, const RowVector3d &atomCoord,
-    const string &atomAltLoc, const string &atomOccupancy,
-    const string &atomTempFactor, const string &atomElement,
-    const string &atomCharge, Residue *atomOwner):
-    name (atomName),
-    num  (atomNum),
-    coord(atomCoord),
-    alt  (atomAltLoc),
-    occ  (atomOccupancy),
-    tempF(atomTempFactor),
-    ele  (atomElement),
-    chg  (atomCharge),
-    owner(atomOwner)
+Atom::Atom(const string &name, int num, const RowVector3d &coord,
+    const string &alt, const string &occ, const string &tempF,
+    const string &ele, const string &chg, Residue *owner):
+    __name (name),
+    __num  (num),
+    __coord(coord),
+    __alt  (alt),
+    __occ  (occ),
+    __tempF(tempF),
+    __ele  (ele),
+    __chg  (chg),
+    __owner(owner)
 {
-    if (atomOwner)
+    if (owner)
     {
-        atomOwner->sub.push_back(this);
+        owner->sub().push_back(this);
     }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Getter: __name
+////////////////////////////////////////////////////////////////////////////////
+
+string &Atom::name()
+{
+    return __name;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Getter: __num
+////////////////////////////////////////////////////////////////////////////////
+
+int Atom::num()
+{
+    return __num;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Getter: __coord
+////////////////////////////////////////////////////////////////////////////////
+
+RowVector3d &Atom::coord()
+{
+    return __coord;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Getter: __alt
+////////////////////////////////////////////////////////////////////////////////
+
+string &Atom::alt()
+{
+    return __alt;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Getter: __occ
+////////////////////////////////////////////////////////////////////////////////
+
+string &Atom::occ()
+{
+    return __occ;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Getter: __tempF
+////////////////////////////////////////////////////////////////////////////////
+
+string &Atom::tempF()
+{
+    return __tempF;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Getter: __ele
+////////////////////////////////////////////////////////////////////////////////
+
+string &Atom::ele()
+{
+    return __ele;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Getter: __chg
+////////////////////////////////////////////////////////////////////////////////
+
+string &Atom::chg()
+{
+    return __chg;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Getter: __owner
+////////////////////////////////////////////////////////////////////////////////
+
+Residue *Atom::owner()
+{
+    return __owner;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Setter: __name
+////////////////////////////////////////////////////////////////////////////////
+
+Atom *Atom::name(const string &val)
+{
+    __name = val;
+
+    return this;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Setter: __num
+////////////////////////////////////////////////////////////////////////////////
+
+Atom *Atom::num(int val)
+{
+    __num = val;
+
+    return this;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Setter: __coord
+////////////////////////////////////////////////////////////////////////////////
+
+Atom *Atom::coord(const RowVector3d &val)
+{
+    __coord = val;
+
+    return this;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Setter: __alt
+////////////////////////////////////////////////////////////////////////////////
+
+Atom *Atom::alt(const string &val)
+{
+    __alt = val;
+
+    return this;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Setter: __occ
+////////////////////////////////////////////////////////////////////////////////
+
+Atom *Atom::occ(const string &val)
+{
+    __occ = val;
+
+    return this;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Setter: __tempF
+////////////////////////////////////////////////////////////////////////////////
+
+Atom *Atom::tempF(const string &val)
+{
+    __tempF = val;
+
+    return this;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Setter: __ele
+////////////////////////////////////////////////////////////////////////////////
+
+Atom *Atom::ele(const string &val)
+{
+    __ele = val;
+
+    return this;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Setter: __chg
+////////////////////////////////////////////////////////////////////////////////
+
+Atom *Atom::chg(const string &val)
+{
+    __chg = val;
+
+    return this;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Setter: __owner
+////////////////////////////////////////////////////////////////////////////////
+
+Atom *Atom::owner(Residue *val)
+{
+    __owner = val;
+
+    return this;
 }
 
 
@@ -58,11 +255,11 @@ Atom::Atom(const string &atomName, int atomNum, const RowVector3d &atomCoord,
 string Atom::str() const
 {
     return (format("<Atom object: %d %s [%.3f, %.3f, %.3f], at 0x%p>") %
-        num                                                            %
-        name                                                           %
-        coord[0]                                                       %
-        coord[1]                                                       %
-        coord[2]                                                       %
+        __num                                                          %
+        __name                                                         %
+        __coord[0]                                                     %
+        __coord[1]                                                     %
+        __coord[2]                                                     %
         this
     ).str();
 }
@@ -74,7 +271,16 @@ string Atom::str() const
 
 Atom *Atom::copy()
 {
-    return new Atom(name, num, coord, alt, occ, tempF, ele, chg);
+    return new Atom(
+        __name,
+        __num,
+        __coord,
+        __alt,
+        __occ,
+        __tempF,
+        __ele,
+        __chg
+    );
 }
 
 
@@ -84,7 +290,7 @@ Atom *Atom::copy()
 
 double Atom::operator-(const Atom &rhs) const
 {
-    return (coord - rhs.coord).norm();
+    return (__coord - rhs.__coord).norm();
 }
 
 
@@ -97,56 +303,56 @@ Atom *Atom::dump(const string &dumpFilePath, const string &fileMode)
     string chainName, resName, resIns, dumpStr;
     int resNum = 0;
 
-    if (owner)
+    if (__owner)
     {
-        resName = owner->name;
-        resNum  = owner->num;
-        resIns  = owner->ins;
+        resName = __owner->name();
+        resNum  = __owner->num();
+        resIns  = __owner->ins();
 
-        if (owner->owner)
+        if (__owner->owner())
         {
-            chainName = owner->owner->name;
+            chainName = __owner->owner()->name();
         }
     }
 
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
 
-    if (isdigit(name[0]) || name.size() == 4)
+    if (isdigit(__name[0]) || __name.size() == 4)
     {
         fprintf(fo, "ATOM  %5d %-4s%1s%3s %1s%4d%1s   %8.3f%8.3f%8.3f%6s%6s          %2s%2s\n",
-            num,
-            name.c_str(),
-            alt.c_str(),
+            __num,
+            __name.c_str(),
+            __alt.c_str(),
             resName.c_str(),
             chainName.c_str(),
             resNum,
             resIns.c_str(),
-            coord[0],
-            coord[1],
-            coord[2],
-            occ.c_str(),
-            tempF.c_str(),
-            ele.c_str(),
-            chg.c_str()
+            __coord[0],
+            __coord[1],
+            __coord[2],
+            __occ.c_str(),
+            __tempF.c_str(),
+            __ele.c_str(),
+            __chg.c_str()
         );
     }
     else
     {
         fprintf(fo, "ATOM  %5d  %-3s%1s%3s %1s%4d%1s   %8.3f%8.3f%8.3f%6s%6s          %2s%2s\n",
-            num,
-            name.c_str(),
-            alt.c_str(),
+            __num,
+            __name.c_str(),
+            __alt.c_str(),
             resName.c_str(),
             chainName.c_str(),
             resNum,
             resIns.c_str(),
-            coord[0],
-            coord[1],
-            coord[2],
-            occ.c_str(),
-            tempF.c_str(),
-            ele.c_str(),
-            chg.c_str()
+            __coord[0],
+            __coord[1],
+            __coord[2],
+            __occ.c_str(),
+            __tempF.c_str(),
+            __ele.c_str(),
+            __chg.c_str()
         );
     }
 
@@ -165,19 +371,19 @@ string Atom::dumps()
     string chainName, resName, resIns, dumpStr, formatStr;
     int resNum = 0;
 
-    if (owner)
+    if (__owner)
     {
-        resName = owner->name;
-        resNum  = owner->num;
-        resIns  = owner->ins;
+        resName = __owner->name();
+        resNum  = __owner->num();
+        resIns  = __owner->ins();
 
-        if (owner->owner)
+        if (__owner->owner())
         {
-            chainName = owner->owner->name;
+            chainName = __owner->owner()->name();
         }
     }
 
-    if (isdigit(name[0]) || name.size() == 4)
+    if (isdigit(__name[0]) || __name.size() == 4)
     {
         formatStr = "ATOM  %5d %-4s%1s%3s %1s%4d%1s   %8.3f%8.3f%8.3f%6s%6s          %2s%2s\n";
     }
@@ -187,20 +393,20 @@ string Atom::dumps()
     }
 
     dumpStr = (format(formatStr) %
-        num                      %
-        name                     %
-        alt                      %
+        __num                    %
+        __name                   %
+        __alt                    %
         resName                  %
         chainName                %
         resNum                   %
         resIns                   %
-        coord[0]                 %
-        coord[1]                 %
-        coord[2]                 %
-        occ                      %
-        tempF                    %
-        ele                      %
-        chg
+        __coord[0]               %
+        __coord[1]               %
+        __coord[2]               %
+        __occ                    %
+        __tempF                  %
+        __ele                    %
+        __chg
     ).str();
 
     return dumpStr;

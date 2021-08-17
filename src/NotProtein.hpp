@@ -28,8 +28,8 @@ using std::find;
 template <typename SelfType, typename OwnerType>
 typename vector<SelfType *>::iterator __NotProtein<SelfType, OwnerType>::iter()
 {
-    return find(static_cast<SelfType *>(this)->owner->sub.begin(),
-        static_cast<SelfType *>(this)->owner->sub.end(),
+    return find(static_cast<SelfType *>(this)->owner()->sub().begin(),
+        static_cast<SelfType *>(this)->owner()->sub().end(),
         static_cast<SelfType *>(this));
 }
 
@@ -64,7 +64,7 @@ template <typename SelfType, typename OwnerType>
 typename vector<SelfType *>::iterator __NotProtein<SelfType, OwnerType>::remove(
     bool deteleBool)
 {
-    auto eraseIter = static_cast<SelfType *>(this)->owner->sub.erase(iter());
+    auto eraseIter = static_cast<SelfType *>(this)->owner()->sub().erase(iter());
 
     if (deteleBool)
     {

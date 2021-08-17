@@ -30,24 +30,84 @@ class Atom: public __NotProtein<Atom, Residue>
 {
 public:
 
-    // Attribute
-    string name;
-    int num;
-    RowVector3d coord;
-    string alt;
-    string occ;
-    string tempF;
-    string ele;
-    string chg;
-    Residue *owner;
-
-
     // Constructor
-    explicit Atom(const string &atomName = "", int atomNum = 0,
-        const RowVector3d &atomCoord = RowVector3d(0., 0., 0.),
-        const string &atomAltLoc = "", const string &atomOccupancy = "",
-        const string &atomTempFactor = "", const string &atomElement = "",
-        const string &atomCharge = "", Residue *atomOwner = nullptr);
+    explicit Atom(const string &name = "", int num = 0,
+        const RowVector3d &coord = RowVector3d::Zero(),
+        const string &alt = "", const string &occ = "",
+        const string &tempF = "", const string &ele = "",
+        const string &chg = "", Residue *owner = nullptr);
+
+
+    // Getter: __name
+    string &name();
+
+
+    // Getter: __num
+    int num();
+
+
+    // Getter: __coord
+    RowVector3d &coord();
+
+
+    // Getter: __alt
+    string &alt();
+
+
+    // Getter: __occ
+    string &occ();
+
+
+    // Getter: __tempF
+    string &tempF();
+
+
+    // Getter: __ele
+    string &ele();
+
+
+    // Getter: __chg
+    string &chg();
+
+
+    // Getter: __owner
+    Residue *owner();
+
+
+    // Setter: __name
+    Atom *name(const string &val);
+
+
+    // Setter: __num
+    Atom *num(int val);
+
+
+    // Setter: __coord
+    Atom *coord(const RowVector3d &val);
+
+
+    // Setter: __alt
+    Atom *alt(const string &val);
+
+
+    // Setter: __occ
+    Atom *occ(const string &val);
+
+
+    // Setter: __tempF
+    Atom *tempF(const string &val);
+
+
+    // Setter: __ele
+    Atom *ele(const string &val);
+
+
+    // Setter: __chg
+    Atom *chg(const string &val);
+
+
+    // Setter: __owner
+    Atom *owner(Residue *val);
 
 
     // str
@@ -68,6 +128,20 @@ public:
 
     // Dumps
     string dumps();
+
+
+private:
+
+    // Attribute
+    string __name;
+    int __num;
+    RowVector3d __coord;
+    string __alt;
+    string __occ;
+    string __tempF;
+    string __ele;
+    string __chg;
+    Residue *__owner;
 };
 
 
