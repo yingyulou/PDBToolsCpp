@@ -1,6 +1,6 @@
 /*
-    Predeclaration.h
-    ================
+    Predecl.h
+    =========
         Struct class predeclaration.
 */
 

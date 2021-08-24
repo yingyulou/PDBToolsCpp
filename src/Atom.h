@@ -7,6 +7,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 #include <Eigen/Dense>
 #include "NotProtein.h"
 #include "Residue.h"
@@ -19,6 +20,7 @@ namespace PDBTools
 ////////////////////////////////////////////////////////////////////////////////
 
 using std::string;
+using std::ostream;
 using Eigen::RowVector3d;
 
 
@@ -28,6 +30,10 @@ using Eigen::RowVector3d;
 
 class Atom: public __NotProtein<Atom, Residue>
 {
+    // Friend
+    friend ostream &operator<<(ostream &os, const Atom &atomObj);
+
+
 public:
 
     // Constructor
@@ -110,10 +116,6 @@ public:
     Atom *owner(Residue *val);
 
 
-    // str
-    string str() const;
-
-
     // Copy
     Atom *copy();
 
@@ -126,8 +128,8 @@ public:
     Atom *dump(const string &dumpFilePath, const string &fileMode = "w");
 
 
-    // Dumps
-    string dumps();
+    // Dump Str
+    string dumpStr();
 
 
 private:
@@ -142,6 +144,9 @@ private:
     string __ele;
     string __chg;
     Residue *__owner;
+
+    // str
+    string __str() const;
 };
 
 

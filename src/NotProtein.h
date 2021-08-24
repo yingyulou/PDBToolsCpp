@@ -27,15 +27,15 @@ class __NotProtein
 {
 public:
 
-    // iter
+    // Iter
     typename vector<SelfType *>::iterator iter();
 
 
-    // prev
+    // Prev
     SelfType *prev(int shiftLen = 1);
 
 
-    // next
+    // Next
     SelfType *next(int shiftLen = 1);
 
 

@@ -249,23 +249,6 @@ Atom *Atom::owner(Residue *val)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// str
-////////////////////////////////////////////////////////////////////////////////
-
-string Atom::str() const
-{
-    return (format("<Atom object: %d %s [%.3f, %.3f, %.3f], at 0x%p>") %
-        __num                                                          %
-        __name                                                         %
-        __coord[0]                                                     %
-        __coord[1]                                                     %
-        __coord[2]                                                     %
-        this
-    ).str();
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 // Copy
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -300,7 +283,7 @@ double Atom::operator-(const Atom &rhs) const
 
 Atom *Atom::dump(const string &dumpFilePath, const string &fileMode)
 {
-    string chainName, resName, resIns, dumpStr;
+    string chainName, resName, resIns;
     int resNum = 0;
 
     if (__owner)
@@ -363,12 +346,12 @@ Atom *Atom::dump(const string &dumpFilePath, const string &fileMode)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Dumps
+// Dump Str
 ////////////////////////////////////////////////////////////////////////////////
 
-string Atom::dumps()
+string Atom::dumpStr()
 {
-    string chainName, resName, resIns, dumpStr, formatStr;
+    string chainName, resName, resIns, formatStr;
     int resNum = 0;
 
     if (__owner)
@@ -392,24 +375,41 @@ string Atom::dumps()
         formatStr = "ATOM  %5d  %-3s%1s%3s %1s%4d%1s   %8.3f%8.3f%8.3f%6s%6s          %2s%2s\n";
     }
 
-    dumpStr = (format(formatStr) %
-        __num                    %
-        __name                   %
-        __alt                    %
-        resName                  %
-        chainName                %
-        resNum                   %
-        resIns                   %
-        __coord[0]               %
-        __coord[1]               %
-        __coord[2]               %
-        __occ                    %
-        __tempF                  %
-        __ele                    %
+    string pdbStr = (format(formatStr) %
+        __num                          %
+        __name                         %
+        __alt                          %
+        resName                        %
+        chainName                      %
+        resNum                         %
+        resIns                         %
+        __coord[0]                     %
+        __coord[1]                     %
+        __coord[2]                     %
+        __occ                          %
+        __tempF                        %
+        __ele                          %
         __chg
     ).str();
 
-    return dumpStr;
+    return pdbStr;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// str
+////////////////////////////////////////////////////////////////////////////////
+
+string Atom::__str() const
+{
+    return (format("<Atom object: %d %s [%.3f, %.3f, %.3f], at 0x%p>") %
+        __num                                                          %
+        __name                                                         %
+        __coord[0]                                                     %
+        __coord[1]                                                     %
+        __coord[2]                                                     %
+        this
+    ).str();
 }
 
 

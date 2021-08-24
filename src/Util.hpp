@@ -41,7 +41,7 @@ using std::pair;
 
 ostream &operator<<(ostream &os, const Protein &proObj)
 {
-    return os << proObj.str();
+    return os << proObj.__str();
 }
 
 
@@ -51,7 +51,7 @@ ostream &operator<<(ostream &os, const Protein &proObj)
 
 ostream &operator<<(ostream &os, const Chain &chainObj)
 {
-    return os << chainObj.str();
+    return os << chainObj.__str();
 }
 
 
@@ -61,7 +61,7 @@ ostream &operator<<(ostream &os, const Chain &chainObj)
 
 ostream &operator<<(ostream &os, const Residue &resObj)
 {
-    return os << resObj.str();
+    return os << resObj.__str();
 }
 
 
@@ -71,12 +71,12 @@ ostream &operator<<(ostream &os, const Residue &resObj)
 
 ostream &operator<<(ostream &os, const Atom &atomObj)
 {
-    return os << atomObj.str();
+    return os << atomObj.__str();
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// If An Atom Name is H
+// Is H
 ////////////////////////////////////////////////////////////////////////////////
 
 bool isH(const string &atomName)
@@ -86,7 +86,7 @@ bool isH(const string &atomName)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Split CompNum To ResNum + ResIns
+// Split CompNum
 ////////////////////////////////////////////////////////////////////////////////
 
 pair<int, string> splitCompNum(const string &compNumStr)
@@ -100,36 +100,36 @@ pair<int, string> splitCompNum(const string &compNumStr)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Get Dump String Of Struct Object List
+// Dump Str
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-string dumpls(const T &structPtrList)
+string dumpStr(const T &structPtrList)
 {
-    string dumpStr;
+    string pdbStr;
 
     for (auto structPtr: structPtrList)
     {
-        dumpStr += structPtr->dumps();
+        pdbStr += structPtr->dumpStr();
     }
 
-    return dumpStr;
+    return pdbStr;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Dump Struct Object List To PDB File
+// Dump
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-void dumpl(const T &structPtrList, const string &dumpFilePath,
+void dump(const T &structPtrList, const string &dumpFilePath,
     const string &fileMode = "w")
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
 
     for (auto structPtr: structPtrList)
     {
-        fprintf(fo, "%s", structPtr->dumps().c_str());
+        fprintf(fo, "%s", structPtr->dumpStr().c_str());
     }
 
     fclose(fo);
@@ -137,36 +137,36 @@ void dumpl(const T &structPtrList, const string &dumpFilePath,
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Get Fasta String Of Struct Object List
+// Fasta Str
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-string dumpFastals(const T &structPtrList)
+string fastaStr(const T &structPtrList)
 {
-    string dumpStr;
+    string fastaStr;
 
     for (auto structPtr: structPtrList)
     {
-        dumpStr += structPtr->fasta();
+        fastaStr += structPtr->fastaStr();
     }
 
-    return dumpStr;
+    return fastaStr;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Dump Struct Object List To Fasta File
+// Dump Fasta
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-void dumpFastal(const T &structPtrList, const string &dumpFilePath,
+void dumpFasta(const T &structPtrList, const string &dumpFilePath,
     const string &fileMode = "w")
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
 
     for (auto structPtr: structPtrList)
     {
-        fprintf(fo, "%s", structPtr->fasta().c_str());
+        fprintf(fo, "%s", structPtr->fastaStr().c_str());
     }
 
     fclose(fo);

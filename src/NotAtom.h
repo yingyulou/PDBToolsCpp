@@ -11,7 +11,7 @@
 #include <unordered_set>
 #include <initializer_list>
 #include <Eigen/Dense>
-#include "Predeclaration.h"
+#include "Predecl.h"
 
 namespace PDBTools
 {
@@ -38,44 +38,47 @@ class __NotAtom
 {
 public:
 
-    // Iterator
+    // Begin
     typename vector<SubType *>::iterator begin();
+
+
+    // End
     typename vector<SubType *>::iterator end();
 
 
-    // FilterAtoms
+    // Filter Atoms
     vector<Atom *> filterAtoms(
         const unordered_set<string> &atomNameSet = {"CA"});
 
 
-    // GetAtomsCoord
+    // Get Atoms Coord
     Matrix<double, Dynamic, 3> getAtomsCoord();
 
 
-    // FilterAtomsCoord
+    // Filter Atoms Coord
     Matrix<double, Dynamic, 3> filterAtomsCoord(
         const unordered_set<string> &atomNameSet = {"CA"});
 
 
-    // center
+    // Center
     RowVector3d center();
 
 
-    // MoveCenter
+    // Move Center
     SelfType *moveCenter();
 
 
-    // seq
+    // Seq
     string seq();
 
 
-    // fasta
-    string fasta(const string &titleStr = "");
+    // Fasta Str
+    string fastaStr(const string &titleStr = "");
 
 
-    // DumpFasta
+    // Dump Fasta
     SelfType *dumpFasta(const string &dumpFilePath,
-        const string &titleStr = "", const string &fileMode = "w");
+        const string &fileMode = "w", const string &titleStr = "");
 
 
     // Renum Residues
@@ -95,12 +98,12 @@ public:
         SubType *subPtr, bool copyBool = true);
 
 
-    // RemoveAlt
+    // Remove Alt
     SelfType *removeAlt();
 
 
-    // Dumps
-    string dumps();
+    // Dump Str
+    string dumpStr();
 };
 
 

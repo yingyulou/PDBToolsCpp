@@ -10,6 +10,7 @@
 #include <vector>
 #include <unordered_map>
 #include <utility>
+#include <iostream>
 #include <Eigen/Dense>
 #include "NotAtom.h"
 #include "NotProtein.h"
@@ -28,6 +29,7 @@ using std::string;
 using std::vector;
 using std::unordered_map;
 using std::pair;
+using std::ostream;
 using Eigen::RowVector3d;
 using Eigen::Matrix3d;
 
@@ -39,6 +41,10 @@ using Eigen::Matrix3d;
 class Residue: public __NotAtom<Residue, Atom>,
     public __NotProtein<Residue, Chain>
 {
+    // Friend
+    friend ostream &operator<<(ostream &os, const Residue &resObj);
+
+
 public:
 
     // Constructor
@@ -96,10 +102,6 @@ public:
 
     // Setter: compNum (by compNumPair)
     Residue *compNum(const pair<int, string> &compNumPair);
-
-
-    // str
-    string str() const;
 
 
     // Copy
@@ -192,6 +194,10 @@ private:
     string __ins;
     Chain *__owner;
     vector<Atom *> __sub;
+
+
+    // str
+    string __str() const;
 };
 
 

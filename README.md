@@ -6,9 +6,9 @@ PDB文件在PDBToolsCpp中将被解析为4个层级：Protein -> Chain -> Residu
 
 **本文档中所有的“角度”均指弧度制角度；所有的“旋转矩阵”均指右乘旋转矩阵。**
 
-**任何结构对象指针均定义于堆内存上，使用时需注意内存管理。（详见下文析构函数部分内容）**
+**任何结构对象均定义于堆内存上，使用时需注意内存管理。（详见下文析构函数部分内容）**
 
-## 编译及使用说明
+## 0. 编译及使用说明
 
 * 导入"PDBTools"头文件即可使用：
 
@@ -24,15 +24,15 @@ PDB文件在PDBToolsCpp中将被解析为4个层级：Protein -> Chain -> Residu
 * 编译器需支持GNU C++17或以上标准
 * PDBToolsCpp的所有接口均位于namespace PDBTools下
 
-## PDB文件解析函数
+## 1. PDB文件解析
 
-### 1. load
+### 1.1 load
 
 ``` Cpp
 Protein *load(const string &pdbFilePath, bool parseHBool = false);
 ```
 
-将PDB文件解析为Protein对象指针。
+将PDB文件解析为Protein对象。
 
 #### 参数：
 
@@ -41,7 +41,7 @@ Protein *load(const string &pdbFilePath, bool parseHBool = false);
 
 #### 返回值：
 
-* Protein对象指针
+* Protein对象
 
 #### 例：
 
@@ -49,13 +49,13 @@ Protein *load(const string &pdbFilePath, bool parseHBool = false);
 Protein *proPtr = load("xxxx.pdb");
 ```
 
-### 2. loadModel
+### 1.2 loadModel
 
 ``` Cpp
 vector<Protein *> loadModel(const string &pdbFilePath, bool parseHBool = false);
 ```
 
-将含有"MODEL"关键词的PDB文件解析为Protein对象指针vector。
+将含有"MODEL"关键词的PDB文件解析为Protein对象vector。
 
 #### 参数：
 
@@ -64,7 +64,7 @@ vector<Protein *> loadModel(const string &pdbFilePath, bool parseHBool = false);
 
 #### 返回值：
 
-* Protein对象指针构成的vector
+* Protein对象构成的vector
 
 #### 例：
 
@@ -72,343 +72,60 @@ vector<Protein *> loadModel(const string &pdbFilePath, bool parseHBool = false);
 vector<Protein *> proPtrList = loadModel("xxxx.pdb");
 ```
 
-## 属性
+## 2. Protein
 
-### Protein属性
+Protein类，用于表示一个蛋白。
 
-#### 1. name
-
-``` Cpp
-string name;
-```
-
-PDB文件名（不包含".pdb"）。
-
-#### 2. model
+### 2.1 Constructor
 
 ``` Cpp
-int model;
-```
-
-Model编号。
-
-如果当前Protein对象由Load函数解析得到，或由LoadModel函数解析得到，但其不属于一个Model，则此值为0。
-
-#### 3. sub
-
-``` Cpp
-vector<Chain *> sub;
-```
-
-this包含的所有链对象指针。
-
-### Chain属性
-
-#### 1. name
-
-``` Cpp
-string name;
-```
-
-链名。
-
-#### 2. owner
-
-``` Cpp
-Protein *owner;
-```
-
-this所属的Protein。
-
-#### 3. sub
-
-``` Cpp
-vector<Residue *> sub;
-```
-
-this包含的所有残基对象指针。
-
-### Residue属性
-
-#### 1. name
-
-``` Cpp
-string name;
-```
-
-残基名。
-
-#### 2. num
-
-``` Cpp
-int num;
-```
-
-残基编号。
-
-#### 3. ins
-
-``` Cpp
-string ins;
-```
-
-残基插入字符。
-
-#### 4. owner
-
-``` Cpp
-Chain *owner;
-```
-
-this所属的Chain。
-
-#### 5. sub
-
-``` Cpp
-vector<Atom *> sub;
-```
-
-this包含的所有原子对象指针。
-
-### Atom属性
-
-#### 1. name
-
-``` Cpp
-string name;
-```
-
-原子名。
-
-#### 2. num
-
-``` Cpp
-int num;
-```
-
-原子编号。
-
-#### 3. coord
-
-``` Cpp
-RowVector3d coord;
-```
-
-原子坐标。
-
-#### 4. alt
-
-``` Cpp
-string alt;
-```
-
-备用位置指示符。
-
-#### 5. occ
-
-``` Cpp
-string occ;
-```
-
-占有。
-
-#### 6. tempF
-
-``` Cpp
-string tempF;
-```
-
-温度因子。
-
-#### 7. ele
-
-``` Cpp
-string ele;
-```
-
-元素符号。
-
-#### 8. chg
-
-``` Cpp
-string chg;
-```
-
-电荷。
-
-#### 9. owner
-
-``` Cpp
-Residue *owner;
-```
-
-this所属的Residue。
-
-## 成员函数
-
-### 构造函数
-
-#### 1. Protein构造函数
-
-``` Cpp
-explicit Protein(const string &proteinID = "", int modelNum = 0);
+explicit Protein(const string &name = "", int model = 0);
 ```
 
 #### 参数：
 
-* proteinID：蛋白名，用于初始化name属性
-* modelNum：Model编号，用于初始化model属性
+* name：蛋白名
+* model：Model编号
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = new Protein("xxxx");
+auto proPtr = new Protein;
 ```
 
-#### 2. Chain构造函数
+### 2.2 Getter / Setter
 
 ``` Cpp
-explicit Chain(const string &chainName = "", Protein *chainOwner = nullptr);
+string          &name ();
+int              model();
+vector<Chain *> &sub  ();
+
+Protein *name (const string          &val);
+Protein *model(int                    val);
+Protein *sub  (const vector<Chain *> &val);
 ```
 
-#### 参数：
-
-* chainName：链名，用于初始化name属性
-* chainOwner：this的所属Protein，用于初始化owner属性。如果owner不为nullptr，则构造函数将自动在owner与this之间建立从属关系
+对应于Constructor各参数的Getter / Setter。
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = new Protein("xxxx");
-Chain *chainPtr = new Chain("X", proPtr);
+auto proPtr = new Protein;
+
+auto name  = proPtr->name();
+auto model = proPtr->model();
+auto sub   = proPtr->sub();
+
+proPtr
+    ->name ("")
+    ->model(0)
+    ->sub  ({});
 ```
 
-#### 3. Residue构造函数
-
-``` Cpp
-explicit Residue(const string &resName = "", int resNum = 0,
-    const string &resIns = "", Chain *resOwner = nullptr);
-```
-
-#### 参数：
-
-* resName：残基名，用于初始化name属性
-* resNum：残基编号，用于初始化num属性
-* resIns：残基插入字符，用于初始化ins属性
-* resOwner：this的所属Chain，用于初始化owner属性。如果owner不为nullptr，则构造函数将自动在owner与this之间建立从属关系
-
-#### 例：
-
-``` Cpp
-Chain *chainPtr = new Chain("X");
-Residue *resPtr = new Residue("XXX", 0, "", chainPtr);
-```
-
-#### 4. Atom构造函数
-
-``` Cpp
-explicit Atom(const string &atomName = "", int atomNum = 0,
-    const RowVector3d &atomCoord = RowVector3d(0., 0., 0.),
-    const string &atomAltLoc = "", const string &atomOccupancy = "",
-    const string &atomTempFactor = "", const string &atomElement = "",
-    const string &atomCharge = "", Residue *atomOwner = nullptr);
-```
-
-#### 参数：
-
-* atomName：原子名，用于初始化name属性
-* atomNum：原子编号，用于初始化num属性
-* atomCoord：原子坐标，用于初始化coord属性
-* atomAltLoc：备用位置指示符，用于初始化alt属性
-* atomOccupancy：占有，用于初始化occ属性
-* atomTempFactor：温度因子，用于初始化tempF属性
-* atomElement：元素符号，用于初始化ele属性
-* atomCharge：电荷，用于初始化chg属性
-* atomOwner：this的所属Residue，用于初始化owner属性。如果owner不为nullptr，则构造函数将自动在owner与this之间建立从属关系
-
-#### 例：
-
-``` Cpp
-Residue *resPtr = new Residue("X");
-Atom *atomPtr = new Atom("X", 0, RowVector3d(0., 0., 0.), "", "", "", "", "", resPtr);
-```
-
-### 析构函数
-
-任何结构对象的析构函数将递归地析构此结构对象所属的一切子结构对象。
-
-#### 例：
-
-``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-delete proPtr;
-```
-
-### 迭代器
-
-非Atom层级均支持委托至sub属性的迭代器：
-
-``` Cpp
-typename vector<Chain *>::iterator begin();
-typename vector<Chain *>::iterator end();
-
-typename vector<Residue *>::iterator begin();
-typename vector<Residue *>::iterator end();
-
-typename vector<Atom *>::iterator begin();
-typename vector<Atom *>::iterator end();
-```
-
-#### 例：
-
-``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-
-for (Chain *chainPtr: *proPtr)
-{
-    for (Residue *resPtr: *chainPtr)
-    {
-        for (Atom *atomPtr: *resPtr)
-        {
-            cout << *atomPtr << endl;
-        }
-    }
-}
-```
-
-### 所有层级公有成员函数
-
-#### 1. str
-
-``` Cpp
-string str() const;
-```
-
-得到结构对象的摘要信息。
-
-#### 参数：
-
-* void
-
-#### 返回值：
-
-* 结构对象的摘要信息
-
-#### 例：
-
-``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-
-cout << proPtr->str() << endl;  // 相当于cout << *proPtr << endl;
-```
-
-#### 2. copy
+### 2.3 copy
 
 ``` Cpp
 Protein *copy();
-Chain *copy();
-Residue *copy();
-Atom *copy();
 ```
 
 得到this的深拷贝。
@@ -424,26 +141,95 @@ Atom *copy();
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
-Protein *copyProPtr = proPtr->copy();
+auto copyProPtr = proPtr->copy();
 ```
 
-#### 3. dump
+### 2.4 getResidues
 
 ``` Cpp
-Protein *dump(const string &dumpFilePath, const string &fileMode = "w");
-Chain *dump(const string &dumpFilePath, const string &fileMode = "w");
-Residue *dump(const string &dumpFilePath, const string &fileMode = "w");
-Atom *dump(const string &dumpFilePath, const string &fileMode = "w");
+vector<Residue *> getResidues();
 ```
 
-将this输出到PDB文件。
+得到this包含的所有残基。
 
 #### 参数：
 
-* dumpFilePath：输出PDB文件路径
-* fileMode：文件句柄打开模式
+* void
+
+#### 返回值：
+
+* this包含的所有残基
+
+#### 例：
+
+``` Cpp
+auto proPtr = new Protein;
+
+auto resPtrList = proPtr->getResidues();
+```
+
+### 2.5 getAtoms
+
+``` Cpp
+vector<Atom *> getAtoms();
+```
+
+得到this包含的所有原子。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this包含的所有原子
+
+#### 例：
+
+``` Cpp
+auto proPtr = new Protein;
+
+auto atomPtrList = proPtr->getAtoms();
+```
+
+### 2.6 subMap
+
+``` Cpp
+unordered_map<string, Chain *> subMap();
+```
+
+得到this包含的所有链名 -> 链对象哈希表。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this包含的所有链名 -> 链对象哈希表
+
+#### 例：
+
+``` Cpp
+auto proPtr = new Protein;
+
+auto subMap = proPtr->subMap();
+```
+
+### 2.7 dump
+
+``` Cpp
+Protein *dump(const string &dumpFilePath, const string &fileMode = "w");
+```
+
+将this输出至PDB文件。
+
+#### 参数：
+
+* dumpFilePath：输出文件路径
+* fileMode：文件打开模式
 
 #### 返回值：
 
@@ -452,75 +238,36 @@ Atom *dump(const string &dumpFilePath, const string &fileMode = "w");
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
-proPtr->dump("xxxx.pdb");
+proPtr->dump("xxx.pdb");
 ```
 
-#### 4. dumps
+### 2.8 begin, end
 
 ``` Cpp
-string dumps();
+typename vector<Chain *>::iterator begin();
+typename vector<Chain *>::iterator end();
 ```
 
-得到字符串形式的PDB文件内容。
-
-#### 参数：
-
-* void
-
-#### 返回值：
-
-* 字符串形式的PDB文件内容
+委托至sub()的迭代器。
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
-string dumpStr = proPtr->dumps();
+for (auto chainPtr: *proPtr);
 ```
 
-### 非Atom层级公有成员函数
-
-#### 1. getResidues
+### 2.9 filterAtoms
 
 ``` Cpp
-vector<Residue *> getResidues();
-```
-
-跨层级直接返回this包含的所有残基对象指针。
-
-#### 参数：
-
-* void
-
-#### 返回值：
-
-* this包含的所有残基对象指针
-
-#### 例：
-
-``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-
-vector<Residue *> resPtrList = proPtr->getResidues();
-```
-
-#### 2. getAtoms, filterAtoms, getAtomsCoord, filterAtomsCoord
-
-``` Cpp
-vector<Atom *> getAtoms();
-
-vector<Atom *> filterAtoms(const unordered_set<string> &atomNameSet = {"CA"});
-
-Matrix<double, Dynamic, 3> getAtomsCoord();
-
-Matrix<double, Dynamic, 3> filterAtomsCoord(
+vector<Atom *> filterAtoms(
     const unordered_set<string> &atomNameSet = {"CA"});
 ```
 
-跨层级直接返回this包含的所有，或按原子的name属性筛选后的原子对象指针列表或原子坐标矩阵。
+按原子名筛选this包含的所有原子。
 
 #### 参数：
 
@@ -528,26 +275,72 @@ Matrix<double, Dynamic, 3> filterAtomsCoord(
 
 #### 返回值：
 
-* 原子对象指针列表/原子坐标矩阵
+* 筛选出的所有原子
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
-vector<Atom *> atomPtrList = proPtr->getAtoms();
-vector<Atom *> filterAtomPtrList = proPtr->filterAtoms({"N", "CA", "C"});
-vector<RowVector3d *> atomCoordList = proPtr->getAtomsCoord();
-vector<RowVector3d *> filterAtomCoordList = proPtr->filterAtomsCoord({"N", "CA", "C"});
+auto atomPtrList = proPtr->filterAtoms();
 ```
 
-#### 3. center
+### 2.10 getAtomsCoord
+
+``` Cpp
+Matrix<double, Dynamic, 3> getAtomsCoord();
+```
+
+得到this包含的所有原子坐标。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this包含的所有原子坐标
+
+#### 例：
+
+``` Cpp
+auto proPtr = new Protein;
+
+auto coordArray = proPtr->getAtomsCoord();
+```
+
+### 2.11 filterAtomsCoord
+
+``` Cpp
+Matrix<double, Dynamic, 3> filterAtomsCoord(
+    const unordered_set<string> &atomNameSet = {"CA"});
+```
+
+按原子名筛选this包含的所有原子坐标。
+
+#### 参数：
+
+* atomNameSet：原子名集合
+
+#### 返回值：
+
+* 筛选出的所有原子坐标
+
+#### 例：
+
+``` Cpp
+auto proPtr = new Protein;
+
+auto coordArray = proPtr->filterAtomsCoord();
+```
+
+### 2.12 center
 
 ``` Cpp
 RowVector3d center();
 ```
 
-得到this的所有原子坐标的几何中心。
+得到this包含的所有原子坐标的几何中心。
 
 #### 参数：
 
@@ -555,25 +348,23 @@ RowVector3d center();
 
 #### 返回值：
 
-* this的所有原子坐标的几何中心
+* this包含的所有原子坐标的几何中心
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
-RowVector3d centerCoord = proPtr->center();
+auto centerCoord = proPtr->center();
 ```
 
-#### 4. moveCenter
+### 2.13 moveCenter
 
 ``` Cpp
 Protein *moveCenter();
-Chain *moveCenter();
-Residue *moveCenter();
 ```
 
-将this的所有原子坐标减去center()向量。
+平移this的所有原子，使得其几何中心变为原点。
 
 #### 参数：
 
@@ -586,18 +377,18 @@ Residue *moveCenter();
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
 proPtr->moveCenter();
 ```
 
-#### 5. seq
+### 2.14 seq
 
 ``` Cpp
 string seq();
 ```
 
-得到this的残基序列。
+得到this的序列。
 
 #### 参数：
 
@@ -605,60 +396,54 @@ string seq();
 
 #### 返回值：
 
-* this的残基序列
+* this的序列
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
-string seqStr = proPtr->seq();
+auto seqStr = proPtr->seq();
 ```
 
-#### 6. fasta
+### 2.15 fastaStr
 
 ``` Cpp
-string fasta(const string &titleStr = "");
+string fastaStr(const string &titleStr = "");
 ```
 
-得到字符串形式的Fasta文件内容。
+得到this的Fasta格式字符串。
 
 #### 参数：
 
-* titleStr：Fasta文件的标题内容，如果传入空字符串，则标题将被设置为this->name
+* titleStr：Fasta标题。如果传入空字符串，则将自动为其分配一个标题
 
 #### 返回值：
 
-* 字符串形式的Fasta文件内容
+* this的Fasta格式字符串
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
-string fastaStr = proPtr->fasta("xxxx");
+auto fastaStr = proPtr->fastaStr();
 ```
 
-#### 7. dumpFasta
+### 2.16 dumpFasta
 
 ``` Cpp
 Protein *dumpFasta(const string &dumpFilePath,
-    const string &titleStr = "", const string &fileMode = "w");
-
-Chain *dumpFasta(const string &dumpFilePath,
-    const string &titleStr = "", const string &fileMode = "w");
-
-Residue *dumpFasta(const string &dumpFilePath,
-    const string &titleStr = "", const string &fileMode = "w");
+    const string &fileMode = "w", const string &titleStr = "");
 ```
 
-将this输出到Fasta文件。
+将this输出至Fasta文件。
 
 #### 参数：
 
-* dumpFilePath：输出Fasta文件路径
-* titleStr：Fasta文件的标题内容，如果传入空字符串，则标题将被设置为this->name
-* fileMode：文件句柄打开模式
+* dumpFilePath：输出文件路径
+* fileMode：文件打开模式
+* titleStr：Fasta标题。如果传入空字符串，则将自动为其分配一个标题
 
 #### 返回值：
 
@@ -667,24 +452,18 @@ Residue *dumpFasta(const string &dumpFilePath,
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
-proPtr->dumpFasta("xxxx.fasta", "xxxx");
+proPtr->dumpFasta("xxx.fasta");
 ```
 
-#### 8. renumResidues, renumAtoms
+### 2.17 renumResidues
 
 ``` Cpp
 Protein *renumResidues(int startNum = 1);
-Chain *renumResidues(int startNum = 1);
-Residue *renumResidues(int startNum = 1);
-
-Protein *renumAtoms(int startNum = 1);
-Chain *renumAtoms(int startNum = 1);
-Residue *renumAtoms(int startNum = 1);
 ```
 
-对this的所有残基/原子进行重编号。
+对this包含的所有残基进行重编号。
 
 #### 参数：
 
@@ -697,32 +476,22 @@ Residue *renumAtoms(int startNum = 1);
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
-proPtr->renumResidues()->renumAtoms();
+proPtr->renumResidues();
 ```
 
-#### 9. append, insert
+### 2.18 renumAtoms
 
 ``` Cpp
-Protein *append(Chain *subPtr, copyBool = true);
-Chain *append(Residue *subPtr, copyBool = true);
-Residue *append(Atom *subPtr, copyBool = true);
-
-Protein *insert(typename vector<Chain *>::iterator insertIter, Chain *subPtr, copyBool = true);
-Chain *insert(typename vector<Residue *>::iterator insertIter, Residue *subPtr, copyBool = true);
-Residue *insert(typename vector<Atom *>::iterator insertIter, Atom *subPtr, copyBool = true);
+Protein *renumAtoms(int startNum = 1);
 ```
 
-为this追加/插入子结构。
-
-所有添加至this的子结构都是原结构对象指针调用Copy成员函数得到的拷贝，且会与this建立从属关系。如果copyBool被设定为false，则拷贝不会发生。
+对this包含的所有原子进行重编号。
 
 #### 参数：
 
-* subPtr：this对应的子结构对象指针
-* insertIter：插入位置迭代器
-* copyBool：是否拷贝subPtr
+* startNum：起始编号
 
 #### 返回值：
 
@@ -731,22 +500,72 @@ Residue *insert(typename vector<Atom *>::iterator insertIter, Atom *subPtr, copy
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
-proPtr->
-    append(proPtr->sub[0])->
-    insert(proPtr->begin(), proPtr->sub[0]);
+proPtr->renumAtoms();
 ```
 
-#### 10. removeAlt
+### 2.19 append
+
+``` Cpp
+Protein *append(Chain *subPtr, bool copyBool = true);
+```
+
+在sub()的末尾插入链对象。
+
+#### 参数：
+
+* subPtr：链对象
+* copyBool：是否需要插入一个拷贝的链对象
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto proPtr   = new Protein;
+auto chainPtr = new Chain;
+
+proPtr->append(chainPtr);
+```
+
+### 2.20 insert
+
+``` Cpp
+Protein *insert(typename vector<Chain *>::iterator insertIter,
+    Chain *subPtr, bool copyBool = true);
+```
+
+在sub()的任意位置插入链对象。
+
+#### 参数：
+
+* insertIter：插入位置迭代器
+* subPtr：链对象
+* copyBool：是否需要插入一个拷贝的链对象
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto proPtr   = new Protein;
+auto chainPtr = new Chain;
+
+proPtr->insert(proPtr->sub().begin(), chainPtr);
+```
+
+### 2.21 removeAlt
 
 ``` Cpp
 Protein *removeAlt();
-Chain *removeAlt();
-Residue *removeAlt();
 ```
 
-遍历this包含的所有原子对象指针，如果原子对象指针的alt属性为""，则忽略，如果为"A"，则修改为""，否则删除当前原子。
+遍历this包含的所有原子对象，如果原子对象的alt()为""，则忽略；如果为"A"，则修改为""；否则，删除当前原子。
 
 #### 参数：
 
@@ -759,29 +578,18 @@ Residue *removeAlt();
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
 proPtr->removeAlt();
 ```
 
-#### 11. subMap
+### 2.22 dumpStr
 
 ``` Cpp
-// Protein
-unordered_map<string, Chain *> subMap();
-
-// Chain
-unordered_map<string, Residue *> subMap();
-
-// Residue
-unordered_map<string, Atom *> subMap();
+string dumpStr();
 ```
 
-对于Protein对象：得到this包含的所有链名 -> 链对象指针哈希表。
-
-对于Chain对象：得到this包含的所有完整残基编号 -> 残基对象指针哈希表。
-
-对于Residue对象：得到this包含的所有原子名 -> 原子对象指针哈希表。
+得到this的PDB格式的字符串。
 
 #### 参数：
 
@@ -789,31 +597,572 @@ unordered_map<string, Atom *> subMap();
 
 #### 返回值：
 
-* 对于Protein对象：this包含的所有链名 -> 链对象指针哈希表
-* 对于Chain对象：this包含的所有完整残基编号 -> 残基对象指针哈希表
-* 对于Residue对象：this包含的所有原子名 -> 原子对象指针哈希表
+* this的PDB格式的字符串
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
-unordered_map<string, Chain *> proSubMap = proPtr->subMap();
-unordered_map<string, Residue *> chainSubMap = proPtr->sub[0]->subMap();
-unordered_map<string, Atom *> resSubMap = proPtr->sub[0]->sub[0]->subMap();
+auto pdbStr = proPtr->dumpStr();
 ```
 
-### 非Protein层级公有成员函数
+### 2.23 Destructor
 
-#### 1. iter
+``` Cpp
+~Protein();
+```
+
+#### 例：
+
+``` Cpp
+auto proPtr = new Protein;
+
+delete proPtr;
+```
+
+## 3. Chain
+
+Chain类，用于表示一条链。
+
+### 3.1 Constructor
+
+``` Cpp
+explicit Chain(const string &name = "", Protein *owner = nullptr);
+```
+
+#### 参数：
+
+* name：链名
+* owner：this所属的Protein
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+```
+
+### 3.2 Getter / Setter
+
+``` Cpp
+string            &name ();
+Protein           *owner();
+vector<Residue *> &sub  ();
+
+Chain *name (const string            &val);
+Chain *owner(Protein                 *val);
+Chain *sub  (const vector<Residue *> &val);
+```
+
+对应于Constructor各参数的Getter / Setter。
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+auto name  = chainPtr->name();
+auto owner = chainPtr->owner();
+auto sub   = chainPtr->sub();
+
+chainPtr
+    ->name ("")
+    ->owner(nullptr)
+    ->sub  ({});
+```
+
+### 3.3 copy
+
+``` Cpp
+Chain *copy();
+```
+
+得到this的深拷贝。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this的深拷贝
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+auto copyChainPtr = chainPtr->copy();
+```
+
+### 3.4 getResidues
+
+``` Cpp
+vector<Residue *> getResidues();
+```
+
+得到this包含的所有残基。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this包含的所有残基
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+auto resPtrList = chainPtr->getResidues();
+```
+
+### 3.5 getAtoms
+
+``` Cpp
+vector<Atom *> getAtoms();
+```
+
+得到this包含的所有原子。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this包含的所有原子
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+auto atomPtrList = chainPtr->getAtoms();
+```
+
+### 3.6 subMap
+
+``` Cpp
+unordered_map<string, Residue *> subMap();
+```
+
+得到this包含的所有残基完整编号 -> 残基对象哈希表。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this包含的所有残基完整编号 -> 残基对象哈希表
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+auto subMap = chainPtr->subMap();
+```
+
+### 3.7 dump
+
+``` Cpp
+Chain *dump(const string &dumpFilePath, const string &fileMode = "w");
+```
+
+将this输出至PDB文件。
+
+#### 参数：
+
+* dumpFilePath：输出文件路径
+* fileMode：文件打开模式
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+chainPtr->dump("xxx.pdb");
+```
+
+### 3.8 begin, end
+
+``` Cpp
+typename vector<Residue *>::iterator begin();
+typename vector<Residue *>::iterator end();
+```
+
+委托至sub()的迭代器。
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+for (auto resPtr: *chainPtr);
+```
+
+### 3.9 filterAtoms
+
+``` Cpp
+vector<Atom *> filterAtoms(
+    const unordered_set<string> &atomNameSet = {"CA"});
+```
+
+按原子名筛选this包含的所有原子。
+
+#### 参数：
+
+* atomNameSet：原子名集合
+
+#### 返回值：
+
+* 筛选出的所有原子
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+auto atomPtrList = chainPtr->filterAtoms();
+```
+
+### 3.10 getAtomsCoord
+
+``` Cpp
+Matrix<double, Dynamic, 3> getAtomsCoord();
+```
+
+得到this包含的所有原子坐标。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this包含的所有原子坐标
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+auto coordArray = chainPtr->getAtomsCoord();
+```
+
+### 3.11 filterAtomsCoord
+
+``` Cpp
+Matrix<double, Dynamic, 3> filterAtomsCoord(
+    const unordered_set<string> &atomNameSet = {"CA"});
+```
+
+按原子名筛选this包含的所有原子坐标。
+
+#### 参数：
+
+* atomNameSet：原子名集合
+
+#### 返回值：
+
+* 筛选出的所有原子坐标
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+auto coordArray = chainPtr->filterAtomsCoord();
+```
+
+### 3.12 center
+
+``` Cpp
+RowVector3d center();
+```
+
+得到this包含的所有原子坐标的几何中心。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this包含的所有原子坐标的几何中心
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+auto centerCoord = chainPtr->center();
+```
+
+### 3.13 moveCenter
+
+``` Cpp
+Chain *moveCenter();
+```
+
+平移this的所有原子，使得其几何中心变为原点。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+chainPtr->moveCenter();
+```
+
+### 3.14 seq
+
+``` Cpp
+string seq();
+```
+
+得到this的序列。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this的序列
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+auto seqStr = chainPtr->seq();
+```
+
+### 3.15 fastaStr
+
+``` Cpp
+string fastaStr(const string &titleStr = "");
+```
+
+得到this的Fasta格式字符串。
+
+#### 参数：
+
+* titleStr：Fasta标题。如果传入空字符串，则将自动为其分配一个标题
+
+#### 返回值：
+
+* this的Fasta格式字符串
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+auto fastaStr = chainPtr->fastaStr();
+```
+
+### 3.16 dumpFasta
+
+``` Cpp
+Chain *dumpFasta(const string &dumpFilePath,
+    const string &fileMode = "w", const string &titleStr = "");
+```
+
+将this输出至Fasta文件。
+
+#### 参数：
+
+* dumpFilePath：输出文件路径
+* fileMode：文件打开模式
+* titleStr：Fasta标题。如果传入空字符串，则将自动为其分配一个标题
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+chainPtr->dumpFasta("xxx.fasta");
+```
+
+### 3.17 renumResidues
+
+``` Cpp
+Chain *renumResidues(int startNum = 1);
+```
+
+对this包含的所有残基进行重编号。
+
+#### 参数：
+
+* startNum：起始编号
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+chainPtr->renumResidues();
+```
+
+### 3.18 renumAtoms
+
+``` Cpp
+Chain *renumAtoms(int startNum = 1);
+```
+
+对this包含的所有原子进行重编号。
+
+#### 参数：
+
+* startNum：起始编号
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+chainPtr->renumAtoms();
+```
+
+### 3.19 append
+
+``` Cpp
+Chain *append(Residue *subPtr, bool copyBool = true);
+```
+
+在sub()的末尾插入残基对象。
+
+#### 参数：
+
+* subPtr：残基对象
+* copyBool：是否需要插入一个拷贝的残基对象
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+auto resPtr   = new Residue;
+
+chainPtr->append(resPtr);
+```
+
+### 3.20 insert
+
+``` Cpp
+Chain *insert(typename vector<Residue *>::iterator insertIter,
+    Residue *subPtr, bool copyBool = true);
+```
+
+在sub()的任意位置插入链对象。
+
+#### 参数：
+
+* insertIter：插入位置迭代器
+* subPtr：残基对象
+* copyBool：是否需要插入一个拷贝的残基对象
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+auto resPtr   = new Residue;
+
+chainPtr->insert(chainPtr->sub().begin(), resPtr);
+```
+
+### 3.21 removeAlt
+
+``` Cpp
+Chain *removeAlt();
+```
+
+遍历this包含的所有原子对象，如果原子对象的alt()为""，则忽略；如果为"A"，则修改为""；否则，删除当前原子。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+chainPtr->removeAlt();
+```
+
+### 3.22 dumpStr
+
+``` Cpp
+string dumpStr();
+```
+
+得到this的PDB格式的字符串。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this的PDB格式的字符串
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+auto pdbStr = chainPtr->dumpStr();
+```
+
+### 3.23 iter
 
 ``` Cpp
 typename vector<Chain *>::iterator iter();
-typename vector<Residue *>::iterator iter();
-typename vector<Atom *>::iterator iter();
 ```
 
-得到this在this->owner->sub中的位置迭代器。
+得到this在this->owner()->sub()中的迭代器。
 
 #### 参数：
 
@@ -821,122 +1170,203 @@ typename vector<Atom *>::iterator iter();
 
 #### 返回值：
 
-* this在this->owner->sub中的位置迭代器
+* this在this->owner()->sub()中的迭代器
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto chainPtr = new Chain;
 
-vector<Chain *>::iterator iterInOwner = proPtr->sub[0]->iter();  // begin
+auto chainIter = chainPtr->iter();
 ```
 
-#### 2. prev, next
+### 3.24 prev
 
 ``` Cpp
 Chain *prev(int shiftLen = 1);
-Residue *prev(int shiftLen = 1);
-Atom *prev(int shiftLen = 1);
-
-Chain *next(int shiftLen = 1);
-Residue *next(int shiftLen = 1);
-Atom *next(int shiftLen = 1);
 ```
 
-得到this在this->owner->sub中的前/后第N个同级结构对象指针
+得到this在this->owner()->sub()中的向前第N个链对象。
 
 #### 参数：
 
-* shiftLen：偏移量
+* shiftLen：向前偏移量
 
 #### 返回值：
 
-* this的前/后第N个同级结构对象指针
+* this在this->owner()->sub()中的向前第N个链对象
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto chainPtr = new Chain;
 
-Chain *chainPtr = proPtr->sub[1];
-Chain *preChainPtr = chainPtr->prev();
-Chain *nextChainPtr = chainPtr->next();
-chainPtr->prev(2);  // Error!
+auto prevChainPtr = chainPtr->prev();
 ```
 
-#### 3. remove
+### 3.25 next
+
+``` Cpp
+Chain *next(int shiftLen = 1);
+```
+
+得到this在this->owner()->sub()中的向后第N个链对象。
+
+#### 参数：
+
+* shiftLen：向后偏移量
+
+#### 返回值：
+
+* this在this->owner()->sub()中的向后第N个链对象
+
+#### 例：
+
+``` Cpp
+auto chainPtr = new Chain;
+
+auto nextChainPtr = chainPtr->next();
+```
+
+### 3.26 remove
 
 ``` Cpp
 typename vector<Chain *>::iterator remove(bool deteleBool = true);
-typename vector<Residue *>::iterator remove(bool deteleBool = true);
-typename vector<Atom *>::iterator remove(bool deteleBool = true);
 ```
 
-从this->owner->sub中删除并析构this。
+从this->owner()->sub()中删除this。
 
 #### 参数：
 
-* deteleBool：如果deteleBool参数为false，则不会析构this
+* deteleBool：是否需要析构this
 
 #### 返回值：
 
-* 删除this后，this的后继元素位置迭代器
+* this的后继元素迭代器
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto chainPtr = new Chain;
 
-proPtr->sub[0]->remove();
+chainPtr->remove();
 ```
 
-### Protein的其他成员函数
+### 3.27 Destructor
 
-无。
+``` Cpp
+~Chain();
+```
 
-### Chain的其他成员函数
+#### 例：
 
-无。
+``` Cpp
+auto chainPtr = new Chain;
 
-### Residue的其他成员函数
+delete chainPtr;
+```
 
-#### 1. compNum
+## 4. Residue
+
+Residue类，用于表示一个残基。
+
+### 4.1 Constructor
+
+``` Cpp
+explicit Residue(const string &name = "", int num = 0,
+    const string &ins = "", Chain *owner = nullptr);
+```
+
+#### 参数：
+
+* name：残基名
+* num：残基编号
+* ins：残基插入字符
+* owner：this所属的Chain
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+```
+
+### 4.2 Getter / Setter
+
+``` Cpp
+string         &name ();
+int             num  ();
+string         &ins  ();
+Chain          *owner();
+vector<Atom *> &sub  ();
+
+Residue *name (const string         &val);
+Residue *num  (int                   val);
+Residue *ins  (const string         &val);
+Residue *owner(Chain                *val);
+Residue *sub  (const vector<Atom *> &val);
+```
+
+对应于Constructor各参数的Getter / Setter。
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto name  = resPtr->name();
+auto num   = resPtr->num();
+auto ins   = resPtr->ins();
+auto owner = resPtr->owner();
+auto sub   = resPtr->sub();
+
+resPtr
+    ->name ("")
+    ->num  (0)
+    ->ins  ("")
+    ->owner(nullptr)
+    ->sub  ({});
+```
+
+### 4.3 compNum
 
 ``` Cpp
 string compNum();
-Residue *compNum(int resNum, const string &resIns = "");
+
+Residue *compNum(int num, const string &ins = "");
 Residue *compNum(const pair<int, string> &compNumPair);
 ```
 
-同时获取/设定残基对象的num + ins属性。
+直接获取或设定残基完整编号。
 
 #### 参数：
 
-* resNum：残基编号
-* resIns：残基插入字符
-* compNumPair：残基编号 + 残基插入字符
+* num：残基编号
+* ins：残基插入字符
+* compNumPair：残基完整编号
 
 #### 返回值：
 
-* 残基对象的num + ins属性字符串（对于无参版本）/this（对于有参版本）
+* 残基完整编号 / this
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto resPtr = new Residue;
 
-Residue *resPtr = proPtr->sub[0]->sub[0];
-resPtr->compNum(0, "");
-string compNum = resPtr->compNum();
+auto compNum = resPtr->compNum();
+
+resPtr
+    ->compNum(0, "")
+    ->compNum({0, ""});
 ```
 
-#### 2. coordMap
+### 4.4 copy
 
 ``` Cpp
-unordered_map<string, RowVector3d *> coordMap();
+Residue *copy();
 ```
 
-得到this包含的所有原子名 -> 原子坐标指针哈希表。
+得到this的深拷贝。
 
 #### 参数：
 
@@ -944,56 +1374,113 @@ unordered_map<string, RowVector3d *> coordMap();
 
 #### 返回值：
 
-* this包含的所有原子名 -> 原子坐标指针哈希表
+* this的深拷贝
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-Residue *resPtr = proPtr->sub[0]->sub[0];
+auto resPtr = new Residue;
 
-unordered_map<string, RowVector3d *> coordMap = resPtr->coordMap();
+auto copyResPtr = resPtr->copy();
 ```
 
-#### 3. 二面角相关
-
-详见下文。
-
-### Atom的其他成员函数
-
-#### 1. operator-
+### 4.5 getResidues
 
 ``` Cpp
-double operator-(const Atom &rhs) const;
+vector<Residue *> getResidues();
 ```
 
-计算两原子间的欧几里得距离。
+得到this包含的所有残基。
 
 #### 参数：
 
-* rhs：另一个原子对象
+* void
 
 #### 返回值：
 
-* 两原子间的欧几里得距离
+* this包含的所有残基
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto resPtr = new Residue;
 
-double atomDis = *proPtr->sub[0]->sub[0]->sub[0] - *proPtr->sub[0]->sub[0]->sub[1];
+resPtrList = resPtr->getResidues();
 ```
 
-## 残基二面角
+### 4.6 getAtoms
 
-残基对象实现了若干对蛋白主/侧链二面角进行计算和旋转相关的成员函数（即以下所有成员函数的this都专指Residue *）。
+``` Cpp
+vector<Atom *> getAtoms();
+```
 
-### 主链二面角
+得到this包含的所有原子。
 
-**对主链进行操作时请注意：N端与C端的两个残基分别无法进行二面角Phi与Psi的计算或调整（因为这两个二面角不存在）。如果出现上述情况，则将抛出out_of_range异常。**
+#### 参数：
 
-#### 1. calcBBDihedralAngle
+* void
+
+#### 返回值：
+
+* this包含的所有原子
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto atomPtrList = resPtr->getAtoms();
+```
+
+### 4.7 subMap
+
+``` Cpp
+unordered_map<string, Atom *> subMap();
+```
+
+得到this包含的所有原子名 -> 原子对象哈希表。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this包含的所有原子名 -> 原子对象哈希表
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto subMap = resPtr->subMap();
+```
+
+### 4.8 coordMap
+
+``` Cpp
+unordered_map<string, RowVector3d> coordMap();
+```
+
+得到this包含的所有原子名 -> 原子坐标哈希表。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this包含的所有原子名 -> 原子坐标哈希表
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto coordMap = resPtr->coordMap();
+```
+
+### 4.9 calcBBDihedralAngle
 
 ``` Cpp
 double calcBBDihedralAngle(DIH dihedralEnum);
@@ -1012,29 +1499,25 @@ double calcBBDihedralAngle(DIH dihedralEnum);
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-Residue *resPtr = proPtr->sub[0]->sub[1];
+auto resPtr = new Residue;
 
-double dihedralAngle = resPtr->calcBBDihedralAngle(DIH::PHI);
+auto dihedralAngle = resPtr->calcBBDihedralAngle(DIH::L);
 ```
 
-#### 2. calcBBRotationMatrixByDeltaAngle, calcBBRotationMatrixByTargetAngle
+### 4.10 calcBBRotationMatrixByDeltaAngle
 
 ``` Cpp
 pair<RowVector3d, Matrix3d> calcBBRotationMatrixByDeltaAngle(
     DIH dihedralEnum, SIDE sideEnum, double deltaAngle);
-
-pair<RowVector3d, Matrix3d> calcBBRotationMatrixByTargetAngle(
-    DIH dihedralEnum, SIDE sideEnum, double targetAngle);
 ```
 
-以旋转角度/目标角度作为参数，计算主链旋转矩阵。
+以旋转角度作为参数，计算主链旋转矩阵。
 
 #### 参数：
 
 * dihedralEnum：主链二面角种类。DIH::PHI或DIH::L表示Phi；DIH::PSI或DIH::R表示Psi
 * sideEnum：转动侧。SIDE::N或SIDE::L表示转动N端；SIDE::C或SIDE::R表示转动C端
-* deltaAngle/targetAngle：旋转角度/目标角度
+* deltaAngle：旋转角度
 
 #### 返回值：
 
@@ -1044,20 +1527,46 @@ pair<RowVector3d, Matrix3d> calcBBRotationMatrixByTargetAngle(
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-Residue *resPtr = proPtr->sub[0]->sub[1];
+auto resPtr = new Residue;
 
 auto [moveCoord, rotationMatrix] = resPtr->calcBBRotationMatrixByDeltaAngle(DIH::PHI, SIDE::N, 1.);
+```
+
+### 4.11 calcBBRotationMatrixByTargetAngle
+
+``` Cpp
+pair<RowVector3d, Matrix3d> calcBBRotationMatrixByTargetAngle(
+    DIH dihedralEnum, SIDE sideEnum, double targetAngle);
+```
+
+以目标角度作为参数，计算主链旋转矩阵。
+
+#### 参数：
+
+* dihedralEnum：主链二面角种类。DIH::PHI或DIH::L表示Phi；DIH::PSI或DIH::R表示Psi
+* sideEnum：转动侧。SIDE::N或SIDE::L表示转动N端；SIDE::C或SIDE::R表示转动C端
+* targetAngle：目标角度
+
+#### 返回值：
+
+* 旋转前/后平移向量
+* 旋转矩阵
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
 auto [moveCoord, rotationMatrix] = resPtr->calcBBRotationMatrixByTargetAngle(DIH::PHI, SIDE::N, 0.);
 ```
 
-#### 3. getBBRotationAtomPtr
+### 4.12 getBBRotationAtomPtr
 
 ``` Cpp
 vector<Atom *> getBBRotationAtomPtr(DIH dihedralEnum, SIDE sideEnum);
 ```
 
-获取以给定参数进行旋转时，所有需要旋转的原子对象指针列表。
+获取以给定参数进行旋转时，所有需要旋转的原子对象列表。
 
 #### 参数：
 
@@ -1066,34 +1575,30 @@ vector<Atom *> getBBRotationAtomPtr(DIH dihedralEnum, SIDE sideEnum);
 
 #### 返回值：
 
-* 所有需要旋转的原子对象指针列表
+* 所有需要旋转的原子对象列表
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-Residue *resPtr = proPtr->sub[0]->sub[1];
+auto resPtr = new Residue;
 
-vector<Atom *> rotationAtomPtrList = resPtr->getBBRotationAtomPtr(DIH::PHI, SIDE::N);
+auto rotationAtomPtrList = resPtr->getBBRotationAtomPtr(DIH::PHI, SIDE::N);
 ```
 
-#### 4. rotateBBDihedralAngleByDeltaAngle, rotateBBDihedralAngleByTargetAngle
+### 4.13 rotateBBDihedralAngleByDeltaAngle
 
 ``` Cpp
 Residue *rotateBBDihedralAngleByDeltaAngle(DIH dihedralEnum,
     SIDE sideEnum, double deltaAngle);
-
-Residue *rotateBBDihedralAngleByTargetAngle(DIH dihedralEnum,
-    SIDE sideEnum, double targetAngle);
 ```
 
-以旋转角度/目标角度作为参数直接旋转主链。
+以旋转角度作为参数直接旋转主链。
 
 #### 参数：
 
 * dihedralEnum：主链二面角种类。DIH::PHI或DIH::L表示Phi；DIH::PSI或DIH::R表示Psi
 * sideEnum：转动侧。SIDE::N或SIDE::L表示转动N端；SIDE::C或SIDE::R表示转动C端
-* deltaAngle/targetAngle：旋转角度/目标角度
+* deltaAngle：旋转角度
 
 #### 返回值：
 
@@ -1102,18 +1607,39 @@ Residue *rotateBBDihedralAngleByTargetAngle(DIH dihedralEnum,
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-Residue *resPtr = proPtr->sub[0]->sub[1];
+auto resPtr = new Residue;
 
 resPtr->rotateBBDihedralAngleByDeltaAngle(DIH::PHI, SIDE::N, 1.);
+```
+
+### 4.14 rotateBBDihedralAngleByTargetAngle
+
+``` Cpp
+Residue *rotateBBDihedralAngleByTargetAngle(DIH dihedralEnum,
+    SIDE sideEnum, double targetAngle);
+```
+
+以目标角度作为参数直接旋转主链。
+
+#### 参数：
+
+* dihedralEnum：主链二面角种类。DIH::PHI或DIH::L表示Phi；DIH::PSI或DIH::R表示Psi
+* sideEnum：转动侧。SIDE::N或SIDE::L表示转动N端；SIDE::C或SIDE::R表示转动C端
+* targetAngle：目标角度
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
 resPtr->rotateBBDihedralAngleByTargetAngle(DIH::PHI, SIDE::N, 0.);
 ```
 
-### 侧链二面角
-
-**对侧链进行调整时请注意：GLY、ALA残基由于不存在侧链二面角，不可调用下列成员函数。且不可使用不存在的侧链二面角索引值调用下列成员函数。如果出现上述情况，则将抛出out_of_range异常。**
-
-#### 1. calcSCDihedralAngle
+### 4.15 calcSCDihedralAngle
 
 ``` Cpp
 double calcSCDihedralAngle(int dihedralIdx);
@@ -1132,20 +1658,16 @@ double calcSCDihedralAngle(int dihedralIdx);
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-Residue *resPtr = proPtr->sub[0]->sub[1];
+auto resPtr = new Residue;
 
 double dihedralAngle = resPtr->calcSCDihedralAngle(0);
 ```
 
-#### 2. calcSCRotationMatrixByDeltaAngle, calcSCRotationMatrixByTargetAngle
+### 4.16 calcSCRotationMatrixByDeltaAngle
 
 ``` Cpp
 pair<RowVector3d, Matrix3d> calcSCRotationMatrixByDeltaAngle(
     int dihedralIdx, double deltaAngle);
-
-pair<RowVector3d, Matrix3d> calcSCRotationMatrixByTargetAngle(
-    int dihedralIdx, double targetAngle);
 ```
 
 以旋转角度/目标角度作为参数，计算侧链旋转矩阵。
@@ -1153,7 +1675,7 @@ pair<RowVector3d, Matrix3d> calcSCRotationMatrixByTargetAngle(
 #### 参数：
 
 * dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
-* deltaAngle/targetAngle：旋转角度/目标角度
+* deltaAngle：旋转角度
 
 #### 返回值：
 
@@ -1163,20 +1685,45 @@ pair<RowVector3d, Matrix3d> calcSCRotationMatrixByTargetAngle(
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-Residue *resPtr = proPtr->sub[0]->sub[1];
+auto resPtr = new Residue;
 
 auto [moveCoord, rotationMatrix] = resPtr->calcSCRotationMatrixByDeltaAngle(0, 1.);
+```
+
+### 4.17 calcSCRotationMatrixByTargetAngle
+
+``` Cpp
+pair<RowVector3d, Matrix3d> calcSCRotationMatrixByTargetAngle(
+    int dihedralIdx, double targetAngle);
+```
+
+以目标角度作为参数，计算侧链旋转矩阵。
+
+#### 参数：
+
+* dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
+* targetAngle：目标角度
+
+#### 返回值：
+
+* 旋转前/后平移向量
+* 旋转矩阵
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
 auto [moveCoord, rotationMatrix] = resPtr->calcSCRotationMatrixByTargetAngle(0, 0.);
 ```
 
-#### 3. getSCRotationAtomPtr
+### 4.18 getSCRotationAtomPtr
 
 ``` Cpp
 vector<Atom *> getSCRotationAtomPtr(int dihedralIdx);
 ```
 
-获取以给定侧链二面角进行旋转时，所有需要旋转的原子对象指针列表。
+获取以给定侧链二面角进行旋转时，所有需要旋转的原子对象列表。
 
 #### 参数：
 
@@ -1184,31 +1731,28 @@ vector<Atom *> getSCRotationAtomPtr(int dihedralIdx);
 
 #### 返回值：
 
-* 所有需要旋转的原子对象指针列表
+* 所有需要旋转的原子对象列表
 
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-Residue *resPtr = proPtr->sub[0]->sub[1];
+auto resPtr = new Residue;
 
-vector<Atom *> rotationAtomPtrList = resPtr->getSCRotationAtomPtr(0);
+auto rotationAtomPtrList = resPtr->getSCRotationAtomPtr(0);
 ```
 
-#### 4. rotateSCDihedralAngleByDeltaAngle, rotateSCDihedralAngleByTargetAngle
+### 4.19 rotateSCDihedralAngleByDeltaAngle
 
 ``` Cpp
 Residue *rotateSCDihedralAngleByDeltaAngle(int dihedralIdx, double deltaAngle);
-
-Residue *rotateSCDihedralAngleByTargetAngle(int dihedralIdx, double targetAngle);
 ```
 
-以旋转角度/目标角度作为参数直接旋转侧链。
+以旋转角度作为参数直接旋转侧链。
 
 #### 参数：
 
 * dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
-* deltaAngle/targetAngle：旋转角度/目标角度
+* deltaAngle：旋转角度
 
 #### 返回值：
 
@@ -1217,16 +1761,816 @@ Residue *rotateSCDihedralAngleByTargetAngle(int dihedralIdx, double targetAngle)
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
-Residue *resPtr = proPtr->sub[0]->sub[1];
+auto resPtr = new Residue;
 
 resPtr->rotateSCDihedralAngleByDeltaAngle(0, 1.);
+```
+
+### 4.20 rotateSCDihedralAngleByTargetAngle
+
+``` Cpp
+Residue *rotateSCDihedralAngleByTargetAngle(int dihedralIdx, double targetAngle);
+```
+
+以目标角度作为参数直接旋转侧链。
+
+#### 参数：
+
+* dihedralIdx：侧链二面角索引值。索引值从0开始编号，最大允许索引值根据残基种类而不同。索引值表示某个残基从主链到侧链方向上的第N个侧链二面角
+* targetAngle：目标角度
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
 resPtr->rotateSCDihedralAngleByTargetAngle(0, 0.);
 ```
 
-## 数学函数
+### 4.21 dump
 
-### 1. degrees, radians
+``` Cpp
+Residue *dump(const string &dumpFilePath, const string &fileMode = "w");
+```
+
+将this输出至PDB文件。
+
+#### 参数：
+
+* dumpFilePath：输出文件路径
+* fileMode：文件打开模式
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+resPtr->dump("xxx.pdb");
+```
+
+### 4.22 begin, end
+
+``` Cpp
+typename vector<Atom *>::iterator begin();
+typename vector<Atom *>::iterator end();
+```
+
+委托至sub()的迭代器。
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+for (auto atomPtr: *resPtr);
+```
+
+### 4.23 filterAtoms
+
+``` Cpp
+vector<Atom *> filterAtoms(
+    const unordered_set<string> &atomNameSet = {"CA"});
+```
+
+按原子名筛选this包含的所有原子。
+
+#### 参数：
+
+* atomNameSet：原子名集合
+
+#### 返回值：
+
+* 筛选出的所有原子
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto atomPtrList = resPtr->filterAtoms();
+```
+
+### 4.24 getAtomsCoord
+
+``` Cpp
+Matrix<double, Dynamic, 3> getAtomsCoord();
+```
+
+得到this包含的所有原子坐标。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this包含的所有原子坐标
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto coordArray = resPtr->getAtomsCoord();
+```
+
+### 4.25 filterAtomsCoord
+
+``` Cpp
+Matrix<double, Dynamic, 3> filterAtomsCoord(
+    const unordered_set<string> &atomNameSet = {"CA"});
+```
+
+按原子名筛选this包含的所有原子坐标。
+
+#### 参数：
+
+* atomNameSet：原子名集合
+
+#### 返回值：
+
+* 筛选出的所有原子坐标
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto coordArray = resPtr->filterAtomsCoord();
+```
+
+### 4.26 center
+
+``` Cpp
+RowVector3d center();
+```
+
+得到this包含的所有原子坐标的几何中心。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this包含的所有原子坐标的几何中心
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto centerCoord = resPtr->center();
+```
+
+### 4.27 moveCenter
+
+``` Cpp
+Residue *moveCenter();
+```
+
+平移this的所有原子，使得其几何中心变为原点。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+resPtr->moveCenter();
+```
+
+### 4.28 seq
+
+``` Cpp
+string seq();
+```
+
+得到this的序列。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this的序列
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto seqStr = resPtr->seq();
+```
+
+### 4.29 fastaStr
+
+``` Cpp
+string fastaStr(const string &titleStr = "");
+```
+
+得到this的Fasta格式字符串。
+
+#### 参数：
+
+* titleStr：Fasta标题。如果传入空字符串，则将自动为其分配一个标题
+
+#### 返回值：
+
+* this的Fasta格式字符串
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto fastaStr = resPtr->fastaStr();
+```
+
+### 4.30 dumpFasta
+
+``` Cpp
+Residue *dumpFasta(const string &dumpFilePath,
+    const string &fileMode = "w", const string &titleStr = "");
+```
+
+将this输出至Fasta文件。
+
+#### 参数：
+
+* dumpFilePath：输出文件路径
+* fileMode：文件打开模式
+* titleStr：Fasta标题。如果传入空字符串，则将自动为其分配一个标题
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+resPtr->dumpFasta("xxx.fasta");
+```
+
+### 4.31 renumResidues
+
+``` Cpp
+Residue *renumResidues(int startNum = 1);
+```
+
+对this包含的所有残基进行重编号。
+
+#### 参数：
+
+* startNum：起始编号
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+resPtr->renumResidues();
+```
+
+### 4.32 renumAtoms
+
+``` Cpp
+Residue *renumAtoms(int startNum = 1);
+```
+
+对this包含的所有原子进行重编号。
+
+#### 参数：
+
+* startNum：起始编号
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+resPtr->renumAtoms();
+```
+
+### 4.33 append
+
+``` Cpp
+Residue *append(Atom *subPtr, bool copyBool = true);
+```
+
+在sub()的末尾插入原子对象。
+
+#### 参数：
+
+* subPtr：原子对象
+* copyBool：是否需要插入一个拷贝的原子对象
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto resPtr  = new Residue;
+auto atomPtr = new Atom;
+
+resPtr->append(atomPtr);
+```
+
+### 4.34 insert
+
+``` Cpp
+Residue *insert(typename vector<Atom *>::iterator insertIter,
+    Atom *subPtr, bool copyBool = true);
+```
+
+在sub()的任意位置插入原子对象。
+
+#### 参数：
+
+* insertIter：插入位置迭代器
+* subPtr：原子对象
+* copyBool：是否需要插入一个拷贝的原子对象
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto resPtr  = new Residue;
+auto atomPtr = new Atom;
+
+resPtr->insert(resPtr->sub().begin(), atomPtr);
+```
+
+### 4.35 removeAlt
+
+``` Cpp
+Residue *removeAlt();
+```
+
+遍历this包含的所有原子对象，如果原子对象的alt()为""，则忽略；如果为"A"，则修改为""；否则，删除当前原子。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+resPtr->removeAlt();
+```
+
+### 4.36 dumpStr
+
+``` Cpp
+string dumpStr();
+```
+
+得到this的PDB格式的字符串。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this的PDB格式的字符串
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto pdbStr = resPtr->dumpStr();
+```
+
+### 4.37 iter
+
+``` Cpp
+typename vector<Residue *>::iterator iter();
+```
+
+得到this在this->owner()->sub()中的迭代器。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this在this->owner()->sub()中的迭代器
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto resIter = resPtr->iter();
+```
+
+### 4.38 prev
+
+``` Cpp
+Residue *prev(int shiftLen = 1);
+```
+
+得到this在this->owner()->sub()中的向前第N个残基对象。
+
+#### 参数：
+
+* shiftLen：向前偏移量
+
+#### 返回值：
+
+* this在this->owner()->sub()中的向前第N个残基对象
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto prevResPtr = resPtr->prev();
+```
+
+### 4.39 next
+
+``` Cpp
+Residue *next(int shiftLen = 1);
+```
+
+得到this在this->owner()->sub()中的向后第N个残基对象。
+
+#### 参数：
+
+* shiftLen：向后偏移量
+
+#### 返回值：
+
+* this在this->owner()->sub()中的向后第N个残基对象
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+auto nextResPtr = resPtr->next();
+```
+
+### 4.40 remove
+
+``` Cpp
+typename vector<Residue *>::iterator remove(bool deteleBool = true);
+```
+
+从this->owner()->sub()中删除this。
+
+#### 参数：
+
+* deteleBool：是否需要析构this
+
+#### 返回值：
+
+* this的后继元素迭代器
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+resPtr->remove();
+```
+
+### 4.41 Destructor
+
+``` Cpp
+~Residue();
+```
+
+#### 例：
+
+``` Cpp
+auto resPtr = new Residue;
+
+delete resPtr;
+```
+
+## 5. Atom
+
+Atom类，用于表示一个原子。
+
+### 5.1 Constructor
+
+``` Cpp
+explicit Atom(const string &name = "", int num = 0,
+    const RowVector3d &coord = RowVector3d::Zero(),
+    const string &alt = "", const string &occ = "",
+    const string &tempF = "", const string &ele = "",
+    const string &chg = "", Residue *owner = nullptr);
+```
+
+#### 参数：
+
+* name：原子名
+* num：原子编号
+* coord：原子坐标
+* alt：备用位置指示符
+* occ：占有
+* tempF：温度因子
+* ele：元素符号
+* chg：电荷
+* owner：this所属的Residue
+
+#### 例：
+
+``` Cpp
+auto atomPtr = new Atom;
+```
+
+### 5.2 Getter / Setter
+
+``` Cpp
+string      &name ();
+int          num  ();
+RowVector3d &coord();
+string      &alt  ();
+string      &occ  ();
+string      &tempF();
+string      &ele  ();
+string      &chg  ();
+Residue     *owner();
+
+Atom *name (const string      &val);
+Atom *num  (int                val);
+Atom *coord(const RowVector3d &val);
+Atom *alt  (const string      &val);
+Atom *occ  (const string      &val);
+Atom *tempF(const string      &val);
+Atom *ele  (const string      &val);
+Atom *chg  (const string      &val);
+Atom *owner(Residue           *val);
+```
+
+对应于Constructor各参数的Getter / Setter。
+
+#### 例：
+
+``` Cpp
+auto atomPtr = new Atom;
+
+auto name  = atomPtr->name ();
+auto num   = atomPtr->num  ();
+auto coord = atomPtr->coord();
+auto alt   = atomPtr->alt  ();
+auto occ   = atomPtr->occ  ();
+auto tempF = atomPtr->tempF();
+auto ele   = atomPtr->ele  ();
+auto chg   = atomPtr->chg  ();
+auto owner = atomPtr->owner();
+
+atomPtr
+    ->name ("")
+    ->num  (0)
+    ->coord(RowVector3d::Zero())
+    ->alt  ("")
+    ->occ  ("")
+    ->tempF("")
+    ->ele  ("")
+    ->chg  ("")
+    ->owner(nullptr);
+```
+
+### 5.3 copy
+
+``` Cpp
+Atom *copy();
+```
+
+得到this的深拷贝。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this的深拷贝
+
+#### 例：
+
+``` Cpp
+auto atomPtr = new Atom;
+
+auto copyAtomPtr = atomPtr->copy();
+```
+
+### 5.4 operator-
+
+``` Cpp
+double operator-(const Atom &rhs) const;
+```
+
+计算两原子间的欧几里得距离。
+
+#### 参数：
+
+* rhs：另一个原子对象
+
+#### 返回值：
+
+* 两原子间的欧几里得距离
+
+#### 例：
+
+``` Cpp
+auto atomPtr = new Atom;
+
+cout << *atomPtr - *atomPtr;
+```
+
+### 5.5 dump
+
+``` Cpp
+Atom *dump(const string &dumpFilePath, const string &fileMode = "w");
+```
+
+将this输出至PDB文件。
+
+#### 参数：
+
+* dumpFilePath：输出文件路径
+* fileMode：文件打开模式
+
+#### 返回值：
+
+* this
+
+#### 例：
+
+``` Cpp
+auto atomPtr = new Atom;
+
+atomPtr->dump("xxx.pdb");
+```
+
+### 5.6 dumpStr
+
+``` Cpp
+string dumpStr();
+```
+
+得到this的PDB格式的字符串。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this的PDB格式的字符串
+
+#### 例：
+
+``` Cpp
+auto atomPtr = new Atom;
+
+auto pdbStr = atomPtr->dumpStr();
+```
+
+### 5.7 iter
+
+``` Cpp
+typename vector<Atom *>::iterator iter();
+```
+
+得到this在this->owner()->sub()中的迭代器。
+
+#### 参数：
+
+* void
+
+#### 返回值：
+
+* this在this->owner()->sub()中的迭代器
+
+#### 例：
+
+``` Cpp
+auto atomPtr = new Atom;
+
+auto atomIter = atomPtr->iter();
+```
+
+### 5.8 prev
+
+``` Cpp
+Atom *prev(int shiftLen = 1);
+```
+
+得到this在this->owner()->sub()中的向前第N个残基对象。
+
+#### 参数：
+
+* shiftLen：向前偏移量
+
+#### 返回值：
+
+* this在this->owner()->sub()中的向前第N个残基对象
+
+#### 例：
+
+``` Cpp
+auto atomPtr = new Atom;
+
+auto prevAtomPtr = atomPtr->prev();
+```
+
+### 5.9 next
+
+``` Cpp
+Atom *next(int shiftLen = 1);
+```
+
+得到this在this->owner()->sub()中的向后第N个残基对象。
+
+#### 参数：
+
+* shiftLen：向后偏移量
+
+#### 返回值：
+
+* this在this->owner()->sub()中的向后第N个残基对象
+
+#### 例：
+
+``` Cpp
+auto atomPtr = new Atom;
+
+auto nextAtomPtr = atomPtr->next();
+```
+
+### 5.10 remove
+
+``` Cpp
+typename vector<Atom *>::iterator remove(bool deteleBool = true);
+```
+
+从this->owner()->sub()中删除this。
+
+#### 参数：
+
+* deteleBool：是否需要析构this
+
+#### 返回值：
+
+* this的后继元素迭代器
+
+#### 例：
+
+``` Cpp
+auto atomPtr = new Atom;
+
+atomPtr->remove();
+```
+
+## 6. 数学函数
+
+### 6.1 degrees, radians
 
 ``` Cpp
 double degrees(double radiansAngle);
@@ -1250,7 +2594,7 @@ cout << degrees(1.) << endl;
 cout << radians(1.) << endl;
 ```
 
-### 2. calcVectorAngle
+### 6.2 calcVectorAngle
 
 ``` Cpp
 double calcVectorAngle(const RowVector3d &coordA, const RowVector3d &coordB);
@@ -1269,10 +2613,10 @@ double calcVectorAngle(const RowVector3d &coordA, const RowVector3d &coordB);
 #### 例：
 
 ``` Cpp
-double vectorAngle = calcVectorAngle(RowVector3d(1., 2., 3.), RowVector3d(4., 5., 6.));
+auto vectorAngle = calcVectorAngle(RowVector3d(1., 2., 3.), RowVector3d(4., 5., 6.));
 ```
 
-### 3. calcRotationMatrix
+### 6.3 calcRotationMatrix
 
 ``` Cpp
 Matrix3d calcRotationMatrix(const RowVector3d &rotationAxis, double rotationAngle);
@@ -1292,10 +2636,10 @@ Matrix3d calcRotationMatrix(const RowVector3d &rotationAxis, double rotationAngl
 #### 例：
 
 ``` Cpp
-Matrix3d rotationMatrix = calcRotationMatrix(RowVector3d(1., 2., 3.), 1.);
+auto rotationMatrix = calcRotationMatrix(RowVector3d(1., 2., 3.), 1.);
 ```
 
-### 4. calcRotationMatrixByTwoVector
+### 6.4 calcRotationMatrixByTwoVector
 
 ``` Cpp
 Matrix3d calcRotationMatrixByTwoVector(const RowVector3d &refCoord,
@@ -1315,11 +2659,11 @@ Matrix3d calcRotationMatrixByTwoVector(const RowVector3d &refCoord,
 #### 例：
 
 ``` Cpp
-Matrix3d rotationMatrix = calcRotationMatrixByTwoVector(
+auto rotationMatrix = calcRotationMatrixByTwoVector(
     RowVector3d(1., 2., 3.), RowVector3d(4., 5., 6.));
 ```
 
-### 5. calcDihedralAngle
+### 6.5 calcDihedralAngle
 
 ``` Cpp
 double calcDihedralAngle(
@@ -1340,11 +2684,12 @@ double calcDihedralAngle(
 #### 例：
 
 ``` Cpp
-double dihedralAngle = calcDihedralAngle(RowVector3d(1., 2., 3.), RowVector3d(4., 5., 6.),
+auto dihedralAngle = calcDihedralAngle(
+    RowVector3d(1., 2., 3.), RowVector3d(4., 5., 6.),
     RowVector3d(7., 8., 9.), RowVector3d(10., 11., 12.));
 ```
 
-### 6. calcRMSD
+### 6.6 calcRMSD
 
 ``` Cpp
 double calcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
@@ -1369,10 +2714,10 @@ Matrix<double, 2, 3> coordArrayA, coordArrayB;
 coordArrayA << 1., 2., 3., 4., 5., 6.;
 coordArrayB << 7., 8., 9., 10., 11., 12.;
 
-double rmsdValue = calcRMSD(coordArrayA, coordArrayB);
+auto rmsdValue = calcRMSD(coordArrayA, coordArrayB);
 ```
 
-### 7. calcSuperimposeRotationMatrix
+### 6.7 calcSuperimposeRotationMatrix
 
 ``` Cpp
 tuple<RowVector3d, Matrix3d, RowVector3d> calcSuperimposeRotationMatrix(
@@ -1409,7 +2754,7 @@ cout << ((srcCoordArray.rowwise() - srcCenterCoord) * rotationMatrix).rowwise() 
     tarCenterCoord << endl << tarCoordArray << endl;
 ```
 
-### 8. calcRMSDAfterSuperimpose
+### 6.8 calcRMSDAfterSuperimpose
 
 ``` Cpp
 double calcRMSDAfterSuperimpose(
@@ -1437,45 +2782,18 @@ Matrix<double, 2, 3> srcCoordArray, tarCoordArray;
 srcCoordArray << 1., 2., 3., 4., 5., 6.;
 tarCoordArray << 7., 8., 9., 10., 11., 12.;
 
-double rmsdValue = calcRMSDAfterSuperimpose(tarCoordArray, srcCoordArray);
+auto rmsdValue = calcRMSDAfterSuperimpose(tarCoordArray, srcCoordArray);
 ```
 
-## 常量
+## 7. 其他函数
 
-### 1. DIH
-
-``` Cpp
-enum class DIH;
-```
-
-枚举变量，表示主链二面角种类。DIH::PHI或DIH::L表示Phi，DIH::PSI或DIH::R表示Psi。
-
-### 2. SIDE
-
-``` Cpp
-enum class SIDE;
-```
-
-枚举变量，表示主链二面角旋转时的转动侧。SIDE::N或SIDE::L表示转动N端，SIDE::C或SIDE::R表示转动C端。
-
-### 3. RESIDUE_NAME_THREE_TO_ONE_MAP, RESIDUE_NAME_ONE_TO_THREE_MAP
-
-``` Cpp
-const unordered_map<string, string> RESIDUE_NAME_THREE_TO_ONE_MAP;
-const unordered_map<string, string> RESIDUE_NAME_ONE_TO_THREE_MAP;
-```
-
-三字母，单字母残基名的相互转换哈希表。
-
-## 其他函数
-
-### 1. operator<<
+### 7.1 operator<<
 
 ``` Cpp
 ostream &operator<<(ostream &os, const Protein &proObj);
-ostream &operator<<(ostream &os, const Chain &chainObj);
+ostream &operator<<(ostream &os, const Chain   &chainObj);
 ostream &operator<<(ostream &os, const Residue &resObj);
-ostream &operator<<(ostream &os, const Atom &atomObj);
+ostream &operator<<(ostream &os, const Atom    &atomObj);
 ```
 
 任何结构对象均可用通过operator\<\<输出此对象的信息摘要。
@@ -1483,7 +2801,7 @@ ostream &operator<<(ostream &os, const Atom &atomObj);
 #### 参数：
 
 * os：输出流对象
-* structPtr：任何层级对象
+* proObj, chainObj, resObj, atomObj：任何层级对象
 
 #### 返回值：
 
@@ -1492,12 +2810,12 @@ ostream &operator<<(ostream &os, const Atom &atomObj);
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+auto proPtr = new Protein;
 
 cout << *proPtr << endl;
 ```
 
-### 2. isH
+### 7.2 isH
 
 ``` Cpp
 bool isH(const string &atomName);
@@ -1519,7 +2837,7 @@ bool isH(const string &atomName);
 bool isHBool = isH("1H");
 ```
 
-### 3. splitCompNum
+### 7.3 splitCompNum
 
 ``` Cpp
 pair<int, string> splitCompNum(const string &compNumStr);
@@ -1539,35 +2857,49 @@ pair<int, string> splitCompNum(const string &compNumStr);
 #### 例：
 
 ``` Cpp
-int resNum;
-string resIns;
-
 auto [resNum, resIns] = splitCompNum("1A");
 ```
 
-### 4. dumpl
+### 7.4 dumpStr
 
 ``` Cpp
-void dumpl(const vector<Protein *> &structPtrList,
-    const string &dumpFilePath, const string &fileMode = "w");
-
-void dumpl(const vector<Chain *> &structPtrList,
-    const string &dumpFilePath, const string &fileMode = "w");
-
-void dumpl(const vector<Residue *> &structPtrList,
-    const string &dumpFilePath, const string &fileMode = "w");
-
-void dumpl(const vector<Atom *> &structPtrList,
-    const string &dumpFilePath, const string &fileMode = "w");
+template <typename T>
+string dumpStr(const T &structPtrList);
 ```
 
-将任何对象指针构成的vector输出到PDB文件。
+得到任意结构对象列表的PDB格式的字符串。
 
 #### 参数：
 
-* structPtrList：任何层级对象指针构成的vector
-* dumpFilePath：输出PDB文件路径
-* fileMode：文件句柄打开模式
+* structPtrList：任意结构对象列表
+
+#### 返回值：
+
+* 任意结构对象列表的PDB格式的字符串
+
+#### 例：
+
+``` Cpp
+auto proPtr = new Protein;
+
+auto pdbStr = dumpStr(proPtr->sub());
+```
+
+### 7.5 dump
+
+``` Cpp
+template <typename T>
+void dump(const T &structPtrList, const string &dumpFilePath,
+    const string &fileMode = "w")
+```
+
+将任意结构对象列表输出至PDB文件。
+
+#### 参数：
+
+* structPtrList：任意结构对象列表
+* dumpFilePath：输出文件路径
+* fileMode：文件打开模式
 
 #### 返回值：
 
@@ -1576,58 +2908,51 @@ void dumpl(const vector<Atom *> &structPtrList,
 #### 例：
 
 ``` Cpp
-vector<Protein *> proPtrList = loadModel("xxxx.pdb");
+auto proPtr = new Protein;
 
-dumpl(proPtrList, "xxxx.pdb");
+dump(proPtr->sub(), "xxx.pdb");
 ```
 
-### 5. dumpls
+### 7.6 fastaStr
 
 ``` Cpp
-string dumpls(const vector<Protein *> &structPtrList);
-string dumpls(const vector<Chain *> &structPtrList);
-string dumpls(const vector<Residue *> &structPtrList);
-string dumpls(const vector<Atom *> &structPtrList);
+template <typename T>
+string fastaStr(const T &structPtrList)
 ```
 
-得到字符串形式的Dumpl函数输出内容。
+得到任意结构对象列表的Fasta格式字符串。
 
 #### 参数：
 
-* structPtrList：任何层级对象指针构成的vector
+* structPtrList：任意结构对象列表
 
 #### 返回值：
 
-* 字符串形式的Dumpl函数输出内容
+* 任意结构对象列表的Fasta格式字符串
 
 #### 例：
 
 ``` Cpp
-vector<Protein *> proPtrList = loadModel("xxxx.pdb");
+auto proPtr = new Protein;
 
-string dumpStr = dumpls(proPtrList);
+auto fastaStr = fastaStr(proPtr->sub());
 ```
 
-### 6. dumpFastal
+### 7.7 dumpFasta
 
 ``` Cpp
-void dumpFastal(const vector<Protein *> &structPtrList,
-    const string &dumpFilePath, const string &fileMode = "w");
-
-void dumpFastal(const vector<Chain *> &structPtrList,
-    const string &dumpFilePath, const string &fileMode = "w");
-
-void dumpFastal(const vector<Residue *> &structPtrList,
-    const string &dumpFilePath, const string &fileMode = "w");
+template <typename T>
+void dumpFasta(const T &structPtrList, const string &dumpFilePath,
+    const string &fileMode = "w")
 ```
 
-将非Atom对象指针构成的vector输出到Fasta文件。
+将任意结构对象列表输出至Fasta文件。
 
 #### 参数：
 
-* structPtrList：非Atom对象指针构成的vector
-* dumpFilePath：输出Fasta文件路径
-* fileMode：文件句柄打开模式
+* structPtrList：任意结构对象列表
+* dumpFilePath：输出文件路径
+* fileMode：文件打开模式
 
 #### 返回值：
 
@@ -1636,57 +2961,58 @@ void dumpFastal(const vector<Residue *> &structPtrList,
 #### 例：
 
 ``` Cpp
-vector<Protein *> proPtrList = loadModel("xxxx.pdb");
+auto proPtr = new Protein;
 
-dumpFastal(proPtrList, "xxxx.fasta");
+dumpFasta(proPtr->sub(), "xxx.fasta");
 ```
 
-### 7. dumpFastals
+## 8. 常量
+
+### 8.1 DIH
 
 ``` Cpp
-string dumpFastals(const vector<Protein *> &structPtrList);
-string dumpFastals(const vector<Chain *> &structPtrList);
-string dumpFastals(const vector<Residue *> &structPtrList);
+enum class DIH;
 ```
 
-得到字符串形式的DumpFastal函数输出内容。
+枚举变量，表示主链二面角种类。DIH::PHI或DIH::L表示Phi，DIH::PSI或DIH::R表示Psi。
 
-#### 参数：
-
-* structPtrList：非Atom对象指针构成的vector
-
-#### 返回值：
-
-* 字符串形式的DumpFastal函数输出内容
-
-#### 例：
+### 8.2 SIDE
 
 ``` Cpp
-vector<Protein *> proPtrList = loadModel("xxxx.pdb");
-
-string dumpStr = dumpFastals(proPtrList);
+enum class SIDE;
 ```
 
-## 补充说明
+枚举变量，表示主链二面角旋转时的转动侧。SIDE::N或SIDE::L表示转动N端，SIDE::C或SIDE::R表示转动C端。
 
-### 解析函数
+### 8.3 RESIDUE_NAME_THREE_TO_ONE_MAP, RESIDUE_NAME_ONE_TO_THREE_MAP
+
+``` Cpp
+const unordered_map<string, string> RESIDUE_NAME_THREE_TO_ONE_MAP;
+const unordered_map<string, string> RESIDUE_NAME_ONE_TO_THREE_MAP;
+```
+
+三字母，单字母残基名的相互转换哈希表。
+
+## 9. 补充说明
+
+### 9.1 解析函数
 
 * PDB文件解析函数（load、loadModel）将完全按照PDB文件内容进行解析，不会对结构进行任何排序、合并或重组操作
 * Load函数在解析时会跳过任何非"ATOM"关键词开头的行（包括"MODEL"）；而LoadModel函数会跳过任何非"ATOM"或"MODEL"关键词开头的行
 * 解析时会去除所有字符串类型属性双端的空格字符
 
-### 对于创建新对象指针的判定
+### 9.2 对于创建新对象的判定
 
-#### 1. load函数：
+#### 9.2.1 load函数：
 
-* Protein：只会在解析开始前创建唯一的一个，并最终返回这个对象指针
-* Chain：解析开始时，以及每次检测到链名发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的链对象指针
-* Residue：解析开始时，创建新链时，以及每次检测到残基名、残基编号或残基插入字符三者之一发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的残基对象指针
-* Atom：每检测到一个新的"ATOM"行都会创建一个新的Atom对象指针
+* Protein：只会在解析开始前创建唯一的一个，并最终返回这个对象
+* Chain：解析开始时，以及每次检测到链名发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的链对象
+* Residue：解析开始时，创建新链时，以及每次检测到残基名、残基编号或残基插入字符三者之一发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的残基对象
+* Atom：每检测到一个新的"ATOM"行都会创建一个新的Atom对象
 
-#### 2. loadModel函数：
+#### 9.2.2 loadModel函数：
 
-* Protein：解析开始前，以及每次检测到"MODEL"关键词时，都会创建一个新的蛋白对象指针。如果解析开始前创建的这个蛋白对象指针在函数返回前仍然为空，则其将在函数返回前被删除并析构
-* Chain：解析开始时，创建新Model时，以及每次检测到链名发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的链对象指针
-* Residue：解析开始时，创建新Model时，创建新链时，以及每次检测到残基名、残基编号或残基插入字符三者之一发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的残基对象指针
-* Atom：每检测到一个新的"ATOM"行都会创建一个新的Atom对象指针
+* Protein：解析开始前，以及每次检测到"MODEL"关键词时，都会创建一个新的蛋白对象。如果解析开始前创建的这个蛋白对象在函数返回前仍然为空，则其将在函数返回前被删除并析构
+* Chain：解析开始时，创建新Model时，以及每次检测到链名发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的链对象
+* Residue：解析开始时，创建新Model时，创建新链时，以及每次检测到残基名、残基编号或残基插入字符三者之一发生变化时（从上一个"ATOM"行到当前行），都会创建一个新的残基对象
+* Atom：每检测到一个新的"ATOM"行都会创建一个新的Atom对象

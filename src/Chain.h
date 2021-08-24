@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <iostream>
 #include "NotAtom.h"
 #include "NotProtein.h"
 #include "Protein.h"
@@ -25,6 +26,7 @@ namespace PDBTools
 using std::string;
 using std::vector;
 using std::unordered_map;
+using std::ostream;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -34,6 +36,10 @@ using std::unordered_map;
 class Chain: public __NotAtom<Chain, Residue>,
     public __NotProtein<Chain, Protein>
 {
+    // Friend
+    friend ostream &operator<<(ostream &os, const Chain &chainObj);
+
+
 public:
 
     // Constructor
@@ -62,10 +68,6 @@ public:
 
     // Setter: __sub
     Chain *sub(const vector<Residue *> &val);
-
-
-    // str
-    string str() const;
 
 
     // Copy
@@ -98,6 +100,10 @@ private:
     string __name;
     Protein *__owner;
     vector<Residue *> __sub;
+
+
+    // str
+    string __str() const;
 };
 
 

@@ -15,7 +15,7 @@
 #include <boost/format.hpp>
 #include <Eigen/Dense>
 #include "NotAtom.h"
-#include "Predeclaration.h"
+#include "Predecl.h"
 #include "Constants.hpp"
 
 namespace PDBTools
@@ -37,7 +37,7 @@ using Eigen::Dynamic;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Iterator
+// Begin
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
@@ -47,6 +47,10 @@ typename vector<SubType *>::iterator __NotAtom<SelfType, SubType>::begin()
 }
 
 
+////////////////////////////////////////////////////////////////////////////////
+// End
+////////////////////////////////////////////////////////////////////////////////
+
 template <typename SelfType, typename SubType>
 typename vector<SubType *>::iterator __NotAtom<SelfType, SubType>::end()
 {
@@ -55,7 +59,7 @@ typename vector<SubType *>::iterator __NotAtom<SelfType, SubType>::end()
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// FilterAtoms
+// Filter Atoms
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
@@ -77,7 +81,7 @@ vector<Atom *> __NotAtom<SelfType, SubType>::filterAtoms(
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// GetAtomsCoord
+// Get Atoms Coord
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
@@ -97,7 +101,7 @@ Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::getAtomsCoord()
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// FilterAtomsCoord
+// Filter Atoms Coord
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
@@ -121,7 +125,7 @@ Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::filterAtomsCoord(
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// center
+// Center
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
@@ -132,7 +136,7 @@ RowVector3d __NotAtom<SelfType, SubType>::center()
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// MoveCenter
+// Move Center
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
@@ -150,7 +154,7 @@ SelfType *__NotAtom<SelfType, SubType>::moveCenter()
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// seq
+// Seq
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
@@ -168,11 +172,11 @@ string __NotAtom<SelfType, SubType>::seq()
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// fasta
+// Fasta Str
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-string __NotAtom<SelfType, SubType>::fasta(const string &titleStr)
+string __NotAtom<SelfType, SubType>::fastaStr(const string &titleStr)
 {
     return (format(">%s\n%s\n")                                               %
         (titleStr.empty() ? static_cast<SelfType *>(this)->name() : titleStr) %
@@ -182,16 +186,16 @@ string __NotAtom<SelfType, SubType>::fasta(const string &titleStr)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// DumpFasta
+// Dump Fasta
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
 SelfType *__NotAtom<SelfType, SubType>::dumpFasta(const string &dumpFilePath,
-    const string &titleStr, const string &fileMode)
+    const string &fileMode, const string &titleStr)
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
 
-    fprintf(fo, "%s", fasta(titleStr).c_str());
+    fprintf(fo, "%s", fastaStr(titleStr).c_str());
 
     fclose(fo);
 
@@ -273,7 +277,7 @@ SelfType *__NotAtom<SelfType, SubType>::insert(
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// RemoveAlt
+// Remove Alt
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
@@ -296,20 +300,20 @@ SelfType *__NotAtom<SelfType, SubType>::removeAlt()
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Dumps
+// Dump Str
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-string __NotAtom<SelfType, SubType>::dumps()
+string __NotAtom<SelfType, SubType>::dumpStr()
 {
-    string dumpStr;
+    string pdbStr;
 
     for (auto atomPtr: static_cast<SelfType *>(this)->getAtoms())
     {
-        dumpStr += atomPtr->dumps();
+        pdbStr += atomPtr->dumpStr();
     }
 
-    return dumpStr;
+    return pdbStr;
 }
 
 
