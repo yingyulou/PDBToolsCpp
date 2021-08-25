@@ -6,7 +6,7 @@ PDB文件在PDBToolsCpp中将被解析为4个层级：Protein -> Chain -> Residu
 
 **本文档中所有的“角度”均指弧度制角度；所有的“旋转矩阵”均指右乘旋转矩阵。**
 
-**任何结构对象均定义于堆内存上，使用时需注意内存管理。（详见下文析构函数部分内容）**
+**任何结构对象均定义于堆内存上，使用时需注意内存管理。**
 
 ## 0. 编译及使用说明
 
@@ -46,7 +46,7 @@ Protein *load(const string &pdbFilePath, bool parseHBool = false);
 #### 例：
 
 ``` Cpp
-Protein *proPtr = load("xxxx.pdb");
+Protein *proPtr = load("xxx.pdb");
 ```
 
 ### 1.2 loadModel
@@ -55,7 +55,7 @@ Protein *proPtr = load("xxxx.pdb");
 vector<Protein *> loadModel(const string &pdbFilePath, bool parseHBool = false);
 ```
 
-将含有"MODEL"关键词的PDB文件解析为Protein对象vector。
+将含有"MODEL"关键词的PDB文件解析为Protein对象列表。
 
 #### 参数：
 
@@ -64,12 +64,12 @@ vector<Protein *> loadModel(const string &pdbFilePath, bool parseHBool = false);
 
 #### 返回值：
 
-* Protein对象构成的vector
+* Protein对象列表
 
 #### 例：
 
 ``` Cpp
-vector<Protein *> proPtrList = loadModel("xxxx.pdb");
+vector<Protein *> proPtrList = loadModel("xxx.pdb");
 ```
 
 ## 2. Protein
@@ -1660,7 +1660,7 @@ double calcSCDihedralAngle(int dihedralIdx);
 ``` Cpp
 auto resPtr = new Residue;
 
-double dihedralAngle = resPtr->calcSCDihedralAngle(0);
+auto dihedralAngle = resPtr->calcSCDihedralAngle(0);
 ```
 
 ### 4.16 calcSCRotationMatrixByDeltaAngle
@@ -1670,7 +1670,7 @@ pair<RowVector3d, Matrix3d> calcSCRotationMatrixByDeltaAngle(
     int dihedralIdx, double deltaAngle);
 ```
 
-以旋转角度/目标角度作为参数，计算侧链旋转矩阵。
+以旋转角度作为参数，计算侧链旋转矩阵。
 
 #### 参数：
 
@@ -2420,7 +2420,7 @@ double operator-(const Atom &rhs) const;
 ``` Cpp
 auto atomPtr = new Atom;
 
-cout << *atomPtr - *atomPtr;
+auto atomDis = *atomPtr - *atomPtr;
 ```
 
 ### 5.5 dump
@@ -2590,8 +2590,8 @@ double radians(double degreesAngle);
 #### 例：
 
 ``` Cpp
-cout << degrees(1.) << endl;
-cout << radians(1.) << endl;
+auto degreesAngle = degrees(1.);
+auto radiansAngle = radians(1.);
 ```
 
 ### 6.2 calcVectorAngle
@@ -2742,16 +2742,15 @@ tuple<RowVector3d, Matrix3d, RowVector3d> calcSuperimposeRotationMatrix(
 #### 例：
 
 ``` Cpp
-Matrix<double, 2, 3> srcCoordArray, tarCoordArray;
+Matrix<double, 2, 3> tarCoordArray, srcCoordArray;
 
-srcCoordArray << 1., 2., 3., 4., 5., 6.;
-tarCoordArray << 7., 8., 9., 10., 11., 12.;
+tarCoordArray << 1., 2., 3., 4., 5., 6.;
+srcCoordArray << 7., 8., 9., 10., 11., 12.;
 
 auto [srcCenterCoord, rotationMatrix, tarCenterCoord] =
     calcSuperimposeRotationMatrix(tarCoordArray, srcCoordArray);
 
-cout << ((srcCoordArray.rowwise() - srcCenterCoord) * rotationMatrix).rowwise() +
-    tarCenterCoord << endl << tarCoordArray << endl;
+// ((srcCoordArray.rowwise() - srcCenterCoord) * rotationMatrix).rowwise() + tarCenterCoord
 ```
 
 ### 6.8 calcRMSDAfterSuperimpose
@@ -2777,10 +2776,10 @@ double calcRMSDAfterSuperimpose(
 #### 例：
 
 ``` Cpp
-Matrix<double, 2, 3> srcCoordArray, tarCoordArray;
+Matrix<double, 2, 3> tarCoordArray, srcCoordArray;
 
-srcCoordArray << 1., 2., 3., 4., 5., 6.;
-tarCoordArray << 7., 8., 9., 10., 11., 12.;
+tarCoordArray << 1., 2., 3., 4., 5., 6.;
+srcCoordArray << 7., 8., 9., 10., 11., 12.;
 
 auto rmsdValue = calcRMSDAfterSuperimpose(tarCoordArray, srcCoordArray);
 ```
@@ -2810,9 +2809,16 @@ ostream &operator<<(ostream &os, const Atom    &atomObj);
 #### 例：
 
 ``` Cpp
-auto proPtr = new Protein;
+auto proPtr   = new Protein;
+auto chainPtr = new Protein;
+auto resPtr   = new Protein;
+auto atomPtr  = new Protein;
 
-cout << *proPtr << endl;
+cout
+    << *proPtr   << endl
+    << *chainPtr << endl
+    << *resPtr   << endl
+    << *atomPtr  << endl;
 ```
 
 ### 7.2 isH
