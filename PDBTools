@@ -3,16 +3,6 @@
 
     Collection of modules for PDB file parsing, linear algebra calculations and
     structure modify.
-
 */
 
-#include "src/Parser.hpp"
-#include "src/NotProtein.hpp"
-#include "src/NotAtom.hpp"
-#include "src/Protein.hpp"
-#include "src/Chain.hpp"
-#include "src/Residue.hpp"
-#include "src/Atom.hpp"
-#include "src/Util.hpp"
-#include "src/Math.hpp"
-#include "src/Constants.hpp"
+#include "src/PDBTools.hpp"
