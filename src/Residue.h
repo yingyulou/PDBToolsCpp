@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include <utility>
 #include <iostream>
-#include <Eigen/Dense>
+#include <Eigen>
 #include "NotAtom.h"
 #include "NotProtein.h"
 #include "Chain.h"

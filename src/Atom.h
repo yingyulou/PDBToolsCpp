@@ -8,7 +8,7 @@
 
 #include <string>
 #include <iostream>
-#include <Eigen/Dense>
+#include <Eigen>
 #include "NotProtein.h"
 #include "Residue.h"
 

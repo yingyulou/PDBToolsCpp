@@ -10,7 +10,7 @@
 #include <vector>
 #include <algorithm>
 #include <tuple>
-#include <Eigen/Dense>
+#include <Eigen>
 
 namespace PDBTools
 {

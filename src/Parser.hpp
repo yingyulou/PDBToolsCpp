@@ -13,7 +13,7 @@
 #include <filesystem>
 #include <stdexcept>
 #include <boost/algorithm/string.hpp>
-#include <Eigen/Dense>
+#include <Eigen>
 #include "Protein.h"
 #include "Chain.h"
 #include "Residue.h"

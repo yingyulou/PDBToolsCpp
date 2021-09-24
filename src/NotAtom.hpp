@@ -13,7 +13,7 @@
 #include <iterator>
 #include <initializer_list>
 #include <boost/format.hpp>
-#include <Eigen/Dense>
+#include <Eigen>
 #include "NotAtom.h"
 #include "Predecl.h"
 #include "Constants.hpp"
