@@ -12,7 +12,7 @@
 #include <utility>
 #include <cctype>
 #include <boost/format.hpp>
-#include <Eigen>
+#include <Eigen/Dense>
 #include "Residue.h"
 #include "Chain.h"
 #include "Atom.h"

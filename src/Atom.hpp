@@ -10,7 +10,7 @@
 #include <cstdio>
 #include <cctype>
 #include <boost/format.hpp>
-#include <Eigen>
+#include <Eigen/Dense>
 #include "Atom.h"
 #include "Residue.h"
 

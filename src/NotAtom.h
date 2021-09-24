@@ -10,7 +10,7 @@
 #include <vector>
 #include <unordered_set>
 #include <initializer_list>
-#include <Eigen>
+#include <Eigen/Dense>
 #include "Predecl.h"
 
 namespace PDBTools
