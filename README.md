@@ -306,7 +306,7 @@ Matrix<double, Dynamic, 3> getAtomsCoord();
 ``` Cpp
 auto proPtr = new Protein;
 
-auto coordArray = proPtr->getAtomsCoord();
+auto coordMatrix = proPtr->getAtomsCoord();
 ```
 
 ### 2.11 filterAtomsCoord
@@ -331,7 +331,7 @@ Matrix<double, Dynamic, 3> filterAtomsCoord(
 ``` Cpp
 auto proPtr = new Protein;
 
-auto coordArray = proPtr->filterAtomsCoord();
+auto coordMatrix = proPtr->filterAtomsCoord();
 ```
 
 ### 2.12 center
@@ -855,7 +855,7 @@ Matrix<double, Dynamic, 3> getAtomsCoord();
 ``` Cpp
 auto chainPtr = new Chain;
 
-auto coordArray = chainPtr->getAtomsCoord();
+auto coordMatrix = chainPtr->getAtomsCoord();
 ```
 
 ### 3.11 filterAtomsCoord
@@ -880,7 +880,7 @@ Matrix<double, Dynamic, 3> filterAtomsCoord(
 ``` Cpp
 auto chainPtr = new Chain;
 
-auto coordArray = chainPtr->filterAtomsCoord();
+auto coordMatrix = chainPtr->filterAtomsCoord();
 ```
 
 ### 3.12 center
@@ -1879,7 +1879,7 @@ Matrix<double, Dynamic, 3> getAtomsCoord();
 ``` Cpp
 auto resPtr = new Residue;
 
-auto coordArray = resPtr->getAtomsCoord();
+auto coordMatrix = resPtr->getAtomsCoord();
 ```
 
 ### 4.25 filterAtomsCoord
@@ -1904,7 +1904,7 @@ Matrix<double, Dynamic, 3> filterAtomsCoord(
 ``` Cpp
 auto resPtr = new Residue;
 
-auto coordArray = resPtr->filterAtomsCoord();
+auto coordMatrix = resPtr->filterAtomsCoord();
 ```
 
 ### 4.26 center
@@ -2692,15 +2692,15 @@ auto dihedralAngle = calcDihedralAngle(
 ### 6.6 calcRMSD
 
 ``` Cpp
-double calcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
-    const Matrix<double, Dynamic, 3> &coordArrayB);
+double calcRMSD(const Matrix<double, Dynamic, 3> &coordMatrixA,
+    const Matrix<double, Dynamic, 3> &coordMatrixB);
 ```
 
 对两组等长的三维坐标计算RMSD。
 
 #### 参数：
 
-* coordArrayA，coordArrayB：两组等长的矩阵（N * 3）
+* coordMatrixA，coordMatrixB：两组等长的矩阵（N * 3）
 
 #### 返回值：
 
@@ -2709,29 +2709,29 @@ double calcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
 #### 例：
 
 ``` Cpp
-Matrix<double, 2, 3> coordArrayA, coordArrayB;
+Matrix<double, 2, 3> coordMatrixA, coordMatrixB;
 
-coordArrayA << 1., 2., 3., 4., 5., 6.;
-coordArrayB << 7., 8., 9., 10., 11., 12.;
+coordMatrixA << 1., 2., 3., 4., 5., 6.;
+coordMatrixB << 7., 8., 9., 10., 11., 12.;
 
-auto rmsdValue = calcRMSD(coordArrayA, coordArrayB);
+auto rmsdValue = calcRMSD(coordMatrixA, coordMatrixB);
 ```
 
 ### 6.7 calcSuperimposeRotationMatrix
 
 ``` Cpp
 tuple<RowVector3d, Matrix3d, RowVector3d> calcSuperimposeRotationMatrix(
-    const Matrix<double, Dynamic, 3> &tarCoordArray,
-    const Matrix<double, Dynamic, 3> &srcCoordArray)
+    const Matrix<double, Dynamic, 3> &tarCoordMatrix,
+    const Matrix<double, Dynamic, 3> &srcCoordMatrix)
 ```
 
-计算从srcCoordArray到tarCoordArray的叠合旋转矩阵。
+计算从srcCoordMatrix到tarCoordMatrix的叠合旋转矩阵。
 
-此函数将使得((srcCoordArray.rowwise() - 平移向量A) * 旋转矩阵).rowwise() + 平移向量B与tarCoordArray形成叠合（RMSD最小）。
+此函数将使得((srcCoordMatrix.rowwise() - 平移向量A) * 旋转矩阵).rowwise() + 平移向量B与tarCoordMatrix形成叠合（RMSD最小）。
 
 #### 参数：
 
-* tarCoordArray, srcCoordArray：两组等长的矩阵（N * 3）
+* tarCoordMatrix, srcCoordMatrix：两组等长的矩阵（N * 3）
 
 #### 返回值：
 
@@ -2742,32 +2742,32 @@ tuple<RowVector3d, Matrix3d, RowVector3d> calcSuperimposeRotationMatrix(
 #### 例：
 
 ``` Cpp
-Matrix<double, 2, 3> tarCoordArray, srcCoordArray;
+Matrix<double, 2, 3> tarCoordMatrix, srcCoordMatrix;
 
-tarCoordArray << 1., 2., 3., 4., 5., 6.;
-srcCoordArray << 7., 8., 9., 10., 11., 12.;
+tarCoordMatrix << 1., 2., 3., 4., 5., 6.;
+srcCoordMatrix << 7., 8., 9., 10., 11., 12.;
 
 auto [srcCenterCoord, rotationMatrix, tarCenterCoord] =
-    calcSuperimposeRotationMatrix(tarCoordArray, srcCoordArray);
+    calcSuperimposeRotationMatrix(tarCoordMatrix, srcCoordMatrix);
 
-// ((srcCoordArray.rowwise() - srcCenterCoord) * rotationMatrix).rowwise() + tarCenterCoord
+// ((srcCoordMatrix.rowwise() - srcCenterCoord) * rotationMatrix).rowwise() + tarCenterCoord
 ```
 
 ### 6.8 calcRMSDAfterSuperimpose
 
 ``` Cpp
 double calcRMSDAfterSuperimpose(
-    const Matrix<double, Dynamic, 3> &tarCoordArray,
-    const Matrix<double, Dynamic, 3> &srcCoordArray)
+    const Matrix<double, Dynamic, 3> &tarCoordMatrix,
+    const Matrix<double, Dynamic, 3> &srcCoordMatrix)
 ```
 
 叠合并计算RMSD。
 
-此函数会将srcCoordArray通过calcSuperimposeRotationMatrix函数向tarCoordArray进行叠合，然后计算两组坐标之间的RMSD。
+此函数会将srcCoordMatrix通过calcSuperimposeRotationMatrix函数向tarCoordMatrix进行叠合，然后计算两组坐标之间的RMSD。
 
 #### 参数：
 
-* tarCoordArray, srcCoordArray：两组等长的矩阵（N * 3）
+* tarCoordMatrix, srcCoordMatrix：两组等长的矩阵（N * 3）
 
 #### 返回值：
 
@@ -2776,12 +2776,12 @@ double calcRMSDAfterSuperimpose(
 #### 例：
 
 ``` Cpp
-Matrix<double, 2, 3> tarCoordArray, srcCoordArray;
+Matrix<double, 2, 3> tarCoordMatrix, srcCoordMatrix;
 
-tarCoordArray << 1., 2., 3., 4., 5., 6.;
-srcCoordArray << 7., 8., 9., 10., 11., 12.;
+tarCoordMatrix << 1., 2., 3., 4., 5., 6.;
+srcCoordMatrix << 7., 8., 9., 10., 11., 12.;
 
-auto rmsdValue = calcRMSDAfterSuperimpose(tarCoordArray, srcCoordArray);
+auto rmsdValue = calcRMSDAfterSuperimpose(tarCoordMatrix, srcCoordMatrix);
 ```
 
 ## 7. 其他函数

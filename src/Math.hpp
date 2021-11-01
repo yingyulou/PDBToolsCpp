@@ -143,10 +143,10 @@ double calcDihedralAngle(const RowVector3d &coordA, const RowVector3d &coordB,
 // Calc RMSD (Root-Mean-Square Deviation)
 ////////////////////////////////////////////////////////////////////////////////
 
-double calcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
-    const Matrix<double, Dynamic, 3> &coordArrayB)
+double calcRMSD(const Matrix<double, Dynamic, 3> &coordMatrixA,
+    const Matrix<double, Dynamic, 3> &coordMatrixB)
 {
-    return sqrt((coordArrayA - coordArrayB).array().square().sum() / coordArrayA.rows());
+    return sqrt((coordMatrixA - coordMatrixB).array().square().sum() / coordMatrixA.rows());
 }
 
 
@@ -155,15 +155,15 @@ double calcRMSD(const Matrix<double, Dynamic, 3> &coordArrayA,
 ////////////////////////////////////////////////////////////////////////////////
 
 tuple<RowVector3d, Matrix3d, RowVector3d> calcSuperimposeRotationMatrix(
-    const Matrix<double, Dynamic, 3> &tarCoordArray,
-    const Matrix<double, Dynamic, 3> &srcCoordArray)
+    const Matrix<double, Dynamic, 3> &tarCoordMatrix,
+    const Matrix<double, Dynamic, 3> &srcCoordMatrix)
 {
-    RowVector3d srcCenterCoord = srcCoordArray.colwise().mean();
-    RowVector3d tarCenterCoord = tarCoordArray.colwise().mean();
+    RowVector3d srcCenterCoord = srcCoordMatrix.colwise().mean();
+    RowVector3d tarCenterCoord = tarCoordMatrix.colwise().mean();
 
     JacobiSVD<Matrix3d> svd(
-        (srcCoordArray.rowwise() - srcCenterCoord).transpose() *
-        (tarCoordArray.rowwise() - tarCenterCoord),
+        (srcCoordMatrix.rowwise() - srcCenterCoord).transpose() *
+        (tarCoordMatrix.rowwise() - tarCenterCoord),
         ComputeFullU | ComputeFullV);
 
     Matrix3d U = svd.matrixU(), V = svd.matrixV().transpose();
@@ -184,13 +184,13 @@ tuple<RowVector3d, Matrix3d, RowVector3d> calcSuperimposeRotationMatrix(
 ////////////////////////////////////////////////////////////////////////////////
 
 double calcRMSDAfterSuperimpose(
-    const Matrix<double, Dynamic, 3> &tarCoordArray,
-    const Matrix<double, Dynamic, 3> &srcCoordArray)
+    const Matrix<double, Dynamic, 3> &tarCoordMatrix,
+    const Matrix<double, Dynamic, 3> &srcCoordMatrix)
 {
     auto [srcCenterCoord, rotationMatrix, tarCenterCoord] =
-        calcSuperimposeRotationMatrix(tarCoordArray, srcCoordArray);
+        calcSuperimposeRotationMatrix(tarCoordMatrix, srcCoordMatrix);
 
-    return calcRMSD(tarCoordArray, (((srcCoordArray.rowwise() - srcCenterCoord) *
+    return calcRMSD(tarCoordMatrix, (((srcCoordMatrix.rowwise() - srcCenterCoord) *
         rotationMatrix).rowwise() + tarCenterCoord).eval());
 }
 
