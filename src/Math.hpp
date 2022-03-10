@@ -84,11 +84,11 @@ Matrix3d calcRotationMatrix(const RowVector3d &rotationAxis, double rotationAngl
 // Calc Rotation Matrix By Two Vector (Right Multiply Matrix)
 ////////////////////////////////////////////////////////////////////////////////
 
-Matrix3d calcRotationMatrixByTwoVector(const RowVector3d &refCoord,
-    const RowVector3d &tarCoord)
+Matrix3d calcRotationMatrixByTwoVector(const RowVector3d &tarCoord,
+    const RowVector3d &srcCoord)
 {
-    return calcRotationMatrix(tarCoord.cross(refCoord),
-        calcVectorAngle(tarCoord, refCoord));
+    return calcRotationMatrix(srcCoord.cross(tarCoord),
+        calcVectorAngle(srcCoord, tarCoord));
 }
 
 
