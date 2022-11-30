@@ -95,10 +95,10 @@ Protein *load(const string &pdbFilePath, bool parseHBool = false)
             stod(line.substr(38, 8)),
             stod(line.substr(46, 8)));
 
-        string atomOccupancy  = line.substr(54, 6);
-        string atomTempFactor = line.substr(60, 6);
-        string atomElement    = line.substr(76, 2);
-        string atomCharge     = line.substr(78, 2);
+        string atomOccupancy  = line.size() > 54 ? line.substr(54, 6) : "";
+        string atomTempFactor = line.size() > 60 ? line.substr(60, 6) : "";
+        string atomElement    = line.size() > 76 ? line.substr(76, 2) : "";
+        string atomCharge     = line.size() > 78 ? line.substr(78, 2) : "";
 
         trim(atomOccupancy);
         trim(atomTempFactor);
@@ -202,10 +202,10 @@ vector<Protein *> loadModel(const string &pdbFilePath, bool parseHBool = false)
             stod(line.substr(38, 8)),
             stod(line.substr(46, 8)));
 
-        string atomOccupancy  = line.substr(54, 6);
-        string atomTempFactor = line.substr(60, 6);
-        string atomElement    = line.substr(76, 2);
-        string atomCharge     = line.substr(78, 2);
+        string atomOccupancy  = line.size() > 54 ? line.substr(54, 6) : "";
+        string atomTempFactor = line.size() > 60 ? line.substr(60, 6) : "";
+        string atomElement    = line.size() > 76 ? line.substr(76, 2) : "";
+        string atomCharge     = line.size() > 78 ? line.substr(78, 2) : "";
 
         trim(atomOccupancy);
         trim(atomTempFactor);
