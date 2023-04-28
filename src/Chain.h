@@ -96,7 +96,7 @@ public:
 
 private:
 
-    // Attribute
+    // Data
     string __name;
     Protein *__owner;
     vector<Residue *> __sub;

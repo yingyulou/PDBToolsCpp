@@ -94,7 +94,7 @@ public:
 
 private:
 
-    // Attribute
+    // Data
     string __name;
     int __model;
     vector<Chain *> __sub;

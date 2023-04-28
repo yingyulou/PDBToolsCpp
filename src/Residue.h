@@ -188,7 +188,7 @@ public:
 
 private:
 
-    // Attribute
+    // Data
     string __name;
     int __num;
     string __ins;

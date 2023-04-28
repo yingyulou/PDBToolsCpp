@@ -134,7 +134,7 @@ public:
 
 private:
 
-    // Attribute
+    // Data
     string __name;
     int __num;
     RowVector3d __coord;
