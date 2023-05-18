@@ -25,8 +25,7 @@ using std::max;
 using std::tuple;
 using Eigen::RowVector3d;
 using Eigen::Matrix3d;
-using Eigen::Dynamic;
-using Eigen::Matrix;
+using Eigen::MatrixX3d;
 using Eigen::JacobiSVD;
 using Eigen::ComputeFullU;
 using Eigen::ComputeFullV;
@@ -143,8 +142,8 @@ double calcDihedralAngle(const RowVector3d &coordA, const RowVector3d &coordB,
 // Calc RMSD (Root-Mean-Square Deviation)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-double calcRMSD(const Matrix<double, Dynamic, 3> &coordMatrixA,
-    const Matrix<double, Dynamic, 3> &coordMatrixB)
+double calcRMSD(const MatrixX3d &coordMatrixA,
+    const MatrixX3d &coordMatrixB)
 {
     return sqrt((coordMatrixA - coordMatrixB).array().square().sum() / coordMatrixA.rows());
 }
@@ -155,8 +154,8 @@ double calcRMSD(const Matrix<double, Dynamic, 3> &coordMatrixA,
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 tuple<RowVector3d, Matrix3d, RowVector3d> calcSuperimposeRotationMatrix(
-    const Matrix<double, Dynamic, 3> &tarCoordMatrix,
-    const Matrix<double, Dynamic, 3> &srcCoordMatrix)
+    const MatrixX3d &tarCoordMatrix,
+    const MatrixX3d &srcCoordMatrix)
 {
     RowVector3d srcCenterCoord = srcCoordMatrix.colwise().mean();
     RowVector3d tarCenterCoord = tarCoordMatrix.colwise().mean();
@@ -184,8 +183,8 @@ tuple<RowVector3d, Matrix3d, RowVector3d> calcSuperimposeRotationMatrix(
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 double calcRMSDAfterSuperimpose(
-    const Matrix<double, Dynamic, 3> &tarCoordMatrix,
-    const Matrix<double, Dynamic, 3> &srcCoordMatrix)
+    const MatrixX3d &tarCoordMatrix,
+    const MatrixX3d &srcCoordMatrix)
 {
     auto [srcCenterCoord, rotationMatrix, tarCenterCoord] =
         calcSuperimposeRotationMatrix(tarCoordMatrix, srcCoordMatrix);

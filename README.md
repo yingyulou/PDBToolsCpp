@@ -288,7 +288,7 @@ auto atomPtrList = proPtr->filterAtoms();
 ### 2.10 getAtomsCoord
 
 ``` Cpp
-Matrix<double, Dynamic, 3> getAtomsCoord();
+MatrixX3d getAtomsCoord();
 ```
 
 得到this包含的所有原子坐标。
@@ -312,7 +312,7 @@ auto coordMatrix = proPtr->getAtomsCoord();
 ### 2.11 filterAtomsCoord
 
 ``` Cpp
-Matrix<double, Dynamic, 3> filterAtomsCoord(
+MatrixX3d filterAtomsCoord(
     const unordered_set<string> &atomNameSet = {"CA"});
 ```
 
@@ -837,7 +837,7 @@ auto atomPtrList = chainPtr->filterAtoms();
 ### 3.10 getAtomsCoord
 
 ``` Cpp
-Matrix<double, Dynamic, 3> getAtomsCoord();
+MatrixX3d getAtomsCoord();
 ```
 
 得到this包含的所有原子坐标。
@@ -861,7 +861,7 @@ auto coordMatrix = chainPtr->getAtomsCoord();
 ### 3.11 filterAtomsCoord
 
 ``` Cpp
-Matrix<double, Dynamic, 3> filterAtomsCoord(
+MatrixX3d filterAtomsCoord(
     const unordered_set<string> &atomNameSet = {"CA"});
 ```
 
@@ -1861,7 +1861,7 @@ auto atomPtrList = resPtr->filterAtoms();
 ### 4.24 getAtomsCoord
 
 ``` Cpp
-Matrix<double, Dynamic, 3> getAtomsCoord();
+MatrixX3d getAtomsCoord();
 ```
 
 得到this包含的所有原子坐标。
@@ -1885,7 +1885,7 @@ auto coordMatrix = resPtr->getAtomsCoord();
 ### 4.25 filterAtomsCoord
 
 ``` Cpp
-Matrix<double, Dynamic, 3> filterAtomsCoord(
+MatrixX3d filterAtomsCoord(
     const unordered_set<string> &atomNameSet = {"CA"});
 ```
 
@@ -2692,8 +2692,8 @@ auto dihedralAngle = calcDihedralAngle(
 ### 6.6 calcRMSD
 
 ``` Cpp
-double calcRMSD(const Matrix<double, Dynamic, 3> &coordMatrixA,
-    const Matrix<double, Dynamic, 3> &coordMatrixB);
+double calcRMSD(const MatrixX3d &coordMatrixA,
+    const MatrixX3d &coordMatrixB);
 ```
 
 对两组等长的三维坐标计算RMSD。
@@ -2721,8 +2721,8 @@ auto rmsdValue = calcRMSD(coordMatrixA, coordMatrixB);
 
 ``` Cpp
 tuple<RowVector3d, Matrix3d, RowVector3d> calcSuperimposeRotationMatrix(
-    const Matrix<double, Dynamic, 3> &tarCoordMatrix,
-    const Matrix<double, Dynamic, 3> &srcCoordMatrix)
+    const MatrixX3d &tarCoordMatrix,
+    const MatrixX3d &srcCoordMatrix)
 ```
 
 计算从srcCoordMatrix到tarCoordMatrix的叠合旋转矩阵。
@@ -2757,8 +2757,8 @@ auto [srcCenterCoord, rotationMatrix, tarCenterCoord] =
 
 ``` Cpp
 double calcRMSDAfterSuperimpose(
-    const Matrix<double, Dynamic, 3> &tarCoordMatrix,
-    const Matrix<double, Dynamic, 3> &srcCoordMatrix)
+    const MatrixX3d &tarCoordMatrix,
+    const MatrixX3d &srcCoordMatrix)
 ```
 
 叠合并计算RMSD。

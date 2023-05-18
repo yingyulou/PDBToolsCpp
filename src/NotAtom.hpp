@@ -32,8 +32,7 @@ using std::distance;
 using std::initializer_list;
 using boost::format;
 using Eigen::RowVector3d;
-using Eigen::Matrix;
-using Eigen::Dynamic;
+using Eigen::MatrixX3d;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,11 +84,11 @@ vector<Atom *> __NotAtom<SelfType, SubType>::filterAtoms(
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::getAtomsCoord()
+MatrixX3d __NotAtom<SelfType, SubType>::getAtomsCoord()
 {
     auto atomPtrList = static_cast<SelfType *>(this)->getAtoms();
 
-    Matrix<double, Dynamic, 3> coordMatrix(atomPtrList.size(), 3);
+    MatrixX3d coordMatrix(atomPtrList.size(), 3);
 
     for (int idx = 0; idx < atomPtrList.size(); idx++)
     {
@@ -105,12 +104,12 @@ Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::getAtomsCoord()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-Matrix<double, Dynamic, 3> __NotAtom<SelfType, SubType>::filterAtomsCoord(
+MatrixX3d __NotAtom<SelfType, SubType>::filterAtomsCoord(
     const unordered_set<string> &atomNameSet)
 {
     auto atomPtrList = static_cast<SelfType *>(this)->filterAtoms();
 
-    Matrix<double, Dynamic, 3> coordMatrix(atomPtrList.size(), 3);
+    MatrixX3d coordMatrix(atomPtrList.size(), 3);
 
     for (int idx = 0; idx < atomPtrList.size(); idx++)
     {

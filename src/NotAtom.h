@@ -25,8 +25,7 @@ using std::vector;
 using std::unordered_set;
 using std::initializer_list;
 using Eigen::RowVector3d;
-using Eigen::Matrix;
-using Eigen::Dynamic;
+using Eigen::MatrixX3d;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,11 +51,11 @@ public:
 
 
     // Get Atoms Coord
-    Matrix<double, Dynamic, 3> getAtomsCoord();
+    MatrixX3d getAtomsCoord();
 
 
     // Filter Atoms Coord
-    Matrix<double, Dynamic, 3> filterAtomsCoord(
+    MatrixX3d filterAtomsCoord(
         const unordered_set<string> &atomNameSet = {"CA"});
 
 
