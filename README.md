@@ -263,8 +263,7 @@ for (auto chainPtr: *proPtr);
 ### 2.9 filterAtoms
 
 ``` Cpp
-vector<Atom *> filterAtoms(
-    const unordered_set<string> &atomNameSet = {"CA"});
+vector<Atom *> filterAtoms(const unordered_set<string> &atomNameSet = {"CA"});
 ```
 
 按原子名筛选this包含的所有原子。
@@ -312,8 +311,7 @@ auto coordMatrix = proPtr->getAtomsCoord();
 ### 2.11 filterAtomsCoord
 
 ``` Cpp
-MatrixX3d filterAtomsCoord(
-    const unordered_set<string> &atomNameSet = {"CA"});
+MatrixX3d filterAtomsCoord(const unordered_set<string> &atomNameSet = {"CA"});
 ```
 
 按原子名筛选this包含的所有原子坐标。
@@ -433,8 +431,7 @@ auto fastaStr = proPtr->fastaStr();
 ### 2.16 dumpFasta
 
 ``` Cpp
-Protein *dumpFasta(const string &dumpFilePath,
-    const string &fileMode = "w", const string &titleStr = "");
+Protein *dumpFasta(const string &dumpFilePath, const string &fileMode = "w", const string &titleStr = "");
 ```
 
 将this输出至Fasta文件。
@@ -534,8 +531,7 @@ proPtr->append(chainPtr);
 ### 2.20 insert
 
 ``` Cpp
-Protein *insert(typename vector<Chain *>::iterator insertIter,
-    Chain *subPtr, bool copyBool = true);
+Protein *insert(typename vector<Chain *>::iterator insertIter, Chain *subPtr, bool copyBool = true);
 ```
 
 在sub()的任意位置插入链对象。
@@ -812,8 +808,7 @@ for (auto resPtr: *chainPtr);
 ### 3.9 filterAtoms
 
 ``` Cpp
-vector<Atom *> filterAtoms(
-    const unordered_set<string> &atomNameSet = {"CA"});
+vector<Atom *> filterAtoms(const unordered_set<string> &atomNameSet = {"CA"});
 ```
 
 按原子名筛选this包含的所有原子。
@@ -861,8 +856,7 @@ auto coordMatrix = chainPtr->getAtomsCoord();
 ### 3.11 filterAtomsCoord
 
 ``` Cpp
-MatrixX3d filterAtomsCoord(
-    const unordered_set<string> &atomNameSet = {"CA"});
+MatrixX3d filterAtomsCoord(const unordered_set<string> &atomNameSet = {"CA"});
 ```
 
 按原子名筛选this包含的所有原子坐标。
@@ -982,8 +976,7 @@ auto fastaStr = chainPtr->fastaStr();
 ### 3.16 dumpFasta
 
 ``` Cpp
-Chain *dumpFasta(const string &dumpFilePath,
-    const string &fileMode = "w", const string &titleStr = "");
+Chain *dumpFasta(const string &dumpFilePath, const string &fileMode = "w", const string &titleStr = "");
 ```
 
 将this输出至Fasta文件。
@@ -1083,8 +1076,7 @@ chainPtr->append(resPtr);
 ### 3.20 insert
 
 ``` Cpp
-Chain *insert(typename vector<Residue *>::iterator insertIter,
-    Residue *subPtr, bool copyBool = true);
+Chain *insert(typename vector<Residue *>::iterator insertIter, Residue *subPtr, bool copyBool = true);
 ```
 
 在sub()的任意位置插入链对象。
@@ -1273,8 +1265,7 @@ Residue类，用于表示一个残基。
 ### 4.1 Constructor
 
 ``` Cpp
-explicit Residue(const string &name = "", int num = 0,
-    const string &ins = "", Chain *owner = nullptr);
+explicit Residue(const string &name = "", int num = 0, const string &ins = "", Chain *owner = nullptr);
 ```
 
 #### 参数：
@@ -1507,8 +1498,7 @@ auto dihedralAngle = resPtr->calcBBDihedralAngle(DIH::L);
 ### 4.10 calcBBRotationMatrixByDeltaAngle
 
 ``` Cpp
-pair<RowVector3d, Matrix3d> calcBBRotationMatrixByDeltaAngle(
-    DIH dihedralEnum, SIDE sideEnum, double deltaAngle);
+pair<RowVector3d, Matrix3d> calcBBRotationMatrixByDeltaAngle(DIH dihedralEnum, SIDE sideEnum, double deltaAngle);
 ```
 
 以旋转角度作为参数，计算主链旋转矩阵。
@@ -1535,8 +1525,7 @@ auto [moveCoord, rotationMatrix] = resPtr->calcBBRotationMatrixByDeltaAngle(DIH:
 ### 4.11 calcBBRotationMatrixByTargetAngle
 
 ``` Cpp
-pair<RowVector3d, Matrix3d> calcBBRotationMatrixByTargetAngle(
-    DIH dihedralEnum, SIDE sideEnum, double targetAngle);
+pair<RowVector3d, Matrix3d> calcBBRotationMatrixByTargetAngle(DIH dihedralEnum, SIDE sideEnum, double targetAngle);
 ```
 
 以目标角度作为参数，计算主链旋转矩阵。
@@ -1588,8 +1577,7 @@ auto rotationAtomPtrList = resPtr->getBBRotationAtomPtr(DIH::PHI, SIDE::N);
 ### 4.13 rotateBBDihedralAngleByDeltaAngle
 
 ``` Cpp
-Residue *rotateBBDihedralAngleByDeltaAngle(DIH dihedralEnum,
-    SIDE sideEnum, double deltaAngle);
+Residue *rotateBBDihedralAngleByDeltaAngle(DIH dihedralEnum, SIDE sideEnum, double deltaAngle);
 ```
 
 以旋转角度作为参数直接旋转主链。
@@ -1615,8 +1603,7 @@ resPtr->rotateBBDihedralAngleByDeltaAngle(DIH::PHI, SIDE::N, 1.);
 ### 4.14 rotateBBDihedralAngleByTargetAngle
 
 ``` Cpp
-Residue *rotateBBDihedralAngleByTargetAngle(DIH dihedralEnum,
-    SIDE sideEnum, double targetAngle);
+Residue *rotateBBDihedralAngleByTargetAngle(DIH dihedralEnum, SIDE sideEnum, double targetAngle);
 ```
 
 以目标角度作为参数直接旋转主链。
@@ -1666,8 +1653,7 @@ auto dihedralAngle = resPtr->calcSCDihedralAngle(0);
 ### 4.16 calcSCRotationMatrixByDeltaAngle
 
 ``` Cpp
-pair<RowVector3d, Matrix3d> calcSCRotationMatrixByDeltaAngle(
-    int dihedralIdx, double deltaAngle);
+pair<RowVector3d, Matrix3d> calcSCRotationMatrixByDeltaAngle(int dihedralIdx, double deltaAngle);
 ```
 
 以旋转角度作为参数，计算侧链旋转矩阵。
@@ -1693,8 +1679,7 @@ auto [moveCoord, rotationMatrix] = resPtr->calcSCRotationMatrixByDeltaAngle(0, 1
 ### 4.17 calcSCRotationMatrixByTargetAngle
 
 ``` Cpp
-pair<RowVector3d, Matrix3d> calcSCRotationMatrixByTargetAngle(
-    int dihedralIdx, double targetAngle);
+pair<RowVector3d, Matrix3d> calcSCRotationMatrixByTargetAngle(int dihedralIdx, double targetAngle);
 ```
 
 以目标角度作为参数，计算侧链旋转矩阵。
@@ -1836,8 +1821,7 @@ for (auto atomPtr: *resPtr);
 ### 4.23 filterAtoms
 
 ``` Cpp
-vector<Atom *> filterAtoms(
-    const unordered_set<string> &atomNameSet = {"CA"});
+vector<Atom *> filterAtoms(const unordered_set<string> &atomNameSet = {"CA"});
 ```
 
 按原子名筛选this包含的所有原子。
@@ -1885,8 +1869,7 @@ auto coordMatrix = resPtr->getAtomsCoord();
 ### 4.25 filterAtomsCoord
 
 ``` Cpp
-MatrixX3d filterAtomsCoord(
-    const unordered_set<string> &atomNameSet = {"CA"});
+MatrixX3d filterAtomsCoord(const unordered_set<string> &atomNameSet = {"CA"});
 ```
 
 按原子名筛选this包含的所有原子坐标。
@@ -2006,8 +1989,7 @@ auto fastaStr = resPtr->fastaStr();
 ### 4.30 dumpFasta
 
 ``` Cpp
-Residue *dumpFasta(const string &dumpFilePath,
-    const string &fileMode = "w", const string &titleStr = "");
+Residue *dumpFasta(const string &dumpFilePath, const string &fileMode = "w", const string &titleStr = "");
 ```
 
 将this输出至Fasta文件。
@@ -2107,8 +2089,7 @@ resPtr->append(atomPtr);
 ### 4.34 insert
 
 ``` Cpp
-Residue *insert(typename vector<Atom *>::iterator insertIter,
-    Atom *subPtr, bool copyBool = true);
+Residue *insert(typename vector<Atom *>::iterator insertIter, Atom *subPtr, bool copyBool = true);
 ```
 
 在sub()的任意位置插入原子对象。
@@ -2297,10 +2278,8 @@ Atom类，用于表示一个原子。
 ### 5.1 Constructor
 
 ``` Cpp
-explicit Atom(const string &name = "", int num = 0,
-    const RowVector3d &coord = RowVector3d::Zero(),
-    const string &alt = "", const string &occ = "",
-    const string &tempF = "", const string &ele = "",
+explicit Atom(const string &name = "", int num = 0, const RowVector3d &coord = RowVector3d::Zero(),
+    const string &alt = "", const string &occ = "", const string &tempF = "", const string &ele = "",
     const string &chg = "", Residue *owner = nullptr);
 ```
 
@@ -2642,8 +2621,7 @@ auto rotationMatrix = calcRotationMatrix(RowVector3d(1., 2., 3.), 1.);
 ### 6.4 calcRotationMatrixByTwoVector
 
 ``` Cpp
-Matrix3d calcRotationMatrixByTwoVector(const RowVector3d &tarCoord,
-    const RowVector3d &srcCoord)
+Matrix3d calcRotationMatrixByTwoVector(const RowVector3d &tarCoord, const RowVector3d &srcCoord)
 ```
 
 计算从向量srcCoord旋转至向量tarCoord所需要的旋转矩阵。
@@ -2659,16 +2637,13 @@ Matrix3d calcRotationMatrixByTwoVector(const RowVector3d &tarCoord,
 #### 例：
 
 ``` Cpp
-auto rotationMatrix = calcRotationMatrixByTwoVector(
-    RowVector3d(1., 2., 3.), RowVector3d(4., 5., 6.));
+auto rotationMatrix = calcRotationMatrixByTwoVector(RowVector3d(1., 2., 3.), RowVector3d(4., 5., 6.));
 ```
 
 ### 6.5 calcDihedralAngle
 
 ``` Cpp
-double calcDihedralAngle(
-    const RowVector3d &coordA, const RowVector3d &coordB,
-    const RowVector3d &coordC, const RowVector3d &coordD);
+double calcDihedralAngle(const RowVector3d &coordA, const RowVector3d &coordB, const RowVector3d &coordC, const RowVector3d &coordD);
 ```
 
 计算二面角。
@@ -2692,8 +2667,7 @@ auto dihedralAngle = calcDihedralAngle(
 ### 6.6 calcRMSD
 
 ``` Cpp
-double calcRMSD(const MatrixX3d &coordMatrixA,
-    const MatrixX3d &coordMatrixB);
+double calcRMSD(const MatrixX3d &coordMatrixA, const MatrixX3d &coordMatrixB);
 ```
 
 对两组等长的三维坐标计算RMSD。
@@ -2721,8 +2695,7 @@ auto rmsdValue = calcRMSD(coordMatrixA, coordMatrixB);
 
 ``` Cpp
 tuple<RowVector3d, Matrix3d, RowVector3d> calcSuperimposeRotationMatrix(
-    const MatrixX3d &tarCoordMatrix,
-    const MatrixX3d &srcCoordMatrix)
+    const MatrixX3d &tarCoordMatrix, const MatrixX3d &srcCoordMatrix)
 ```
 
 计算从srcCoordMatrix到tarCoordMatrix的叠合旋转矩阵。
@@ -2756,9 +2729,7 @@ auto [srcCenterCoord, rotationMatrix, tarCenterCoord] =
 ### 6.8 calcRMSDAfterSuperimpose
 
 ``` Cpp
-double calcRMSDAfterSuperimpose(
-    const MatrixX3d &tarCoordMatrix,
-    const MatrixX3d &srcCoordMatrix)
+double calcRMSDAfterSuperimpose(const MatrixX3d &tarCoordMatrix, const MatrixX3d &srcCoordMatrix)
 ```
 
 叠合并计算RMSD。
@@ -2895,8 +2866,7 @@ auto pdbStr = dumpStr(proPtr->sub());
 
 ``` Cpp
 template <typename T>
-void dump(const T &structPtrList, const string &dumpFilePath,
-    const string &fileMode = "w")
+void dump(const T &structPtrList, const string &dumpFilePath, const string &fileMode = "w")
 ```
 
 将任意结构对象列表输出至PDB文件。
@@ -2948,8 +2918,7 @@ auto fastaStr = fastaStr(proPtr->sub());
 
 ``` Cpp
 template <typename T>
-void dumpFasta(const T &structPtrList, const string &dumpFilePath,
-    const string &fileMode = "w")
+void dumpFasta(const T &structPtrList, const string &dumpFilePath, const string &fileMode = "w")
 ```
 
 将任意结构对象列表输出至Fasta文件。
