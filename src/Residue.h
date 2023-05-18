@@ -38,8 +38,7 @@ using Eigen::Matrix3d;
 // Class Residue
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class Residue: public __NotAtom<Residue, Atom>,
-    public __NotProtein<Residue, Chain>
+class Residue: public __NotAtom<Residue, Atom>, public __NotProtein<Residue, Chain>
 {
     // Friend
     friend ostream &operator<<(ostream &os, const Residue &resObj);
@@ -48,8 +47,7 @@ class Residue: public __NotAtom<Residue, Atom>,
 public:
 
     // Constructor
-    explicit Residue(const string &name = "", int num = 0,
-        const string &ins = "", Chain *owner = nullptr);
+    explicit Residue(const string &name = "", int num = 0, const string &ins = "", Chain *owner = nullptr);
 
 
     // Getter: __name
@@ -129,13 +127,11 @@ public:
 
 
     // Calc Backbone Rotation Matrix By Delta Angle
-    pair<RowVector3d, Matrix3d> calcBBRotationMatrixByDeltaAngle(
-        DIH dihedralEnum, SIDE sideEnum, double deltaAngle);
+    pair<RowVector3d, Matrix3d> calcBBRotationMatrixByDeltaAngle(DIH dihedralEnum, SIDE sideEnum, double deltaAngle);
 
 
     // Calc Backbone Rotation Matrix By Target Angle
-    pair<RowVector3d, Matrix3d> calcBBRotationMatrixByTargetAngle(
-        DIH dihedralEnum, SIDE sideEnum, double targetAngle);
+    pair<RowVector3d, Matrix3d> calcBBRotationMatrixByTargetAngle(DIH dihedralEnum, SIDE sideEnum, double targetAngle);
 
 
     // Get Backbone Rotation Atom Pointer
@@ -143,13 +139,11 @@ public:
 
 
     // Rotate Backbone Dihedral Angle By Delta Angle
-    Residue *rotateBBDihedralAngleByDeltaAngle(DIH dihedralEnum,
-        SIDE sideEnum, double deltaAngle);
+    Residue *rotateBBDihedralAngleByDeltaAngle(DIH dihedralEnum, SIDE sideEnum, double deltaAngle);
 
 
     // Rotate Backbone Dihedral Angle By Target Angle
-    Residue *rotateBBDihedralAngleByTargetAngle(DIH dihedralEnum,
-        SIDE sideEnum, double targetAngle);
+    Residue *rotateBBDihedralAngleByTargetAngle(DIH dihedralEnum, SIDE sideEnum, double targetAngle);
 
 
     // Calc Side Chain Dihedral Angle
@@ -157,13 +151,11 @@ public:
 
 
     // Calc Side Chain Rotation Matrix By Delta Angle
-    pair<RowVector3d, Matrix3d> calcSCRotationMatrixByDeltaAngle(
-        int dihedralIdx, double deltaAngle);
+    pair<RowVector3d, Matrix3d> calcSCRotationMatrixByDeltaAngle(int dihedralIdx, double deltaAngle);
 
 
     // Calc Side Chain Rotation Matrix By Target Angle
-    pair<RowVector3d, Matrix3d> calcSCRotationMatrixByTargetAngle(
-        int dihedralIdx, double targetAngle);
+    pair<RowVector3d, Matrix3d> calcSCRotationMatrixByTargetAngle(int dihedralIdx, double targetAngle);
 
 
     // Get Side Chain Rotation Atom Pointer

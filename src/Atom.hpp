@@ -30,9 +30,8 @@ using Eigen::RowVector3d;
 // Constructor
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Atom::Atom(const string &name, int num, const RowVector3d &coord,
-    const string &alt, const string &occ, const string &tempF,
-    const string &ele, const string &chg, Residue *owner):
+Atom::Atom(const string &name, int num, const RowVector3d &coord, const string &alt, const string &occ,
+    const string &tempF, const string &ele, const string &chg, Residue *owner):
     __name (name),
     __num  (num),
     __coord(coord),
@@ -254,16 +253,7 @@ Atom *Atom::owner(Residue *val)
 
 Atom *Atom::copy()
 {
-    return new Atom(
-        __name,
-        __num,
-        __coord,
-        __alt,
-        __occ,
-        __tempF,
-        __ele,
-        __chg
-    );
+    return new Atom(__name, __num, __coord, __alt, __occ, __tempF, __ele, __chg);
 }
 
 

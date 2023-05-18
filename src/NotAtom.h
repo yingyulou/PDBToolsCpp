@@ -46,8 +46,7 @@ public:
 
 
     // Filter Atoms
-    vector<Atom *> filterAtoms(
-        const unordered_set<string> &atomNameSet = {"CA"});
+    vector<Atom *> filterAtoms(const unordered_set<string> &atomNameSet = {"CA"});
 
 
     // Get Atoms Coord
@@ -55,8 +54,7 @@ public:
 
 
     // Filter Atoms Coord
-    MatrixX3d filterAtomsCoord(
-        const unordered_set<string> &atomNameSet = {"CA"});
+    MatrixX3d filterAtomsCoord(const unordered_set<string> &atomNameSet = {"CA"});
 
 
     // Center
@@ -76,8 +74,7 @@ public:
 
 
     // Dump Fasta
-    SelfType *dumpFasta(const string &dumpFilePath,
-        const string &fileMode = "w", const string &titleStr = "");
+    SelfType *dumpFasta(const string &dumpFilePath, const string &fileMode = "w", const string &titleStr = "");
 
 
     // Renum Residues
@@ -93,8 +90,7 @@ public:
 
 
     // Insert
-    SelfType *insert(typename vector<SubType *>::iterator insertIter,
-        SubType *subPtr, bool copyBool = true);
+    SelfType *insert(typename vector<SubType *>::iterator insertIter, SubType *subPtr, bool copyBool = true);
 
 
     // Remove Alt

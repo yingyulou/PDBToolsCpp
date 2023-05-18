@@ -29,8 +29,7 @@ template <typename SelfType, typename OwnerType>
 typename vector<SelfType *>::iterator __NotProtein<SelfType, OwnerType>::iter()
 {
     return find(static_cast<SelfType *>(this)->owner()->sub().begin(),
-        static_cast<SelfType *>(this)->owner()->sub().end(),
-        static_cast<SelfType *>(this));
+        static_cast<SelfType *>(this)->owner()->sub().end(), static_cast<SelfType *>(this));
 }
 
 
@@ -61,8 +60,7 @@ SelfType *__NotProtein<SelfType, OwnerType>::next(int shiftLen)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename OwnerType>
-typename vector<SelfType *>::iterator __NotProtein<SelfType, OwnerType>::remove(
-    bool deteleBool)
+typename vector<SelfType *>::iterator __NotProtein<SelfType, OwnerType>::remove(bool deteleBool)
 {
     auto eraseIter = static_cast<SelfType *>(this)->owner()->sub().erase(iter());
 

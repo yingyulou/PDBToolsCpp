@@ -62,8 +62,7 @@ typename vector<SubType *>::iterator __NotAtom<SelfType, SubType>::end()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-vector<Atom *> __NotAtom<SelfType, SubType>::filterAtoms(
-    const unordered_set<string> &atomNameSet)
+vector<Atom *> __NotAtom<SelfType, SubType>::filterAtoms(const unordered_set<string> &atomNameSet)
 {
     vector<Atom *> atomPtrList;
 
@@ -104,8 +103,7 @@ MatrixX3d __NotAtom<SelfType, SubType>::getAtomsCoord()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-MatrixX3d __NotAtom<SelfType, SubType>::filterAtomsCoord(
-    const unordered_set<string> &atomNameSet)
+MatrixX3d __NotAtom<SelfType, SubType>::filterAtomsCoord(const unordered_set<string> &atomNameSet)
 {
     auto atomPtrList = static_cast<SelfType *>(this)->filterAtoms();
 
@@ -189,8 +187,7 @@ string __NotAtom<SelfType, SubType>::fastaStr(const string &titleStr)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::dumpFasta(const string &dumpFilePath,
-    const string &fileMode, const string &titleStr)
+SelfType *__NotAtom<SelfType, SubType>::dumpFasta(const string &dumpFilePath, const string &fileMode, const string &titleStr)
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
 
@@ -259,8 +256,7 @@ SelfType *__NotAtom<SelfType, SubType>::append(SubType *subPtr, bool copyBool)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename SelfType, typename SubType>
-SelfType *__NotAtom<SelfType, SubType>::insert(
-    typename vector<SubType *>::iterator insertIter, SubType *subPtr, bool copyBool)
+SelfType *__NotAtom<SelfType, SubType>::insert(typename vector<SubType *>::iterator insertIter, SubType *subPtr, bool copyBool)
 {
     if (copyBool)
     {

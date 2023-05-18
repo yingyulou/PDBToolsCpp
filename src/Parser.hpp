@@ -90,10 +90,7 @@ Protein *load(const string &pdbFilePath, bool parseHBool = false)
         trim(chainName);
         trim(resIns);
 
-        RowVector3d atomCoord(
-            stod(line.substr(30, 8)),
-            stod(line.substr(38, 8)),
-            stod(line.substr(46, 8)));
+        RowVector3d atomCoord(stod(line.substr(30, 8)), stod(line.substr(38, 8)), stod(line.substr(46, 8)));
 
         string atomOccupancy  = line.size() > 54 ? line.substr(54, 6) : "";
         string atomTempFactor = line.size() > 60 ? line.substr(60, 6) : "";
@@ -122,8 +119,7 @@ Protein *load(const string &pdbFilePath, bool parseHBool = false)
             resPtr      = new Residue(resName, resNum, resIns, chainPtr);
         }
 
-        new Atom(atomName, atomNum, atomCoord, atomAltLoc, atomOccupancy,
-            atomTempFactor, atomElement, atomCharge, resPtr);
+        new Atom(atomName, atomNum, atomCoord, atomAltLoc, atomOccupancy, atomTempFactor, atomElement, atomCharge, resPtr);
     }
 
     f.close();
@@ -197,10 +193,7 @@ vector<Protein *> loadModel(const string &pdbFilePath, bool parseHBool = false)
         trim(chainName);
         trim(resIns);
 
-        RowVector3d atomCoord(
-            stod(line.substr(30, 8)),
-            stod(line.substr(38, 8)),
-            stod(line.substr(46, 8)));
+        RowVector3d atomCoord(stod(line.substr(30, 8)), stod(line.substr(38, 8)), stod(line.substr(46, 8)));
 
         string atomOccupancy  = line.size() > 54 ? line.substr(54, 6) : "";
         string atomTempFactor = line.size() > 60 ? line.substr(60, 6) : "";
@@ -229,8 +222,7 @@ vector<Protein *> loadModel(const string &pdbFilePath, bool parseHBool = false)
             resPtr      = new Residue(resName, resNum, resIns, chainPtr);
         }
 
-        new Atom(atomName, atomNum, atomCoord, atomAltLoc, atomOccupancy,
-            atomTempFactor, atomElement, atomCharge, resPtr);
+        new Atom(atomName, atomNum, atomCoord, atomAltLoc, atomOccupancy, atomTempFactor, atomElement, atomCharge, resPtr);
     }
 
     f.close();

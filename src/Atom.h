@@ -37,10 +37,8 @@ class Atom: public __NotProtein<Atom, Residue>
 public:
 
     // Constructor
-    explicit Atom(const string &name = "", int num = 0,
-        const RowVector3d &coord = RowVector3d::Zero(),
-        const string &alt = "", const string &occ = "",
-        const string &tempF = "", const string &ele = "",
+    explicit Atom(const string &name = "", int num = 0, const RowVector3d &coord = RowVector3d::Zero(),
+        const string &alt = "", const string &occ = "", const string &tempF = "", const string &ele = "",
         const string &chg = "", Residue *owner = nullptr);
 
 

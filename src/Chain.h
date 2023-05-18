@@ -33,8 +33,7 @@ using std::ostream;
 // Class Chain
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class Chain: public __NotAtom<Chain, Residue>,
-    public __NotProtein<Chain, Protein>
+class Chain: public __NotAtom<Chain, Residue>, public __NotProtein<Chain, Protein>
 {
     // Friend
     friend ostream &operator<<(ostream &os, const Chain &chainObj);

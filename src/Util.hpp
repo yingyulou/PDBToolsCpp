@@ -122,8 +122,7 @@ string dumpStr(const T &structPtrList)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-void dump(const T &structPtrList, const string &dumpFilePath,
-    const string &fileMode = "w")
+void dump(const T &structPtrList, const string &dumpFilePath, const string &fileMode = "w")
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
 
@@ -159,8 +158,7 @@ string fastaStr(const T &structPtrList)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-void dumpFasta(const T &structPtrList, const string &dumpFilePath,
-    const string &fileMode = "w")
+void dumpFasta(const T &structPtrList, const string &dumpFilePath, const string &fileMode = "w")
 {
     FILE *fo = fopen(dumpFilePath.c_str(), fileMode.c_str());
 
