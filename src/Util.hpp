@@ -9,8 +9,9 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <charconv>
 #include <cstdio>
-#include <regex>
+#include <cstdint>
 #include <utility>
 #include "Protein.h"
 #include "Chain.h"
@@ -29,9 +30,7 @@ using std::string;
 using std::stoi;
 using std::vector;
 using std::ostream;
-using std::regex_search;
-using std::regex_match;
-using std::smatch;
+using std::from_chars;
 using std::pair;
 
 
@@ -81,7 +80,9 @@ ostream &operator<<(ostream &os, const Atom &atomObj)
 
 bool isH(const string &atomName)
 {
-    return regex_search(atomName, __H_RE);
+    static const uint64_t __H_MASK_ARRAY[] = {0x000e000000000000ull, 0x100ull, 0ull, 0ull};
+
+    return (__H_MASK_ARRAY[(uint8_t)atomName[0] >> 6] >> ((uint8_t)atomName[0] & 0x3f)) & 0x1;
 }
 
 
@@ -91,11 +92,20 @@ bool isH(const string &atomName)
 
 pair<int, string> splitCompNum(const string &compNumStr)
 {
-    smatch smatchObj;
+    int resNum;
 
-    regex_match(compNumStr, smatchObj, __COMP_NUM_RE);
+    if (isalpha(compNumStr.back()))
+    {
+        from_chars(compNumStr.data(), compNumStr.data() + compNumStr.size() - 1, resNum);
 
-    return {stoi(smatchObj[1]), smatchObj[2]};
+        return {resNum, string(1, compNumStr.back())};
+    }
+    else
+    {
+        from_chars(compNumStr.data(), compNumStr.data() + compNumStr.size(), resNum);
+
+        return {resNum, ""};
+    }
 }
 
 
