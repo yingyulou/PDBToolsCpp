@@ -80,7 +80,7 @@ ostream &operator<<(ostream &os, const Atom &atomObj)
 
 bool isH(const string &atomName)
 {
-    static const uint64_t __H_MASK_ARRAY[] = {0x000e000000000000ull, 0x100ull, 0ull, 0ull};
+    static const uint64_t __H_MASK_ARRAY[] = {0xe000000000000ull, 0x100ull, 0ull, 0ull};
 
     return (__H_MASK_ARRAY[(uint8_t)atomName[0] >> 6] >> ((uint8_t)atomName[0] & 0x3f)) & 0x1;
 }
