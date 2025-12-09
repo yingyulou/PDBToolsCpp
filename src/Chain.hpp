@@ -256,7 +256,7 @@ Chain::~Chain()
 
 string Chain::__str() const
 {
-    return (format("<Chain object: %s, at 0x%p>") %
+    return (format("<Chain object: %s, at %p>") %
         __name                                    %
         this
     ).str();

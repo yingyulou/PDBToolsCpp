@@ -392,7 +392,7 @@ string Atom::dumpStr()
 
 string Atom::__str() const
 {
-    return (format("<Atom object: %d %s [%.3f, %.3f, %.3f], at 0x%p>") %
+    return (format("<Atom object: %d %s [%.3f, %.3f, %.3f], at %p>") %
         __num                                                          %
         __name                                                         %
         __coord[0]                                                     %

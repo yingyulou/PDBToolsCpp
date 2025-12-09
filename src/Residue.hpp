@@ -605,7 +605,7 @@ Residue::~Residue()
 
 string Residue::__str() const
 {
-    return (format("<Residue object: %d%s %s, at 0x%p>") %
+    return (format("<Residue object: %d%s %s, at %p>") %
         __num                                            %
         __ins                                            %
         __name                                           %

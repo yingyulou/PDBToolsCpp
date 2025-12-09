@@ -266,7 +266,7 @@ Protein::~Protein()
 
 string Protein::__str() const
 {
-    return (format("<Protein object: %s (Model: %d), at 0x%p>") %
+    return (format("<Protein object: %s (Model: %d), at %p>") %
         __name                                                  %
         __model                                                 %
         this
